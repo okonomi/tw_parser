@@ -14,7 +14,17 @@ module TwParser
     :variants, # ! Variant[]
     :important, # ! boolean
     :raw # ! string
-  )
+  ) do
+    def inspect
+      {
+        raw: raw,
+        kind: :static,
+        root: root,
+        variants: variants.map(&:inspect),
+        important: important
+      }
+    end
+  end
   FunctionalCandidate = Data.define(
     :root, # ! string
     :value, # ! ArbitraryUtilityValue | NamedUtilityValue | null
@@ -31,7 +41,14 @@ module TwParser
 
   StaticVariant = Data.define(
     :root # : string
-  )
+  ) do
+    def inspect
+      {
+        kind: :static,
+        root: root
+      }
+    end
+  end
 
   class Parser
     STATIC_CANDIDATES = Set.new([

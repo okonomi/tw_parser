@@ -4,6 +4,6 @@ require "tw_parser"
 
 parser = TwParser::Parser.new
 
-puts parser.parse("flex")
-puts parser.parse("flex!")
-puts parser.parse("hover:flex!")
+p parser.parse("flex")
+p parser.parse("flex!")
+p parser.parse("hover:flex!")
