@@ -29,6 +29,10 @@ module TwParser
     :fraction # ! string | nil
   )
 
+  StaticVariant = Data.define(
+    :root # : string
+  )
+
   class Parser
     STATIC_CANDIDATES = Set.new([
                                   "flex"
@@ -41,8 +45,23 @@ module TwParser
                                     ]).freeze
 
     def parse(input)
+      # hover:focus:underline
+      # ^^^^^ ^^^^^^           -> Variants
+      #             ^^^^^^^^^  -> Base
+      raw_variants = segment(input, ":")
+
+      base = raw_variants.pop
+
+      parsed_candidate_variants = []
+
+      raw_variants.each do |variant|
+        parsed_variant = parse_variant(variant)
+        return nil if parsed_variant.nil?
+
+        parsed_candidate_variants.push(parsed_variant)
+      end
+
       important = false
-      base = input
 
       if base.end_with?("!")
         important = true
@@ -52,7 +71,7 @@ module TwParser
       if STATIC_CANDIDATES.include?(base) && !base.include?("[")
         return StaticCandidate.new(
           root: base,
-          variants: [],
+          variants: parsed_candidate_variants,
           important:,
           raw: input
         )
@@ -77,6 +96,16 @@ module TwParser
         raw:,
         root: input,
         variants: []
+      )
+    end
+
+    def segment(input, delimiter)
+      input.split(delimiter)
+    end
+
+    def parse_variant(variant)
+      TwParser::StaticVariant.new(
+        root: variant
       )
     end
   end
