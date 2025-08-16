@@ -110,7 +110,7 @@ module TwParser
 
       StaticCandidate.new(
         important:,
-        raw:,
+        raw: input,
         root: input,
         variants: []
       )
