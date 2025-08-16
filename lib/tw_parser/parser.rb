@@ -30,20 +30,39 @@ module TwParser
   )
 
   class Parser
+    STATIC_CANDIDATES = Set.new([
+                                  "flex"
+                                ]).freeze
+    FUNCTIONAL_CANDIDATES = Set.new([
+                                      "translate",
+                                      "-translate",
+                                      "translate-x",
+                                      "-translate-x"
+                                    ]).freeze
+
     def parse(input)
       important = false
-      raw = input
+      base = input
 
-      if input.end_with?("!")
+      if base.end_with?("!")
         important = true
-        input = input[0...-1]
+        base = base[0...-1]
       end
 
-      if input == "-translate-x-4"
+      if STATIC_CANDIDATES.include?(base) && !base.include?("[")
+        return StaticCandidate.new(
+          root: base,
+          variants: [],
+          important:,
+          raw: input
+        )
+      end
+
+      if base == "-translate-x-4"
         return FunctionalCandidate.new(
           important:,
           modifier: nil,
-          raw: raw,
+          raw: input,
           root: "-translate-x",
           value: TwParser::NamedUtilityValue.new(
             fraction: nil,
