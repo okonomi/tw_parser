@@ -17,11 +17,11 @@ module TwParser
   ) do
     def inspect
       {
-        raw: raw,
         kind: :static,
-        root: root,
+        root:,
         variants: variants.map(&:inspect),
-        important: important
+        important:,
+        raw:
       }
     end
   end
@@ -32,12 +32,32 @@ module TwParser
     :variants, # ! Variant[]
     :important, # ! boolean
     :raw # ! string
-  )
+  ) do
+    def inspect
+      {
+        kind: :functional,
+        root:,
+        value:,
+        modifier:,
+        variants: variants.map(&:inspect),
+        important:,
+        raw:
+      }
+    end
+  end
 
   NamedUtilityValue = Data.define(
     :value, # ! string
     :fraction # ! string | nil
-  )
+  ) do
+    def inspect
+      {
+        kind: :named,
+        value:,
+        fraction:
+      }
+    end
+  end
 
   StaticVariant = Data.define(
     :root # : string
@@ -45,7 +65,7 @@ module TwParser
     def inspect
       {
         kind: :static,
-        root: root
+        root:
       }
     end
   end
