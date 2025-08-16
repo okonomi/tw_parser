@@ -27,6 +27,19 @@ RSpec.describe TwParser::Parser do
           )
         ]
       ),
+      "focus:hover:flex" => TwParser::StaticCandidate.new(
+        important: false,
+        raw: "focus:hover:flex",
+        root: "flex",
+        variants: [
+          TwParser::StaticVariant.new(
+            root: "hover"
+          ),
+          TwParser::StaticVariant.new(
+            root: "focus"
+          )
+        ]
+      ),
       "-translate-x-4" => TwParser::FunctionalCandidate.new(
         important: false,
         modifier: nil,

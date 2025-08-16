@@ -117,7 +117,9 @@ module TwParser
     end
 
     def segment(input, delimiter)
-      input.split(delimiter)
+      segments = input.split(delimiter)
+      base = segments.pop
+      segments.reverse.push(base)
     end
 
     def parse_variant(variant)
