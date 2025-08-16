@@ -46,6 +46,17 @@ module TwParser
     end
   end
 
+  NamedModifier = Data.define(
+    :value # : string
+  ) do
+    def inspect
+      {
+        kind: :named,
+        value:
+      }
+    end
+  end
+
   NamedUtilityValue = Data.define(
     :value, # ! string
     :fraction # ! string | nil
@@ -78,7 +89,8 @@ module TwParser
                                       "translate",
                                       "-translate",
                                       "translate-x",
-                                      "-translate-x"
+                                      "-translate-x",
+                                      "bg"
                                     ]).freeze
 
     def parse(input)
@@ -128,12 +140,42 @@ module TwParser
         )
       end
 
-      StaticCandidate.new(
-        important:,
-        raw: input,
-        root: input,
-        variants: []
-      )
+      # // Figure out the new base and the modifier segment if present.
+      # //
+      # // E.g.:
+      # //
+      # // ```
+      # // bg-red-500/50
+      # // ^^^^^^^^^^    -> Base without modifier
+      # //            ^^ -> Modifier segment
+      # // ```
+      base_without_modifier, modifier_segment, additional_modifier = segment(base, "/")
+
+      parsed_modifier = modifier_segment.nil? ? nil : parse_modifier(modifier_segment)
+
+      roots = find_roots(base_without_modifier) do |root|
+        FUNCTIONAL_CANDIDATES.include?(root)
+      end
+
+      return nil if roots.empty?
+
+      roots.each do |root, value|
+        candidate = TwParser::FunctionalCandidate.new(
+          root: root,
+          modifier: parsed_modifier,
+          value: nil,
+          variants: parsed_candidate_variants,
+          important:,
+          raw: input
+        )
+
+        candidate = candidate.with(value: TwParser::NamedUtilityValue.new(
+          value: value,
+          fraction: "#{value}/#{parsed_modifier.value}"
+        ))
+
+        return candidate
+      end
     end
 
     def segment(input, delimiter)
@@ -146,6 +188,27 @@ module TwParser
       TwParser::StaticVariant.new(
         root: variant
       )
+    end
+
+    def parse_modifier(modifier)
+      TwParser::NamedModifier.new(
+        value: modifier
+      )
+    end
+
+    def find_roots(input, &exists)
+      return [[input, nil]] if exists.call(input)
+
+      idx = input.rindex("-", -1)
+      while idx
+        maybe_root = input.slice(0, idx)
+
+        return [[maybe_root, input.slice((idx + 1)..)]] if exists.call(maybe_root)
+
+        idx = input.rindex("-", idx - 1)
+      end
+
+      []
     end
   end
 end

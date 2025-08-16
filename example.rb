@@ -7,3 +7,4 @@ parser = TwParser::Parser.new
 p parser.parse("flex")
 p parser.parse("flex!")
 p parser.parse("hover:flex!")
+p parser.parse("bg-red-500/50")
