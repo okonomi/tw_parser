@@ -63,6 +63,19 @@ RSpec.describe TwParser::Parser do
           value: "red-500"
         ),
         variants: []
+      ),
+      "bg-red-500/50!" => TwParser::FunctionalCandidate.new(
+        important: true,
+        modifier: TwParser::NamedModifier.new(
+          value: "50"
+        ),
+        raw: "bg-red-500/50!",
+        root: "bg",
+        value: TwParser::NamedUtilityValue.new(
+          fraction: "red-500/50",
+          value: "red-500"
+        ),
+        variants: []
       )
     }.each do |input, expected|
       context input do
