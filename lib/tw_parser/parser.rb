@@ -126,20 +126,6 @@ module TwParser
         )
       end
 
-      if base == "-translate-x-4"
-        return FunctionalCandidate.new(
-          important:,
-          modifier: nil,
-          raw: input,
-          root: "-translate-x",
-          value: TwParser::NamedUtilityValue.new(
-            fraction: nil,
-            value: "4"
-          ),
-          variants: []
-        )
-      end
-
       # // Figure out the new base and the modifier segment if present.
       # //
       # // E.g.:
@@ -169,10 +155,14 @@ module TwParser
           raw: input
         )
 
-        candidate = candidate.with(value: TwParser::NamedUtilityValue.new(
-          value: value,
-          fraction: "#{value}/#{parsed_modifier.value}"
-        ))
+        if value
+          fraction = ("#{value}/#{parsed_modifier.value}" if parsed_modifier)
+
+          candidate = candidate.with(value: TwParser::NamedUtilityValue.new(
+            value:,
+            fraction:
+          ))
+        end
 
         return candidate
       end
