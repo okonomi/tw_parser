@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "./segment"
+
 module TwParser
   ArbitraryCandidate = Data.define(
     :property, # ! string
@@ -97,7 +99,7 @@ module TwParser
       # hover:focus:underline
       # ^^^^^ ^^^^^^           -> Variants
       #             ^^^^^^^^^  -> Base
-      raw_variants = segment(input, ":")
+      raw_variants = TwParser.segment(input, ":")
 
       base = raw_variants.pop
 
@@ -135,7 +137,7 @@ module TwParser
       # // ^^^^^^^^^^    -> Base without modifier
       # //            ^^ -> Modifier segment
       # // ```
-      base_without_modifier, modifier_segment, additional_modifier = segment(base, "/")
+      base_without_modifier, modifier_segment, additional_modifier = TwParser.segment(base, "/")
 
       parsed_modifier = modifier_segment.nil? ? nil : parse_modifier(modifier_segment)
 
@@ -166,12 +168,6 @@ module TwParser
 
         return candidate
       end
-    end
-
-    def segment(input, delimiter)
-      segments = input.split(delimiter)
-      base = segments.pop
-      segments.reverse.push(base)
     end
 
     def parse_variant(variant)
