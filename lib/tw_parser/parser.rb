@@ -141,6 +141,29 @@ module TwParser
 
       parsed_modifier = modifier_segment.nil? ? nil : parse_modifier(modifier_segment)
 
+      # Arbitrary properties
+      if base_without_modifier.start_with?("[")
+        p base_without_modifier
+        # Arbitrary properties should end with a `]`.
+        return nil unless base_without_modifier.end_with?("]")
+
+        base_without_modifier = base_without_modifier.delete_prefix("[").delete_suffix("]")
+
+        idx = base_without_modifier.index(":")
+
+        property = base_without_modifier.slice(0, idx)
+        value = base_without_modifier.slice(idx + 1..)
+
+        return TwParser::ArbitraryCandidate.new(
+          property: property,
+          value: value,
+          modifier: parsed_modifier,
+          variants: parsed_candidate_variants,
+          important:,
+          raw: input
+        )
+      end
+
       roots = find_roots(base_without_modifier) do |root|
         FUNCTIONAL_CANDIDATES.include?(root)
       end
