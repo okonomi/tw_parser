@@ -25,6 +25,12 @@ module TwParser
       when '"', "'"
         while (idx += 1) < len
           next_char = input[idx]
+
+          if next_char == "\\"
+            idx += 1
+            next
+          end
+
           break if next_char == char
         end
       when "("

@@ -38,5 +38,19 @@ RSpec.describe TwParser do
         end
       end
     end
+
+    context "when input is escaped" do
+      {
+        'a:"b:c\":d":e' => ["a", '"b:c\":d"', "e"],
+        "a:'b:c\\':d':e" => ["a", "'b:c\\':d'", "e"]
+      }.each do |input, expected|
+        context "with #{input}" do
+          let(:input) { input }
+          let(:delimiter) { ":" }
+
+          it { is_expected.to eq(expected) }
+        end
+      end
+    end
   end
 end
