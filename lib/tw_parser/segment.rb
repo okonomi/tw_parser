@@ -4,8 +4,39 @@ module TwParser
   module_function
 
   def segment(input, delimiter)
-    segments = input.split(delimiter)
-    base = segments.pop
-    segments.reverse.push(base)
+    closing_bracket_stack = []
+
+    parts = []
+    last_pos = 0
+    len = input.length
+
+    idx = 0
+    while idx < len
+      char = input[idx]
+
+      if closing_bracket_stack.empty? && char == delimiter
+        parts << input[last_pos...idx]
+        last_pos = idx + 1
+        idx += 1
+        next
+      end
+
+      case char
+      when "("
+        closing_bracket_stack.push(")")
+      when "["
+        closing_bracket_stack.push("]")
+      when "{"
+        closing_bracket_stack.push("}")
+      when ")", "]", "}"
+        closing_bracket_stack.pop if closing_bracket_stack.last == char
+      end
+
+      idx += 1
+    end
+
+    parts << input[last_pos..]
+
+    parts
   end
 end
