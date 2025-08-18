@@ -10,7 +10,19 @@ module TwParser
     :variants, # ! Variant[]
     :important, # ! boolean
     :raw # ! string
-  )
+  ) do
+    def inspect
+      {
+        kind: :arbitrary,
+        property:,
+        value:,
+        modifier:,
+        variants: variants.map(&:inspect),
+        important:,
+        raw:
+      }
+    end
+  end
   StaticCandidate = Data.define(
     :root, # ! string
     :variants, # ! Variant[]
