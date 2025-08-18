@@ -94,26 +94,21 @@ RSpec.describe TwParser::Parser do
           )
         ]
       ),
-      # it('should parse arbitrary properties', () => {
-      #   expect(run('[color:red]')).toMatchInlineSnapshot(`
-      #     [
-      #       {
-      #         "important": false,
-      #         "kind": "arbitrary",
-      #         "modifier": null,
-      #         "property": "color",
-      #         "raw": "[color:red]",
-      #         "value": "red",
-      #         "variants": [],
-      #       },
-      #     ]
-      #   `)
-      # })
       "[color:red]" => TwParser::ArbitraryCandidate.new(
         important: false,
         modifier: nil,
         property: "color",
         raw: "[color:red]",
+        value: "red",
+        variants: []
+      ),
+      "[color:red]/50" => TwParser::ArbitraryCandidate.new(
+        important: false,
+        modifier: TwParser::NamedModifier.new(
+          value: "50"
+        ),
+        property: "color",
+        raw: "[color:red]/50",
         value: "red",
         variants: []
       )
