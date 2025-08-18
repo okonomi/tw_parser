@@ -111,6 +111,41 @@ RSpec.describe TwParser::Parser do
         raw: "[color:red]/50",
         value: "red",
         variants: []
+      ),
+      "[color:red]!" => TwParser::ArbitraryCandidate.new(
+        important: true,
+        modifier: nil,
+        property: "color",
+        raw: "[color:red]!",
+        value: "red",
+        variants: []
+      ),
+      "hover:[color:red]" => TwParser::ArbitraryCandidate.new(
+        important: false,
+        modifier: nil,
+        property: "color",
+        raw: "hover:[color:red]",
+        value: "red",
+        variants: [
+          TwParser::StaticVariant.new(
+            root: "hover"
+          )
+        ]
+      ),
+      "focus:hover:[color:red]" => TwParser::ArbitraryCandidate.new(
+        important: false,
+        modifier: nil,
+        property: "color",
+        raw: "focus:hover:[color:red]",
+        value: "red",
+        variants: [
+          TwParser::StaticVariant.new(
+            root: "hover"
+          ),
+          TwParser::StaticVariant.new(
+            root: "focus"
+          )
+        ]
       )
     }.each do |input, expected|
       context input do
