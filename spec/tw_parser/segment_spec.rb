@@ -52,5 +52,21 @@ RSpec.describe TwParser do
         end
       end
     end
+
+    context "when input is delimited by backslash" do
+      {
+        'a\\b\\c\\d' => %w[a b c d],
+        'a\\(b\\c)\\d' => ["a", '(b\\c)', "d"],
+        'a\\[b\\c]\\d' => ["a", '[b\\c]', "d"],
+        'a\\{b\\c}\\d' => ["a", '{b\\c}', "d"]
+      }.each do |input, expected|
+        context "with #{input}" do
+          let(:input) { input }
+          let(:delimiter) { "\\" }
+
+          it { is_expected.to eq(expected) }
+        end
+      end
+    end
   end
 end
