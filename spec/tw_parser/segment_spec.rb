@@ -11,7 +11,9 @@ RSpec.describe TwParser do
       "foo:bar:baz" => %w[foo bar baz],
       "a:(b:c):d" => %w[a (b:c) d],
       "a:[b:c]:d" => %w[a [b:c] d],
-      "a:{b:c}:d" => %w[a {b:c} d]
+      "a:{b:c}:d" => %w[a {b:c} d],
+      'a:"b:c":d' => ["a", '"b:c"', "d"],
+      "a:'b:c':d" => ["a", "'b:c'", "d"]
     }.each do |input, expected|
       context "when #{input}" do
         let(:input) { input }

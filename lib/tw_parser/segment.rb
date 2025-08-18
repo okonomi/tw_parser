@@ -22,6 +22,11 @@ module TwParser
       end
 
       case char
+      when '"', "'"
+        while (idx += 1) < len
+          next_char = input[idx]
+          break if next_char == char
+        end
       when "("
         closing_bracket_stack.push(")")
       when "["
