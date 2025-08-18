@@ -105,7 +105,7 @@ module TwParser
 
       parsed_candidate_variants = []
 
-      raw_variants.each do |variant|
+      raw_variants.reverse_each do |variant|
         parsed_variant = parse_variant(variant)
         return nil if parsed_variant.nil?
 
