@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "tw_parser"
+require_relative "./support/simple_result_formatter"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
