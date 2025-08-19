@@ -15,7 +15,7 @@ module TwParser
       {
         kind: :arbitrary,
         property:,
-        value:,
+        value: value.inspect,
         modifier:,
         variants: variants.map(&:inspect),
         important:,
@@ -51,7 +51,7 @@ module TwParser
       {
         kind: :functional,
         root:,
-        value:,
+        value: value.inspect,
         modifier:,
         variants: variants.map(&:inspect),
         important:,
