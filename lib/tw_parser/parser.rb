@@ -155,7 +155,6 @@ module TwParser
 
       # Arbitrary properties
       if base_without_modifier.start_with?("[")
-        p base_without_modifier
         # Arbitrary properties should end with a `]`.
         return nil unless base_without_modifier.end_with?("]")
 
