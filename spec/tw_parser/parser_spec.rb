@@ -146,6 +146,17 @@ RSpec.describe TwParser::Parser do
             root: "focus"
           )
         ]
+      ),
+      "[&_p]:flex" => TwParser::StaticCandidate.new(
+          important: false,
+          raw: "[&_p]:flex",
+          root: "flex",
+          variants: [
+            TwParser::ArbitraryVariant.new(
+              relative: false,
+              selector: "& p"
+            )
+          ]
       )
     }.each do |input, expected|
       context input do

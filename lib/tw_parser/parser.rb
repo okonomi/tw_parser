@@ -84,6 +84,21 @@ module TwParser
     end
   end
 
+  ArbitraryVariant = Data.define(
+    :selector, #: string
+
+    # Whether or not the selector is a relative selector
+    # @see https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors/Selector_structure#relative_selector
+    :relative, #: boolean
+  ) do
+    def inspect
+      {
+        kind: :arbitrary,
+        selector:,
+        relative:
+      }
+    end
+  end
   StaticVariant = Data.define(
     :root # : string
   ) do
@@ -205,9 +220,23 @@ module TwParser
     end
 
     def parse_variant(variant)
+      if variant.start_with?("[") && variant.end_with?("]")
+        selector = decode_arbitrary_value(variant[1..-2])
+        relative = selector.start_with?(">", "+", "~")
+
+        return TwParser::ArbitraryVariant.new(
+          selector: selector,
+          relative: relative
+        )
+      end
+
       TwParser::StaticVariant.new(
         root: variant
       )
+    end
+
+    def decode_arbitrary_value(value)
+      value.gsub("_", " ")
     end
 
     def parse_modifier(modifier)
