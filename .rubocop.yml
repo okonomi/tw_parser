@@ -4,8 +4,14 @@ plugins:
 AllCops:
   TargetRubyVersion: 3.2
 
+Metrics:
+  Enabled: false
+
 Layout/LeadingCommentSpace:
   AllowRBSInlineAnnotation: true
+
+Layout/LineLength:
+  Enabled: false
 
 Style/Documentation:
   Enabled: false
