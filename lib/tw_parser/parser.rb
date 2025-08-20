@@ -186,7 +186,7 @@ module TwParser
                                       "bg"
                                     ]).freeze
     VARIANTS = Set.new([
-                         "supports",
+                         "supports"
                        ]).freeze
 
     def parse(input)
@@ -313,7 +313,7 @@ module TwParser
           )
         end
 
-        if value.end_with?(")")
+        if value.end_with?(")") # rubocop:disable Style/Next
           # Discard values like `foo-(--bar)`
           next unless value.start_with?("(")
 
