@@ -148,15 +148,15 @@ RSpec.describe TwParser::Parser do
         ]
       ),
       "[&_p]:flex" => TwParser::StaticCandidate.new(
-          important: false,
-          raw: "[&_p]:flex",
-          root: "flex",
-          variants: [
-            TwParser::ArbitraryVariant.new(
-              relative: false,
-              selector: "& p"
-            )
-          ]
+        important: false,
+        raw: "[&_p]:flex",
+        root: "flex",
+        variants: [
+          TwParser::ArbitraryVariant.new(
+            relative: false,
+            selector: "& p"
+          )
+        ]
       ),
       "supports-(--test):flex" => TwParser::StaticCandidate.new(
         important: false,
