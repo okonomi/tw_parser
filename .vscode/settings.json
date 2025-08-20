@@ -1,0 +1,4 @@
+{
+  "rbs-helper.rbs-inline-on-save": true,
+  "rubyLsp.formatter": "rubocop"
+}

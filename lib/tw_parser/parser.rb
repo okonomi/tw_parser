@@ -1,15 +1,16 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
-require_relative "./segment"
+require_relative "segment"
 
 module TwParser
   ArbitraryCandidate = Data.define(
-    :property, # ! string
-    :value, # ! string
-    :modifier, # ! ArbitraryModifier | NamedModifier | null
-    :variants, # ! Variant[]
-    :important, # ! boolean
-    :raw # ! string
+    :property, #: String
+    :value, #: String
+    :modifier, #: ArbitraryModifier | NamedModifier | nil
+    :variants, #: Array[variant]
+    :important, #: bool
+    :raw #: String
   ) do
     def inspect
       {
@@ -24,10 +25,10 @@ module TwParser
     end
   end
   StaticCandidate = Data.define(
-    :root, # ! string
-    :variants, # ! Variant[]
-    :important, # ! boolean
-    :raw # ! string
+    :root, #: String
+    :variants, #: Array[variant]
+    :important, #: bool
+    :raw #: String
   ) do
     def inspect
       {
@@ -40,12 +41,12 @@ module TwParser
     end
   end
   FunctionalCandidate = Data.define(
-    :root, # ! string
-    :value, # ! ArbitraryUtilityValue | NamedUtilityValue | null
-    :modifier, # ! ArbitraryModifier | NamedModifier | null
-    :variants, # ! Variant[]
-    :important, # ! boolean
-    :raw # ! string
+    :root, #: String
+    :value, #: ArbitraryUtilityValue | NamedUtilityValue | nil
+    :modifier, #: ArbitraryModifier | NamedModifier | nil
+    :variants, #: Array[variant]
+    :important, #: bool
+    :raw #: String
   ) do
     def inspect
       {
@@ -61,7 +62,7 @@ module TwParser
   end
 
   NamedModifier = Data.define(
-    :value # : string
+    :value #: String
   ) do
     def inspect
       {
@@ -72,8 +73,8 @@ module TwParser
   end
 
   NamedUtilityValue = Data.define(
-    :value, # ! string
-    :fraction # ! string | nil
+    :value, #: String
+    :fraction #: String?
   ) do
     def inspect
       {
@@ -87,7 +88,7 @@ module TwParser
   ArbitraryModifier = Data.define(
     # bg-red-500/[50%]
     #             ^^^
-    :value #: string
+    :value #: String
   ) do
     def inspect
       {
@@ -99,7 +100,7 @@ module TwParser
   NamedModifier = Data.define(
     # bg-red-500/50
     #            ^^
-    :value #: string
+    :value #: String
   ) do
     def inspect
       {
@@ -110,11 +111,10 @@ module TwParser
   end
 
   ArbitraryVariant = Data.define(
-    :selector, #: string
-
+    :selector, #: String
     # Whether or not the selector is a relative selector
     # @see https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors/Selector_structure#relative_selector
-    :relative, #: boolean
+    :relative #: bool
   ) do
     def inspect
       {
@@ -125,7 +125,7 @@ module TwParser
     end
   end
   StaticVariant = Data.define(
-    :root # : string
+    :root #: String
   ) do
     def inspect
       {
@@ -135,9 +135,9 @@ module TwParser
     end
   end
   FunctionalVariant = Data.define(
-    :root, #: string
-    :value, #: ArbitraryVariantValue | NamedVariantValue | null
-    :modifier #: ArbitraryModifier | NamedModifier | null
+    :root, #: String
+    :value, #: ArbitraryVariantValue | NamedVariantValue | nil
+    :modifier #: ArbitraryModifier | NamedModifier | nil
   ) do
     def inspect
       {
@@ -149,8 +149,12 @@ module TwParser
     end
   end
 
+  # @rbs!
+  #
+  #  type variant = ArbitraryVariant | StaticVariant | FunctionalVariant
+
   ArbitraryVariantValue = Data.define(
-    :value #: string
+    :value #: String
   ) do
     def inspect
       {
@@ -160,7 +164,7 @@ module TwParser
     end
   end
   NamedVariantValue = Data.define(
-    :value #: string
+    :value #: String
   ) do
     def inspect
       {

@@ -1,0 +1,189 @@
+# Generated from lib/tw_parser/parser.rb with RBS::Inline
+
+module TwParser
+  class ArbitraryCandidate < Data
+    attr_reader property(): String
+
+    attr_reader value(): String
+
+    attr_reader modifier(): ArbitraryModifier | NamedModifier | nil
+
+    attr_reader variants(): Array[variant]
+
+    attr_reader important(): bool
+
+    attr_reader raw(): String
+
+    def self.new: (String property, String value, ArbitraryModifier | NamedModifier | nil modifier, Array[variant] variants, bool important, String raw) -> instance
+                | (property: String, value: String, modifier: ArbitraryModifier | NamedModifier | nil, variants: Array[variant], important: bool, raw: String) -> instance
+
+    def self.members: () -> [ :property, :value, :modifier, :variants, :important, :raw ]
+
+    def members: () -> [ :property, :value, :modifier, :variants, :important, :raw ]
+  end
+
+  class StaticCandidate < Data
+    attr_reader root(): String
+
+    attr_reader variants(): Array[variant]
+
+    attr_reader important(): bool
+
+    attr_reader raw(): String
+
+    def self.new: (String root, Array[variant] variants, bool important, String raw) -> instance
+                | (root: String, variants: Array[variant], important: bool, raw: String) -> instance
+
+    def self.members: () -> [ :root, :variants, :important, :raw ]
+
+    def members: () -> [ :root, :variants, :important, :raw ]
+  end
+
+  class FunctionalCandidate < Data
+    attr_reader root(): String
+
+    attr_reader value(): ArbitraryUtilityValue | NamedUtilityValue | nil
+
+    attr_reader modifier(): ArbitraryModifier | NamedModifier | nil
+
+    attr_reader variants(): Array[variant]
+
+    attr_reader important(): bool
+
+    attr_reader raw(): String
+
+    def self.new: (String root, ArbitraryUtilityValue | NamedUtilityValue | nil value, ArbitraryModifier | NamedModifier | nil modifier, Array[variant] variants, bool important, String raw) -> instance
+                | (root: String, value: ArbitraryUtilityValue | NamedUtilityValue | nil, modifier: ArbitraryModifier | NamedModifier | nil, variants: Array[variant], important: bool, raw: String) -> instance
+
+    def self.members: () -> [ :root, :value, :modifier, :variants, :important, :raw ]
+
+    def members: () -> [ :root, :value, :modifier, :variants, :important, :raw ]
+  end
+
+  class NamedModifier < Data
+    attr_reader value(): String
+
+    def self.new: (String value) -> instance
+                | (value: String) -> instance
+
+    def self.members: () -> [ :value ]
+
+    def members: () -> [ :value ]
+  end
+
+  class NamedUtilityValue < Data
+    attr_reader value(): String
+
+    attr_reader fraction(): String?
+
+    def self.new: (String value, String? fraction) -> instance
+                | (value: String, fraction: String?) -> instance
+
+    def self.members: () -> [ :value, :fraction ]
+
+    def members: () -> [ :value, :fraction ]
+  end
+
+  class ArbitraryModifier < Data
+    attr_reader value(): String
+
+    def self.new: (String value) -> instance
+                | (value: String) -> instance
+
+    def self.members: () -> [ :value ]
+
+    def members: () -> [ :value ]
+  end
+
+  class NamedModifier < Data
+    attr_reader value(): String
+
+    def self.new: (String value) -> instance
+                | (value: String) -> instance
+
+    def self.members: () -> [ :value ]
+
+    def members: () -> [ :value ]
+  end
+
+  class ArbitraryVariant < Data
+    attr_reader selector(): String
+
+    attr_reader relative(): bool
+
+    def self.new: (String selector, bool relative) -> instance
+                | (selector: String, relative: bool) -> instance
+
+    def self.members: () -> [ :selector, :relative ]
+
+    def members: () -> [ :selector, :relative ]
+  end
+
+  class StaticVariant < Data
+    attr_reader root(): String
+
+    def self.new: (String root) -> instance
+                | (root: String) -> instance
+
+    def self.members: () -> [ :root ]
+
+    def members: () -> [ :root ]
+  end
+
+  class FunctionalVariant < Data
+    attr_reader root(): String
+
+    attr_reader value(): ArbitraryVariantValue | NamedVariantValue | nil
+
+    attr_reader modifier(): ArbitraryModifier | NamedModifier | nil
+
+    def self.new: (String root, ArbitraryVariantValue | NamedVariantValue | nil value, ArbitraryModifier | NamedModifier | nil modifier) -> instance
+                | (root: String, value: ArbitraryVariantValue | NamedVariantValue | nil, modifier: ArbitraryModifier | NamedModifier | nil) -> instance
+
+    def self.members: () -> [ :root, :value, :modifier ]
+
+    def members: () -> [ :root, :value, :modifier ]
+  end
+
+  type variant = ArbitraryVariant | StaticVariant | FunctionalVariant
+
+  class ArbitraryVariantValue < Data
+    attr_reader value(): String
+
+    def self.new: (String value) -> instance
+                | (value: String) -> instance
+
+    def self.members: () -> [ :value ]
+
+    def members: () -> [ :value ]
+  end
+
+  class NamedVariantValue < Data
+    attr_reader value(): String
+
+    def self.new: (String value) -> instance
+                | (value: String) -> instance
+
+    def self.members: () -> [ :value ]
+
+    def members: () -> [ :value ]
+  end
+
+  class Parser
+    STATIC_CANDIDATES: untyped
+
+    FUNCTIONAL_CANDIDATES: untyped
+
+    VARIANTS: untyped
+
+    def parse: (untyped input) -> untyped
+
+    def parse_variant: (untyped variant) -> untyped
+
+    def decode_arbitrary_value: (untyped value) -> untyped
+
+    def parse_modifier: (untyped modifier) -> untyped
+
+    def find_roots: (untyped input) ?{ (?) -> untyped } -> untyped
+  end
+end
