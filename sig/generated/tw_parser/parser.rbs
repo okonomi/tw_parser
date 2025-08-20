@@ -60,15 +60,17 @@ module TwParser
     def members: () -> [ :root, :value, :modifier, :variants, :important, :raw ]
   end
 
-  class NamedModifier < Data
+  class ArbitraryUtilityValue < Data
+    attr_reader data_type(): String?
+
     attr_reader value(): String
 
-    def self.new: (String value) -> instance
-                | (value: String) -> instance
+    def self.new: (String? data_type, String value) -> instance
+                | (data_type: String?, value: String) -> instance
 
-    def self.members: () -> [ :value ]
+    def self.members: () -> [ :data_type, :value ]
 
-    def members: () -> [ :value ]
+    def members: () -> [ :data_type, :value ]
   end
 
   class NamedUtilityValue < Data

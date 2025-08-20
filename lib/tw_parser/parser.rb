@@ -61,12 +61,31 @@ module TwParser
     end
   end
 
-  NamedModifier = Data.define(
+  ArbitraryUtilityValue = Data.define(
+    # ```
+    # bg-[color:var(--my-color)]
+    #     ^^^^^
+    #
+    # bg-(color:--my-color)
+    #     ^^^^^
+    # ```
+    :data_type, #: String?
+    # ```
+    # bg-[#0088cc]
+    #     ^^^^^^^
+    #
+    # bg-[var(--my_variable)]
+    #     ^^^^^^^^^^^^^^^^^^
+    #
+    # bg-(--my_variable)
+    #     ^^^^^^^^^^^^^^
+    # ```
     :value #: String
   ) do
     def inspect
       {
-        kind: :named,
+        kind: :arbitrary,
+        data_type:,
         value:
       }
     end
