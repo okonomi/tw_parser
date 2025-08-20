@@ -84,6 +84,31 @@ module TwParser
     end
   end
 
+  ArbitraryModifier = Data.define(
+    # bg-red-500/[50%]
+    #             ^^^
+    :value #: string
+  ) do
+    def inspect
+      {
+        kind: :arbitrary,
+        value:
+      }
+    end
+  end
+  NamedModifier = Data.define(
+    # bg-red-500/50
+    #            ^^
+    :value #: string
+  ) do
+    def inspect
+      {
+        kind: :named,
+        value:
+      }
+    end
+  end
+
   ArbitraryVariant = Data.define(
     :selector, #: string
 
@@ -109,6 +134,41 @@ module TwParser
       }
     end
   end
+  FunctionalVariant = Data.define(
+    :root, #: string
+    :value, #: ArbitraryVariantValue | NamedVariantValue | null
+    :modifier #: ArbitraryModifier | NamedModifier | null
+  ) do
+    def inspect
+      {
+        kind: :functional,
+        root:,
+        value: value.inspect,
+        modifier:
+      }
+    end
+  end
+
+  ArbitraryVariantValue = Data.define(
+    :value #: string
+  ) do
+    def inspect
+      {
+        kind: :arbitrary,
+        value:
+      }
+    end
+  end
+  NamedVariantValue = Data.define(
+    :value #: string
+  ) do
+    def inspect
+      {
+        kind: :named,
+        value:
+      }
+    end
+  end
 
   class Parser
     STATIC_CANDIDATES = Set.new([
@@ -121,6 +181,9 @@ module TwParser
                                       "-translate-x",
                                       "bg"
                                     ]).freeze
+    VARIANTS = Set.new([
+                         "supports",
+                       ]).freeze
 
     def parse(input)
       # hover:focus:underline
@@ -220,6 +283,7 @@ module TwParser
     end
 
     def parse_variant(variant)
+      # Arbitrary variants
       if variant.start_with?("[") && variant.end_with?("]")
         selector = decode_arbitrary_value(variant[1..-2])
         relative = selector.start_with?(">", "+", "~")
@@ -228,6 +292,37 @@ module TwParser
           selector: selector,
           relative: relative
         )
+      end
+
+      # Functional variants
+      variant_without_modifier, _modifier, _additional_modifier = TwParser.segment(variant, "/")
+
+      roots = find_roots(variant_without_modifier) do |root|
+        VARIANTS.include?(root)
+      end
+      roots.each do |root, value|
+        if value.nil?
+          return TwParser::FunctionalVariant.new(
+            root: root,
+            value: nil,
+            modifier: nil
+          )
+        end
+
+        if value.end_with?(")")
+          # Discard values like `foo-(--bar)`
+          next unless value.start_with?("(")
+
+          arbitrary_value = decode_arbitrary_value(value[1..-2])
+
+          return TwParser::FunctionalVariant.new(
+            root: root,
+            value: TwParser::ArbitraryVariantValue.new(
+              value: "var(#{arbitrary_value})"
+            ),
+            modifier: nil
+          )
+        end
       end
 
       TwParser::StaticVariant.new(

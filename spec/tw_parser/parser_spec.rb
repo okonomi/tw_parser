@@ -157,6 +157,20 @@ RSpec.describe TwParser::Parser do
               selector: "& p"
             )
           ]
+      ),
+      "supports-(--test):flex" => TwParser::StaticCandidate.new(
+        important: false,
+        raw: "supports-(--test):flex",
+        root: "flex",
+        variants: [
+          TwParser::FunctionalVariant.new(
+            modifier: nil,
+            root: "supports",
+            value: TwParser::ArbitraryVariantValue.new(
+              value: "var(--test)"
+            )
+          )
+        ]
       )
     }.each do |input, expected|
       context input do
