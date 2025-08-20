@@ -250,7 +250,7 @@ module TwParser
       # // ^^^^^^^^^^    -> Base without modifier
       # //            ^^ -> Modifier segment
       # // ```
-      base_without_modifier, modifier_segment, additional_modifier = TwParser.segment(base, "/")
+      base_without_modifier, modifier_segment, _additional_modifier = TwParser.segment(base, "/")
 
       parsed_modifier = modifier_segment.nil? ? nil : parse_modifier(modifier_segment)
 
@@ -282,7 +282,7 @@ module TwParser
 
       return nil if roots.empty?
 
-      roots.each do |root, value|
+      roots.each do |root, value| # rubocop:disable Lint/UnreachableLoop
         candidate = TwParser::FunctionalCandidate.new(
           root: root,
           modifier: parsed_modifier,
