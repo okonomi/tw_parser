@@ -4,63 +4,6 @@
 require_relative "segment"
 
 module TwParser
-  ArbitraryCandidate = Data.define(
-    :property, #: String
-    :value, #: String
-    :modifier, #: ArbitraryModifier | NamedModifier | nil
-    :variants, #: Array[variant]
-    :important, #: bool
-    :raw #: String
-  ) do
-    def inspect
-      {
-        kind: :arbitrary,
-        property:,
-        value: value.inspect,
-        modifier:,
-        variants: variants.map(&:inspect),
-        important:,
-        raw:
-      }
-    end
-  end
-  StaticCandidate = Data.define(
-    :root, #: String
-    :variants, #: Array[variant]
-    :important, #: bool
-    :raw #: String
-  ) do
-    def inspect
-      {
-        kind: :static,
-        root:,
-        variants: variants.map(&:inspect),
-        important:,
-        raw:
-      }
-    end
-  end
-  FunctionalCandidate = Data.define(
-    :root, #: String
-    :value, #: ArbitraryUtilityValue | NamedUtilityValue | nil
-    :modifier, #: ArbitraryModifier | NamedModifier | nil
-    :variants, #: Array[variant]
-    :important, #: bool
-    :raw #: String
-  ) do
-    def inspect
-      {
-        kind: :functional,
-        root:,
-        value: value.inspect,
-        modifier:,
-        variants: variants.map(&:inspect),
-        important:,
-        raw:
-      }
-    end
-  end
-
   ArbitraryUtilityValue = Data.define(
     # ```
     # bg-[color:var(--my-color)]
@@ -69,7 +12,7 @@ module TwParser
     # bg-(color:--my-color)
     #     ^^^^^
     # ```
-    :data_type, #: String?
+    :data_type, #: String | nil
     # ```
     # bg-[#0088cc]
     #     ^^^^^^^
@@ -93,7 +36,7 @@ module TwParser
 
   NamedUtilityValue = Data.define(
     :value, #: String
-    :fraction #: String?
+    :fraction #: String | nil
   ) do
     def inspect
       {
@@ -116,9 +59,35 @@ module TwParser
       }
     end
   end
+
   NamedModifier = Data.define(
     # bg-red-500/50
     #            ^^
+    :value #: String
+  ) do
+    def inspect
+      {
+        kind: :named,
+        value:
+      }
+    end
+  end
+
+  # @rbs!
+  #  type candidate_modifier = ArbitraryModifier | NamedModifier
+
+  ArbitraryVariantValue = Data.define(
+    :value #: String
+  ) do
+    def inspect
+      {
+        kind: :arbitrary,
+        value:
+      }
+    end
+  end
+
+  NamedVariantValue = Data.define(
     :value #: String
   ) do
     def inspect
@@ -143,6 +112,7 @@ module TwParser
       }
     end
   end
+
   StaticVariant = Data.define(
     :root #: String
   ) do
@@ -153,6 +123,7 @@ module TwParser
       }
     end
   end
+
   FunctionalVariant = Data.define(
     :root, #: String
     :value, #: ArbitraryVariantValue | NamedVariantValue | nil
@@ -172,26 +143,67 @@ module TwParser
   #
   #  type variant = ArbitraryVariant | StaticVariant | FunctionalVariant
 
-  ArbitraryVariantValue = Data.define(
-    :value #: String
+  ArbitraryCandidate = Data.define(
+    :property, #: String
+    :value, #: String
+    :modifier, #: ArbitraryModifier | NamedModifier | nil
+    :variants, #: Array[variant]
+    :important, #: bool
+    :raw #: String
   ) do
     def inspect
       {
         kind: :arbitrary,
-        value:
+        property:,
+        value: value.inspect,
+        modifier:,
+        variants: variants.map(&:inspect),
+        important:,
+        raw:
       }
     end
   end
-  NamedVariantValue = Data.define(
-    :value #: String
+
+  StaticCandidate = Data.define(
+    :root, #: String
+    :variants, #: Array[variant]
+    :important, #: bool
+    :raw #: String
   ) do
     def inspect
       {
-        kind: :named,
-        value:
+        kind: :static,
+        root:,
+        variants: variants.map(&:inspect),
+        important:,
+        raw:
       }
     end
   end
+
+  FunctionalCandidate = Data.define(
+    :root, #: String
+    :value, #: ArbitraryUtilityValue | NamedUtilityValue | nil
+    :modifier, #: ArbitraryModifier | NamedModifier | nil
+    :variants, #: Array[variant]
+    :important, #: bool
+    :raw #: String
+  ) do
+    def inspect
+      {
+        kind: :functional,
+        root:,
+        value: value.inspect,
+        modifier:,
+        variants: variants.map(&:inspect),
+        important:,
+        raw:
+      }
+    end
+  end
+
+  # @rbs!
+  #  type candidate = ArbitraryCandidate | StaticCandidate | FunctionalCandidate
 
   class Parser
     STATIC_CANDIDATES = Set.new([
