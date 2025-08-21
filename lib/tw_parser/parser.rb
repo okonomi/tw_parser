@@ -133,8 +133,8 @@ module TwParser
       {
         kind: :functional,
         root:,
-        value: value.inspect,
-        modifier:
+        value: value&.inspect,
+        modifier: modifier&.inspect
       }
     end
   end
@@ -155,8 +155,8 @@ module TwParser
       {
         kind: :arbitrary,
         property:,
-        value: value.inspect,
-        modifier:,
+        value:,
+        modifier: modifier&.inspect,
         variants: variants.map(&:inspect),
         important:,
         raw:
@@ -193,8 +193,8 @@ module TwParser
       {
         kind: :functional,
         root:,
-        value: value.inspect,
-        modifier:,
+        value: value&.inspect,
+        modifier: modifier&.inspect,
         variants: variants.map(&:inspect),
         important:,
         raw:
