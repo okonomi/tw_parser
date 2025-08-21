@@ -34,7 +34,7 @@ end
 
 RSpec.describe TwParser::Parser do
   describe "#parse" do
-    def run(candidate, _utilities: nil, _variants: nil, _prefix: nil)
+    def run(candidate, utilities: nil, variants: nil, prefix: nil) # rubocop:disable Lint/UnusedMethodArgument
       # utilities ||= TwParser::Utilities.new
       # variants ||= TwParser::Variants.new
 
