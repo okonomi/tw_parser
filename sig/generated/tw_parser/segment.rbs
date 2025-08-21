@@ -1,0 +1,6 @@
+# Generated from lib/tw_parser/segment.rb with RBS::Inline
+
+module TwParser
+  # : (input: String, delimiter: String) -> Array[String]
+  def self?.segment: (input: String, delimiter: String) -> Array[String]
+end

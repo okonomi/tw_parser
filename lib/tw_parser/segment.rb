@@ -3,6 +3,7 @@
 module TwParser
   module_function
 
+  #: (input: String, delimiter: String) -> Array[String]
   def segment(input, delimiter)
     closing_bracket_stack = []
 
