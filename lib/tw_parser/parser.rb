@@ -215,7 +215,7 @@ module TwParser
                          "supports"
                        ]).freeze
 
-    #: (String input, utilities: TwParser::Utilities, variants: TwParser::Variants) -> candidate | nil
+    #: (String input, utilities: TwParser::Utilities, variants: TwParser::Variants) -> (candidate | nil)
     def parse(input, utilities:, variants:)
       # hover:focus:underline
       # ^^^^^ ^^^^^^           -> Variants
@@ -377,7 +377,7 @@ module TwParser
       value.gsub("_", " ")
     end
 
-    #: (String modifier) -> TwParser::NamedModifier
+    #: (String modifier) -> candidate_modifier
     def parse_modifier(modifier)
       if modifier.start_with?("[") && modifier.end_with?("]")
         arbitrary_value = decode_arbitrary_value(modifier[1..-2])
