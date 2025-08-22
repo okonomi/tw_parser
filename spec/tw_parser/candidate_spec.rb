@@ -1,16 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "../../lib/tw_parser/utilities"
+
 module TwParser
-  class Utilities
-    def static(name, &block)
-      # TODO: implement static utility registration
-    end
-
-    def functional(name, &block)
-      # TODO: implement functional utility registration
-    end
-  end
-
   class Variants
     def static(name, &block)
       # TODO: implement static variant registration

@@ -1,0 +1,9 @@
+# Generated from lib/tw_parser/utilities.rb with RBS::Inline
+
+module TwParser
+  class Utilities
+    def static: (untyped name) ?{ (?) -> untyped } -> untyped
+
+    def functional: (untyped name) ?{ (?) -> untyped } -> untyped
+  end
+end

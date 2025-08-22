@@ -4,4 +4,5 @@ target :lib do
   signature "sig"
   check "lib/tw_parser/parser"
   check "lib/tw_parser/segment"
+  check "lib/tw_parser/utilities"
 end
