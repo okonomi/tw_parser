@@ -10,6 +10,8 @@ RSpec.describe TwParser::Parser do
       end
       variants = TwParser::Variants.new.tap do |v|
         v.functional("supports") {}
+        v.static("hover") {}
+        v.static("focus") {}
       end
       described_class.new.parse(input, utilities:, variants:)
     end
@@ -195,7 +197,8 @@ RSpec.describe TwParser::Parser do
           )
         ]
       ),
-      "unknown-utility" => nil
+      "unknown-utility" => nil,
+      "unknown-variant:flex" => nil
     }.each do |input, expected|
       context input do
         let(:input) { input }

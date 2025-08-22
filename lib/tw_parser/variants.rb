@@ -7,11 +7,11 @@ module TwParser
     end
 
     def static(name, &block)
-      # TODO: implement static variant registration
+      @variants[name] = { kind: :static, block: }
     end
 
     def functional(name, &block)
-      @variants[name] = block
+      @variants[name] = { kind: :functional, block: }
     end
 
     def compound(name, compound_type, &block)
@@ -21,6 +21,11 @@ module TwParser
     #: (String name) -> bool
     def has(name)
       @variants.key?(name)
+    end
+
+    #: (String name) -> (Symbol | nil)
+    def kind(name)
+      @variants[name]&.dig(:kind)
     end
   end
 end

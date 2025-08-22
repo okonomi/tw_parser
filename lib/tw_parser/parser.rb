@@ -347,33 +347,30 @@ module TwParser
         variants.has(root)
       end
       roots.each do |root, value|
-        if value.nil?
-          return TwParser::FunctionalVariant.new(
-            root: root,
-            value: nil,
-            modifier: nil
+        case variants.kind(root)
+        when :static
+          return TwParser::StaticVariant.new(
+            root: variant
           )
-        end
+        when :functional
+          if value.end_with?(")")
+            # Discard values like `foo-(--bar)`
+            next unless value.start_with?("(")
 
-        if value.end_with?(")") # rubocop:disable Style/Next
-          # Discard values like `foo-(--bar)`
-          next unless value.start_with?("(")
+            arbitrary_value = decode_arbitrary_value(value[1..-2])
 
-          arbitrary_value = decode_arbitrary_value(value[1..-2])
-
-          return TwParser::FunctionalVariant.new(
-            root: root,
-            value: TwParser::ArbitraryVariantValue.new(
-              value: "var(#{arbitrary_value})"
-            ),
-            modifier: nil
-          )
+            return TwParser::FunctionalVariant.new(
+              root: root,
+              value: TwParser::ArbitraryVariantValue.new(
+                value: "var(#{arbitrary_value})"
+              ),
+              modifier: nil
+            )
+          end
         end
       end
 
-      TwParser::StaticVariant.new(
-        root: variant
-      )
+      nil
     end
 
     def decode_arbitrary_value(value)
