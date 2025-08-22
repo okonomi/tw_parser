@@ -2,8 +2,13 @@
 
 module TwParser
   class Utilities
+    def initialize: () -> untyped
+
     def static: (untyped name) ?{ (?) -> untyped } -> untyped
 
     def functional: (untyped name) ?{ (?) -> untyped } -> untyped
+
+    # : (String name, String kind) -> bool
+    def has: (String name, String kind) -> bool
   end
 end

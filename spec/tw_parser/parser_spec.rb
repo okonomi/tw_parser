@@ -2,7 +2,14 @@
 
 RSpec.describe TwParser::Parser do
   describe "#parse" do
-    subject { described_class.new.parse(input) }
+    subject do
+      utilities = TwParser::Utilities.new.tap do |u|
+        u.functional("translate-x") { [] }
+        u.functional("-translate-x") { [] }
+        u.functional("bg") { [] }
+      end
+      described_class.new.parse(input, utilities:)
+    end
 
     {
       "flex" => TwParser::StaticCandidate.new(

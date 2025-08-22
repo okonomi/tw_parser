@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require_relative "segment"
+require_relative "utilities"
 
 module TwParser
   ArbitraryUtilityValue = Data.define(
@@ -209,18 +210,12 @@ module TwParser
     STATIC_CANDIDATES = Set.new([
                                   "flex"
                                 ]).freeze
-    FUNCTIONAL_CANDIDATES = Set.new([
-                                      "translate",
-                                      "-translate",
-                                      "translate-x",
-                                      "-translate-x",
-                                      "bg"
-                                    ]).freeze
     VARIANTS = Set.new([
                          "supports"
                        ]).freeze
 
-    def parse(input)
+    #: (String input, utilities: TwParser::Utilities) -> candidate | nil
+    def parse(input, utilities:)
       # hover:focus:underline
       # ^^^^^ ^^^^^^           -> Variants
       #             ^^^^^^^^^  -> Base
@@ -289,7 +284,7 @@ module TwParser
       end
 
       roots = find_roots(base_without_modifier) do |root|
-        FUNCTIONAL_CANDIDATES.include?(root)
+        utilities.has(root, "functional")
       end
 
       return nil if roots.empty?

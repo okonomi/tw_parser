@@ -27,15 +27,14 @@ end
 RSpec.describe TwParser::Parser do
   describe "#parse" do
     def run(candidate, utilities: nil, variants: nil, prefix: nil) # rubocop:disable Lint/UnusedMethodArgument
-      # utilities ||= TwParser::Utilities.new
+      utilities ||= TwParser::Utilities.new
       # variants ||= TwParser::Variants.new
 
       parser = described_class.new
-      # parser.utilities = utilities
       # parser.variants = variants
       # parser.prefix = prefix
 
-      [parser.parse(candidate).inspect]
+      [parser.parse(candidate, utilities:).inspect]
     end
 
     it "should skip unknown utilities" do

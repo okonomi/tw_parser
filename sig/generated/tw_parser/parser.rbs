@@ -178,11 +178,10 @@ module TwParser
   class Parser
     STATIC_CANDIDATES: untyped
 
-    FUNCTIONAL_CANDIDATES: untyped
-
     VARIANTS: untyped
 
-    def parse: (untyped input) -> untyped
+    # : (String input, utilities: TwParser::Utilities) -> candidate | nil
+    def parse: (String input, utilities: TwParser::Utilities) -> candidate
 
     def parse_variant: (untyped variant) -> untyped
 
