@@ -188,8 +188,10 @@ module TwParser
 
     def decode_arbitrary_value: (untyped value) -> untyped
 
-    def parse_modifier: (untyped modifier) -> untyped
+    # : (String modifier) -> TwParser::NamedModifier
+    def parse_modifier: (String modifier) -> TwParser::NamedModifier
 
-    def find_roots: (untyped input) ?{ (?) -> untyped } -> untyped
+    # : (String input) { (String) -> bool } -> [[String, String?]]
+    def find_roots: (String input) { (String) -> bool } -> [ [ String, String? ] ]
   end
 end

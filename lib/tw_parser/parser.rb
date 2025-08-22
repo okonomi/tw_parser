@@ -304,8 +304,22 @@ module TwParser
           raw: input
         )
 
-        if value
-          fraction = ("#{value}/#{parsed_modifier.value}" if parsed_modifier)
+        return candidate if value.nil?
+
+        if value.start_with?("[")
+          return nil unless value.end_with?("]")
+
+          # TODO: no implemented yet
+        else
+          # Some utilities support fractions as values, e.g. `w-1/2`. Since it's
+          # ambiguous whether the slash signals a modifier or not, we store the
+          # fraction separately in case the utility matcher is interested in it.
+          fraction =
+            if modifier_segment.nil? || candidate.modifier.is_a?(TwParser::ArbitraryModifier)
+              nil
+            else
+              "#{value}/#{modifier_segment}"
+            end
 
           candidate = candidate.with(value: TwParser::NamedUtilityValue.new(
             value:,
@@ -369,12 +383,22 @@ module TwParser
       value.gsub("_", " ")
     end
 
+    #: (String modifier) -> TwParser::NamedModifier
     def parse_modifier(modifier)
+      if modifier.start_with?("[") && modifier.end_with?("]")
+        arbitrary_value = decode_arbitrary_value(modifier[1..-2])
+
+        return TwParser::ArbitraryModifier.new(
+          value: arbitrary_value
+        )
+      end
+
       TwParser::NamedModifier.new(
         value: modifier
       )
     end
 
+    #: (String input) { (String) -> bool } -> [[String, String?]]
     def find_roots(input, &exists)
       return [[input, nil]] if exists.call(input)
 

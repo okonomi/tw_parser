@@ -94,6 +94,19 @@ RSpec.describe TwParser::Parser do
           )
         ]
       ),
+      "bg-red-500/[50%]" => TwParser::FunctionalCandidate.new(
+        important: false,
+        modifier: TwParser::ArbitraryModifier.new(
+          value: "50%"
+        ),
+        raw: "bg-red-500/[50%]",
+        root: "bg",
+        value: TwParser::NamedUtilityValue.new(
+          fraction: nil,
+          value: "red-500"
+        ),
+        variants: []
+      ),
       "[color:red]" => TwParser::ArbitraryCandidate.new(
         important: false,
         modifier: nil,
