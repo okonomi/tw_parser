@@ -34,7 +34,7 @@ RSpec.describe TwParser::Parser do
       # parser.variants = variants
       # parser.prefix = prefix
 
-      [parser.parse(candidate, utilities:).inspect]
+      [parser.parse(candidate, utilities:)&.inspect].compact
     end
 
     it "should skip unknown utilities" do

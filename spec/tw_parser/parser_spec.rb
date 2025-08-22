@@ -191,7 +191,8 @@ RSpec.describe TwParser::Parser do
             )
           )
         ]
-      )
+      ),
+      "unknown-utility" => nil
     }.each do |input, expected|
       context input do
         let(:input) { input }
