@@ -1,22 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../../lib/tw_parser/utilities"
-
 module TwParser
-  class Variants
-    def static(name, &block)
-      # TODO: implement static variant registration
-    end
-
-    def functional(name, &block)
-      # TODO: implement functional variant registration
-    end
-
-    def compound(name, compound_type, &block)
-      # TODO: implement compound variant registration
-    end
-  end
-
   module Compounds
     module StyleRules
       # TODO: implement StyleRules compound type
@@ -28,13 +12,12 @@ RSpec.describe TwParser::Parser do
   describe "#parse" do
     def run(candidate, utilities: nil, variants: nil, prefix: nil) # rubocop:disable Lint/UnusedMethodArgument
       utilities ||= TwParser::Utilities.new
-      # variants ||= TwParser::Variants.new
+      variants ||= TwParser::Variants.new
 
       parser = described_class.new
-      # parser.variants = variants
       # parser.prefix = prefix
 
-      [parser.parse(candidate, utilities:)&.inspect].compact
+      [parser.parse(candidate, utilities:, variants:)&.inspect].compact
     end
 
     it "should skip unknown utilities" do

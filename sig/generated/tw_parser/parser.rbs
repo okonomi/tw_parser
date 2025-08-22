@@ -180,10 +180,11 @@ module TwParser
 
     VARIANTS: untyped
 
-    # : (String input, utilities: TwParser::Utilities) -> candidate | nil
-    def parse: (String input, utilities: TwParser::Utilities) -> candidate
+    # : (String input, utilities: TwParser::Utilities, variants: TwParser::Variants) -> candidate | nil
+    def parse: (String input, utilities: TwParser::Utilities, variants: TwParser::Variants) -> candidate
 
-    def parse_variant: (untyped variant) -> untyped
+    # : (String variant, variants: TwParser::Variants) -> variant
+    def parse_variant: (String variant, variants: TwParser::Variants) -> variant
 
     def decode_arbitrary_value: (untyped value) -> untyped
 

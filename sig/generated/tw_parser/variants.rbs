@@ -1,0 +1,16 @@
+# Generated from lib/tw_parser/variants.rb with RBS::Inline
+
+module TwParser
+  class Variants
+    def initialize: () -> untyped
+
+    def static: (untyped name) ?{ (?) -> untyped } -> untyped
+
+    def functional: (untyped name) ?{ (?) -> untyped } -> untyped
+
+    def compound: (untyped name, untyped compound_type) ?{ (?) -> untyped } -> untyped
+
+    # : (String name) -> bool
+    def has: (String name) -> bool
+  end
+end

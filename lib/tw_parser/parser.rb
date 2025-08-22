@@ -3,6 +3,7 @@
 
 require_relative "segment"
 require_relative "utilities"
+require_relative "variants"
 
 module TwParser
   ArbitraryUtilityValue = Data.define(
@@ -214,8 +215,8 @@ module TwParser
                          "supports"
                        ]).freeze
 
-    #: (String input, utilities: TwParser::Utilities) -> candidate | nil
-    def parse(input, utilities:)
+    #: (String input, utilities: TwParser::Utilities, variants: TwParser::Variants) -> candidate | nil
+    def parse(input, utilities:, variants:)
       # hover:focus:underline
       # ^^^^^ ^^^^^^           -> Variants
       #             ^^^^^^^^^  -> Base
@@ -226,7 +227,7 @@ module TwParser
       parsed_candidate_variants = []
 
       raw_variants.reverse_each do |variant|
-        parsed_variant = parse_variant(variant)
+        parsed_variant = parse_variant(variant, variants:)
         return nil if parsed_variant.nil?
 
         parsed_candidate_variants.push(parsed_variant)
@@ -326,7 +327,8 @@ module TwParser
       end
     end
 
-    def parse_variant(variant)
+    #: (String variant, variants: TwParser::Variants) -> variant
+    def parse_variant(variant, variants:)
       # Arbitrary variants
       if variant.start_with?("[") && variant.end_with?("]")
         selector = decode_arbitrary_value(variant[1..-2])
@@ -342,7 +344,7 @@ module TwParser
       variant_without_modifier, _modifier, _additional_modifier = TwParser.segment(variant, "/")
 
       roots = find_roots(variant_without_modifier) do |root|
-        VARIANTS.include?(root)
+        variants.has(root)
       end
       roots.each do |root, value|
         if value.nil?

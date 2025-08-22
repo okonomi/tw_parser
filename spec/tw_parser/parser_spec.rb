@@ -8,7 +8,10 @@ RSpec.describe TwParser::Parser do
         u.functional("-translate-x") { [] }
         u.functional("bg") { [] }
       end
-      described_class.new.parse(input, utilities:)
+      variants = TwParser::Variants.new.tap do |v|
+        v.functional("supports") {}
+      end
+      described_class.new.parse(input, utilities:, variants:)
     end
 
     {
