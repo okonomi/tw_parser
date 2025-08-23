@@ -4,208 +4,17 @@
 require_relative "segment"
 require_relative "utilities"
 require_relative "variants"
+require_relative "candidate/modifier"
+require_relative "candidate/variant"
+require_relative "candidate/candidate"
 
 module TwParser
-  ArbitraryUtilityValue = Data.define(
-    # ```
-    # bg-[color:var(--my-color)]
-    #     ^^^^^
-    #
-    # bg-(color:--my-color)
-    #     ^^^^^
-    # ```
-    :data_type, #: String | nil
-    # ```
-    # bg-[#0088cc]
-    #     ^^^^^^^
-    #
-    # bg-[var(--my_variable)]
-    #     ^^^^^^^^^^^^^^^^^^
-    #
-    # bg-(--my_variable)
-    #     ^^^^^^^^^^^^^^
-    # ```
-    :value #: String
-  ) do
-    def inspect
-      {
-        kind: :arbitrary,
-        data_type:,
-        value:
-      }
-    end
-  end
-
-  NamedUtilityValue = Data.define(
-    :value, #: String
-    :fraction #: String | nil
-  ) do
-    def inspect
-      {
-        kind: :named,
-        value:,
-        fraction:
-      }
-    end
-  end
-
-  ArbitraryModifier = Data.define(
-    # bg-red-500/[50%]
-    #             ^^^
-    :value #: String
-  ) do
-    def inspect
-      {
-        kind: :arbitrary,
-        value:
-      }
-    end
-  end
-
-  NamedModifier = Data.define(
-    # bg-red-500/50
-    #            ^^
-    :value #: String
-  ) do
-    def inspect
-      {
-        kind: :named,
-        value:
-      }
-    end
-  end
-
-  # @rbs!
-  #  type candidate_modifier = ArbitraryModifier | NamedModifier
-
-  ArbitraryVariantValue = Data.define(
-    :value #: String
-  ) do
-    def inspect
-      {
-        kind: :arbitrary,
-        value:
-      }
-    end
-  end
-
-  NamedVariantValue = Data.define(
-    :value #: String
-  ) do
-    def inspect
-      {
-        kind: :named,
-        value:
-      }
-    end
-  end
-
-  ArbitraryVariant = Data.define(
-    :selector, #: String
-    # Whether or not the selector is a relative selector
-    # @see https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors/Selector_structure#relative_selector
-    :relative #: bool
-  ) do
-    def inspect
-      {
-        kind: :arbitrary,
-        selector:,
-        relative:
-      }
-    end
-  end
-
-  StaticVariant = Data.define(
-    :root #: String
-  ) do
-    def inspect
-      {
-        kind: :static,
-        root:
-      }
-    end
-  end
-
-  FunctionalVariant = Data.define(
-    :root, #: String
-    :value, #: ArbitraryVariantValue | NamedVariantValue | nil
-    :modifier #: ArbitraryModifier | NamedModifier | nil
-  ) do
-    def inspect
-      {
-        kind: :functional,
-        root:,
-        value: value&.inspect,
-        modifier: modifier&.inspect
-      }
-    end
-  end
-
   # @rbs!
   #
-  #  type variant = ArbitraryVariant | StaticVariant | FunctionalVariant
-
-  ArbitraryCandidate = Data.define(
-    :property, #: String
-    :value, #: String
-    :modifier, #: ArbitraryModifier | NamedModifier | nil
-    :variants, #: Array[variant]
-    :important, #: bool
-    :raw #: String
-  ) do
-    def inspect
-      {
-        kind: :arbitrary,
-        property:,
-        value:,
-        modifier: modifier&.inspect,
-        variants: variants.map(&:inspect),
-        important:,
-        raw:
-      }
-    end
-  end
-
-  StaticCandidate = Data.define(
-    :root, #: String
-    :variants, #: Array[variant]
-    :important, #: bool
-    :raw #: String
-  ) do
-    def inspect
-      {
-        kind: :static,
-        root:,
-        variants: variants.map(&:inspect),
-        important:,
-        raw:
-      }
-    end
-  end
-
-  FunctionalCandidate = Data.define(
-    :root, #: String
-    :value, #: ArbitraryUtilityValue | NamedUtilityValue | nil
-    :modifier, #: ArbitraryModifier | NamedModifier | nil
-    :variants, #: Array[variant]
-    :important, #: bool
-    :raw #: String
-  ) do
-    def inspect
-      {
-        kind: :functional,
-        root:,
-        value: value&.inspect,
-        modifier: modifier&.inspect,
-        variants: variants.map(&:inspect),
-        important:,
-        raw:
-      }
-    end
-  end
-
-  # @rbs!
-  #  type candidate = ArbitraryCandidate | StaticCandidate | FunctionalCandidate
+  #  type variant = TwParser::Candidate::ArbitraryVariant | TwParser::Candidate::StaticVariant | TwParser::Candidate::FunctionalVariant
+  #  type candidate_modifier = TwParser::Candidate::ArbitraryModifier | TwParser::Candidate::NamedModifier
+  #  type candidate_value = TwParser::Candidate::ArbitraryUtilityValue | TwParser::Candidate::NamedUtilityValue
+  #  type candidate = TwParser::Candidate::ArbitraryCandidate | TwParser::Candidate::StaticCandidate | TwParser::Candidate::FunctionalCandidate
 
   class Parser
     STATIC_CANDIDATES = Set.new([
@@ -241,7 +50,7 @@ module TwParser
       end
 
       if STATIC_CANDIDATES.include?(base) && !base.include?("[")
-        return StaticCandidate.new(
+        return TwParser::Candidate::StaticCandidate.new(
           root: base,
           variants: parsed_candidate_variants,
           important:,
@@ -274,7 +83,7 @@ module TwParser
         property = base_without_modifier.slice(0, idx)
         value = base_without_modifier.slice(idx + 1..)
 
-        return TwParser::ArbitraryCandidate.new(
+        return TwParser::Candidate::ArbitraryCandidate.new(
           property: property,
           value: value,
           modifier: parsed_modifier,
@@ -291,7 +100,7 @@ module TwParser
       return nil if roots.empty?
 
       roots.each do |root, value| # rubocop:disable Lint/UnreachableLoop
-        candidate = TwParser::FunctionalCandidate.new(
+        candidate = TwParser::Candidate::FunctionalCandidate.new(
           root: root,
           modifier: parsed_modifier,
           value: nil,
@@ -311,13 +120,13 @@ module TwParser
           # ambiguous whether the slash signals a modifier or not, we store the
           # fraction separately in case the utility matcher is interested in it.
           fraction =
-            if modifier_segment.nil? || candidate.modifier.is_a?(TwParser::ArbitraryModifier)
+            if modifier_segment.nil? || candidate.modifier.is_a?(TwParser::Candidate::ArbitraryModifier)
               nil
             else
               "#{value}/#{modifier_segment}"
             end
 
-          candidate = candidate.with(value: TwParser::NamedUtilityValue.new(
+          candidate = candidate.with(value: TwParser::Candidate::NamedUtilityValue.new(
             value:,
             fraction:
           ))
@@ -327,14 +136,14 @@ module TwParser
       end
     end
 
-    #: (String variant, variants: TwParser::Variants) -> variant
+    #: (String variant, variants: TwParser::Variants) -> (variant | nil)
     def parse_variant(variant, variants:)
       # Arbitrary variants
       if variant.start_with?("[") && variant.end_with?("]")
         selector = decode_arbitrary_value(variant[1..-2])
         relative = selector.start_with?(">", "+", "~")
 
-        return TwParser::ArbitraryVariant.new(
+        return TwParser::Candidate::ArbitraryVariant.new(
           selector: selector,
           relative: relative
         )
@@ -349,7 +158,7 @@ module TwParser
       roots.each do |root, value|
         case variants.kind(root)
         when :static
-          return TwParser::StaticVariant.new(
+          return TwParser::Candidate::StaticVariant.new(
             root: variant
           )
         when :functional
@@ -359,9 +168,9 @@ module TwParser
 
             arbitrary_value = decode_arbitrary_value(value[1..-2])
 
-            return TwParser::FunctionalVariant.new(
+            return TwParser::Candidate::FunctionalVariant.new(
               root: root,
-              value: TwParser::ArbitraryVariantValue.new(
+              value: TwParser::Candidate::ArbitraryVariantValue.new(
                 value: "var(#{arbitrary_value})"
               ),
               modifier: nil
@@ -382,12 +191,12 @@ module TwParser
       if modifier.start_with?("[") && modifier.end_with?("]")
         arbitrary_value = decode_arbitrary_value(modifier[1..-2])
 
-        return TwParser::ArbitraryModifier.new(
+        return TwParser::Candidate::ArbitraryModifier.new(
           value: arbitrary_value
         )
       end
 
-      TwParser::NamedModifier.new(
+      TwParser::Candidate::NamedModifier.new(
         value: modifier
       )
     end

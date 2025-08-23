@@ -17,109 +17,109 @@ RSpec.describe TwParser::Parser do
     end
 
     {
-      "flex" => TwParser::StaticCandidate.new(
+      "flex" => TwParser::Candidate::StaticCandidate.new(
         important: false,
         raw: "flex",
         root: "flex",
         variants: []
       ),
-      "flex!" => TwParser::StaticCandidate.new(
+      "flex!" => TwParser::Candidate::StaticCandidate.new(
         important: true,
         raw: "flex!",
         root: "flex",
         variants: []
       ),
-      "hover:flex" => TwParser::StaticCandidate.new(
+      "hover:flex" => TwParser::Candidate::StaticCandidate.new(
         important: false,
         raw: "hover:flex",
         root: "flex",
         variants: [
-          TwParser::StaticVariant.new(
+          TwParser::Candidate::StaticVariant.new(
             root: "hover"
           )
         ]
       ),
-      "focus:hover:flex" => TwParser::StaticCandidate.new(
+      "focus:hover:flex" => TwParser::Candidate::StaticCandidate.new(
         important: false,
         raw: "focus:hover:flex",
         root: "flex",
         variants: [
-          TwParser::StaticVariant.new(
+          TwParser::Candidate::StaticVariant.new(
             root: "hover"
           ),
-          TwParser::StaticVariant.new(
+          TwParser::Candidate::StaticVariant.new(
             root: "focus"
           )
         ]
       ),
-      "-translate-x-4" => TwParser::FunctionalCandidate.new(
+      "-translate-x-4" => TwParser::Candidate::FunctionalCandidate.new(
         important: false,
         modifier: nil,
         raw: "-translate-x-4",
         root: "-translate-x",
-        value: TwParser::NamedUtilityValue.new(
+        value: TwParser::Candidate::NamedUtilityValue.new(
           fraction: nil,
           value: "4"
         ),
         variants: []
       ),
-      "bg-red-500/50" => TwParser::FunctionalCandidate.new(
+      "bg-red-500/50" => TwParser::Candidate::FunctionalCandidate.new(
         important: false,
-        modifier: TwParser::NamedModifier.new(
+        modifier: TwParser::Candidate::NamedModifier.new(
           value: "50"
         ),
         raw: "bg-red-500/50",
         root: "bg",
-        value: TwParser::NamedUtilityValue.new(
+        value: TwParser::Candidate::NamedUtilityValue.new(
           fraction: "red-500/50",
           value: "red-500"
         ),
         variants: []
       ),
-      "bg-red-500/50!" => TwParser::FunctionalCandidate.new(
+      "bg-red-500/50!" => TwParser::Candidate::FunctionalCandidate.new(
         important: true,
-        modifier: TwParser::NamedModifier.new(
+        modifier: TwParser::Candidate::NamedModifier.new(
           value: "50"
         ),
         raw: "bg-red-500/50!",
         root: "bg",
-        value: TwParser::NamedUtilityValue.new(
+        value: TwParser::Candidate::NamedUtilityValue.new(
           fraction: "red-500/50",
           value: "red-500"
         ),
         variants: []
       ),
-      "hover:bg-red-500/50" => TwParser::FunctionalCandidate.new(
+      "hover:bg-red-500/50" => TwParser::Candidate::FunctionalCandidate.new(
         important: false,
-        modifier: TwParser::NamedModifier.new(
+        modifier: TwParser::Candidate::NamedModifier.new(
           value: "50"
         ),
         raw: "hover:bg-red-500/50",
         root: "bg",
-        value: TwParser::NamedUtilityValue.new(
+        value: TwParser::Candidate::NamedUtilityValue.new(
           fraction: "red-500/50",
           value: "red-500"
         ),
         variants: [
-          TwParser::StaticVariant.new(
+          TwParser::Candidate::StaticVariant.new(
             root: "hover"
           )
         ]
       ),
-      "bg-red-500/[50%]" => TwParser::FunctionalCandidate.new(
+      "bg-red-500/[50%]" => TwParser::Candidate::FunctionalCandidate.new(
         important: false,
-        modifier: TwParser::ArbitraryModifier.new(
+        modifier: TwParser::Candidate::ArbitraryModifier.new(
           value: "50%"
         ),
         raw: "bg-red-500/[50%]",
         root: "bg",
-        value: TwParser::NamedUtilityValue.new(
+        value: TwParser::Candidate::NamedUtilityValue.new(
           fraction: nil,
           value: "red-500"
         ),
         variants: []
       ),
-      "[color:red]" => TwParser::ArbitraryCandidate.new(
+      "[color:red]" => TwParser::Candidate::ArbitraryCandidate.new(
         important: false,
         modifier: nil,
         property: "color",
@@ -127,9 +127,9 @@ RSpec.describe TwParser::Parser do
         value: "red",
         variants: []
       ),
-      "[color:red]/50" => TwParser::ArbitraryCandidate.new(
+      "[color:red]/50" => TwParser::Candidate::ArbitraryCandidate.new(
         important: false,
-        modifier: TwParser::NamedModifier.new(
+        modifier: TwParser::Candidate::NamedModifier.new(
           value: "50"
         ),
         property: "color",
@@ -137,7 +137,7 @@ RSpec.describe TwParser::Parser do
         value: "red",
         variants: []
       ),
-      "[color:red]!" => TwParser::ArbitraryCandidate.new(
+      "[color:red]!" => TwParser::Candidate::ArbitraryCandidate.new(
         important: true,
         modifier: nil,
         property: "color",
@@ -145,53 +145,53 @@ RSpec.describe TwParser::Parser do
         value: "red",
         variants: []
       ),
-      "hover:[color:red]" => TwParser::ArbitraryCandidate.new(
+      "hover:[color:red]" => TwParser::Candidate::ArbitraryCandidate.new(
         important: false,
         modifier: nil,
         property: "color",
         raw: "hover:[color:red]",
         value: "red",
         variants: [
-          TwParser::StaticVariant.new(
+          TwParser::Candidate::StaticVariant.new(
             root: "hover"
           )
         ]
       ),
-      "focus:hover:[color:red]" => TwParser::ArbitraryCandidate.new(
+      "focus:hover:[color:red]" => TwParser::Candidate::ArbitraryCandidate.new(
         important: false,
         modifier: nil,
         property: "color",
         raw: "focus:hover:[color:red]",
         value: "red",
         variants: [
-          TwParser::StaticVariant.new(
+          TwParser::Candidate::StaticVariant.new(
             root: "hover"
           ),
-          TwParser::StaticVariant.new(
+          TwParser::Candidate::StaticVariant.new(
             root: "focus"
           )
         ]
       ),
-      "[&_p]:flex" => TwParser::StaticCandidate.new(
+      "[&_p]:flex" => TwParser::Candidate::StaticCandidate.new(
         important: false,
         raw: "[&_p]:flex",
         root: "flex",
         variants: [
-          TwParser::ArbitraryVariant.new(
+          TwParser::Candidate::ArbitraryVariant.new(
             relative: false,
             selector: "& p"
           )
         ]
       ),
-      "supports-(--test):flex" => TwParser::StaticCandidate.new(
+      "supports-(--test):flex" => TwParser::Candidate::StaticCandidate.new(
         important: false,
         raw: "supports-(--test):flex",
         root: "flex",
         variants: [
-          TwParser::FunctionalVariant.new(
+          TwParser::Candidate::FunctionalVariant.new(
             modifier: nil,
             root: "supports",
-            value: TwParser::ArbitraryVariantValue.new(
+            value: TwParser::Candidate::ArbitraryVariantValue.new(
               value: "var(--test)"
             )
           )

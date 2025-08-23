@@ -1,0 +1,27 @@
+# Generated from lib/tw_parser/candidate/modifier.rb with RBS::Inline
+
+module TwParser
+  module Candidate
+    class ArbitraryModifier < Data
+      attr_reader value(): String
+
+      def self.new: (String value) -> instance
+                  | (value: String) -> instance
+
+      def self.members: () -> [ :value ]
+
+      def members: () -> [ :value ]
+    end
+
+    class NamedModifier < Data
+      attr_reader value(): String
+
+      def self.new: (String value) -> instance
+                  | (value: String) -> instance
+
+      def self.members: () -> [ :value ]
+
+      def members: () -> [ :value ]
+    end
+  end
+end

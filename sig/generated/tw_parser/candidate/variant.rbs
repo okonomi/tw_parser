@@ -1,0 +1,66 @@
+# Generated from lib/tw_parser/candidate/variant.rb with RBS::Inline
+
+module TwParser
+  module Candidate
+    class ArbitraryVariant < Data
+      attr_reader selector(): String
+
+      attr_reader relative(): bool
+
+      def self.new: (String selector, bool relative) -> instance
+                  | (selector: String, relative: bool) -> instance
+
+      def self.members: () -> [ :selector, :relative ]
+
+      def members: () -> [ :selector, :relative ]
+    end
+
+    class StaticVariant < Data
+      attr_reader root(): String
+
+      def self.new: (String root) -> instance
+                  | (root: String) -> instance
+
+      def self.members: () -> [ :root ]
+
+      def members: () -> [ :root ]
+    end
+
+    class FunctionalVariant < Data
+      attr_reader root(): String
+
+      attr_reader value(): TwParser::Candidate::ArbitraryVariantValue | TwParser::Candidate::NamedVariantValue | nil
+
+      attr_reader modifier(): TwParser::Candidate::ArbitraryModifier | TwParser::Candidate::NamedModifier | nil
+
+      def self.new: (String root, TwParser::Candidate::ArbitraryVariantValue | TwParser::Candidate::NamedVariantValue | nil value, TwParser::Candidate::ArbitraryModifier | TwParser::Candidate::NamedModifier | nil modifier) -> instance
+                  | (root: String, value: TwParser::Candidate::ArbitraryVariantValue | TwParser::Candidate::NamedVariantValue | nil, modifier: TwParser::Candidate::ArbitraryModifier | TwParser::Candidate::NamedModifier | nil) -> instance
+
+      def self.members: () -> [ :root, :value, :modifier ]
+
+      def members: () -> [ :root, :value, :modifier ]
+    end
+
+    class ArbitraryVariantValue < Data
+      attr_reader value(): String
+
+      def self.new: (String value) -> instance
+                  | (value: String) -> instance
+
+      def self.members: () -> [ :value ]
+
+      def members: () -> [ :value ]
+    end
+
+    class NamedVariantValue < Data
+      attr_reader value(): String
+
+      def self.new: (String value) -> instance
+                  | (value: String) -> instance
+
+      def self.members: () -> [ :value ]
+
+      def members: () -> [ :value ]
+    end
+  end
+end
