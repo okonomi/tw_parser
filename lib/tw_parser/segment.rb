@@ -1,3 +1,4 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module TwParser
@@ -5,9 +6,9 @@ module TwParser
 
   #: (String input, String delimiter) -> Array[String]
   def segment(input, delimiter)
-    closing_bracket_stack = []
+    closing_bracket_stack = [] #: Array[String]
 
-    parts = []
+    parts = [] #: Array[String | nil]
     last_pos = 0
     len = input.length
 
@@ -49,6 +50,6 @@ module TwParser
 
     parts << input[last_pos..]
 
-    parts
+    parts.compact
   end
 end
