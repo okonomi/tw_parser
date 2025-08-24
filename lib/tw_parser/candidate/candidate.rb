@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../parser"
+require_relative "util"
 
 module TwParser
   module Candidate
@@ -18,19 +18,9 @@ module TwParser
       :important, #: bool
       :raw #: String
     ) do
-      # steep:ignore:start
       def inspect
-        {
-          kind: :arbitrary,
-          property:,
-          value:,
-          modifier: modifier&.inspect,
-          variants: variants.map(&:inspect),
-          important:,
-          raw:
-        }
+        Util.extract_candidate_info(self).to_s
       end
-      # steep:ignore:end
     end
 
     StaticCandidate = Data.define(
@@ -39,17 +29,9 @@ module TwParser
       :important, #: bool
       :raw #: String
     ) do
-      # steep:ignore:start
       def inspect
-        {
-          kind: :static,
-          root:,
-          variants: variants.map(&:inspect),
-          important:,
-          raw:
-        }
+        Util.extract_candidate_info(self).to_s
       end
-      # steep:ignore:end
     end
 
     FunctionalCandidate = Data.define(
@@ -60,19 +42,9 @@ module TwParser
       :important, #: bool
       :raw #: String
     ) do
-      # steep:ignore:start
       def inspect
-        {
-          kind: :functional,
-          root:,
-          value: value&.inspect,
-          modifier: modifier&.inspect,
-          variants: variants.map(&:inspect),
-          important:,
-          raw:
-        }
+        Util.extract_candidate_info(self).to_s
       end
-      # steep:ignore:end
     end
 
     ArbitraryUtilityValue = Data.define(
@@ -95,31 +67,11 @@ module TwParser
       #     ^^^^^^^^^^^^^^
       # ```
       :value #: String
-    ) do
-      # steep:ignore:start
-      def inspect
-        {
-          kind: :arbitrary,
-          data_type:,
-          value:
-        }
-      end
-      # steep:ignore:end
-    end
+    )
 
     NamedUtilityValue = Data.define(
       :value, #: String
       :fraction #: String | nil
-    ) do
-      # steep:ignore:start
-      def inspect
-        {
-          kind: :named,
-          value:,
-          fraction:
-        }
-      end
-      # steep:ignore:end
-    end
+    )
   end
 end

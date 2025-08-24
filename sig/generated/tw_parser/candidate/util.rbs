@@ -1,0 +1,9 @@
+# Generated from lib/tw_parser/candidate/util.rb with RBS::Inline
+
+module TwParser
+  module Candidate
+    class Util
+      def self.extract_candidate_info: (untyped candidate) -> untyped
+    end
+  end
+end

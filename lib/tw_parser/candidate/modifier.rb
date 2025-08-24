@@ -7,30 +7,12 @@ module TwParser
       # bg-red-500/[50%]
       #             ^^^
       :value #: String
-    ) do
-      # steep:ignore:start
-      def inspect
-        {
-          kind: :arbitrary,
-          value:
-        }
-      end
-      # steep:ignore:end
-    end
+    )
 
     NamedModifier = Data.define(
       # bg-red-500/50
       #            ^^
       :value #: String
-    ) do
-      # steep:ignore:start
-      def inspect
-        {
-          kind: :named,
-          value:
-        }
-      end
-      # steep:ignore:end
-    end
+    )
   end
 end
