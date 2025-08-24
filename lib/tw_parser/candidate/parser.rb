@@ -66,6 +66,7 @@ module TwParser
         # //            ^^ -> Modifier segment
         # // ```
         base_without_modifier, modifier_segment, _additional_modifier = TwParser.segment(base, "/")
+        return nil if base_without_modifier.nil?
 
         parsed_modifier = modifier_segment.nil? ? nil : parse_modifier(modifier_segment)
 
@@ -76,10 +77,18 @@ module TwParser
 
           base_without_modifier = base_without_modifier.delete_prefix("[").delete_suffix("]")
 
+          # Arbitrary properties consist of a property and a value separated by a
+          # `:`. If the `:` cannot be found, then it is an invalid candidate, and we
+          # can skip continue parsing.
+          #
+          # Since the property and the value should be separated by a `:`, we can
+          # also verify that the colon is not the first or last character in the
+          # candidate, because that would make it invalid as well.
           idx = base_without_modifier.index(":")
+          return nil if idx.nil? || [0, base_without_modifier.length - 1].include?(idx)
 
-          property = base_without_modifier.slice(0, idx)
-          value = base_without_modifier.slice(idx + 1..)
+          property = base_without_modifier.slice(0, idx) || ""
+          value = base_without_modifier.slice(idx + 1..) || ""
 
           return ArbitraryCandidate.new(
             property: property,
