@@ -157,7 +157,7 @@ module TwParser
         end
 
         # Functional variants
-        variant_without_modifier, _modifier, _additional_modifier = TwParser.segment(variant, "/")
+        variant_without_modifier, modifier, _additional_modifier = TwParser.segment(variant, "/")
         return nil if variant_without_modifier.nil?
 
         roots = find_roots(variant_without_modifier) do |root|
@@ -170,6 +170,16 @@ module TwParser
               root: variant
             )
           when :functional
+            parsed_modifier = modifier.nil? ? nil : parse_modifier(modifier)
+
+            if value.nil?
+              return FunctionalVariant.new(
+                root: root,
+                modifier: parsed_modifier,
+                value: nil
+              )
+            end
+
             if value.end_with?(")")
               # Discard values like `foo-(--bar)`
               next unless value.start_with?("(")
