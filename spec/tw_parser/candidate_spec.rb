@@ -8,7 +8,9 @@ module TwParser
   end
 end
 
-RSpec.describe TwParser::Parser do
+require_relative "../../lib/tw_parser/candidate/util"
+
+RSpec.describe TwParser::Candidate::Parser do
   describe "#parse" do
     def run(candidate, utilities: nil, variants: nil, prefix: nil) # rubocop:disable Lint/UnusedMethodArgument
       utilities ||= TwParser::Utilities.new
@@ -17,7 +19,10 @@ RSpec.describe TwParser::Parser do
       parser = described_class.new
       # parser.prefix = prefix
 
-      [parser.parse(candidate, utilities:, variants:)&.inspect].compact
+      candidate = parser.parse(candidate, utilities:, variants:)
+      return [] if candidate.nil?
+
+      [TwParser::Candidate::Util.extract_candidate_info(candidate)]
     end
 
     it "should skip unknown utilities" do
