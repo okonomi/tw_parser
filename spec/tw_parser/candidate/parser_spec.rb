@@ -4,6 +4,7 @@ RSpec.describe TwParser::Candidate::Parser do
   describe "#parse" do
     subject do
       utilities = TwParser::Utilities.new.tap do |u|
+        u.static("flex") { [] }
         u.functional("translate-x") { [] }
         u.functional("-translate-x") { [] }
         u.functional("bg") { [] }

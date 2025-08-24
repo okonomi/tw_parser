@@ -7,7 +7,8 @@ module TwParser
     end
 
     def static(name, &block)
-      # TODO: implement static utility registration
+      @utilities[name] ||= []
+      @utilities[name].push({ kind: "static", compileFn: block })
     end
 
     def functional(name, &block)

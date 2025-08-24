@@ -15,9 +15,6 @@ module TwParser
       #
       #  type candidate = ArbitraryCandidate | StaticCandidate | FunctionalCandidate
 
-      STATIC_CANDIDATES = Set.new([
-                                    "flex"
-                                  ]).freeze
       VARIANTS = Set.new([
                            "supports"
                          ]).freeze
@@ -47,7 +44,9 @@ module TwParser
           base = base.delete_suffix("!")
         end
 
-        if STATIC_CANDIDATES.include?(base) && !base.include?("[")
+        # // Check for an exact match of a static utility first as long as it does not
+        # // look like an arbitrary value.
+        if utilities.has(base, "static") && !base.include?("[")
           return StaticCandidate.new(
             root: base,
             variants: parsed_candidate_variants,
