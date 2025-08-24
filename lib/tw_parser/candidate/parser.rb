@@ -160,6 +160,7 @@ module TwParser
 
         # Functional variants
         variant_without_modifier, _modifier, _additional_modifier = TwParser.segment(variant, "/")
+        return nil if variant_without_modifier.nil?
 
         roots = find_roots(variant_without_modifier) do |root|
           variants.has(root)
