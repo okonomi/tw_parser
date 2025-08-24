@@ -179,6 +179,21 @@ module TwParser
               )
             end
 
+            if value.end_with?("]")
+              # Discard values like `foo-[#bar]`
+              next unless value.start_with?("[")
+
+              arbitrary_value = decode_arbitrary_value(value[1..-2])
+
+              return FunctionalVariant.new(
+                root: root,
+                value: ArbitraryVariantValue.new(
+                  value: arbitrary_value
+                ),
+                modifier: parsed_modifier
+              )
+            end
+
             if value.end_with?(")")
               # Discard values like `foo-(--bar)`
               next unless value.start_with?("(")

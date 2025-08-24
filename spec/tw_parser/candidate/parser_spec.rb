@@ -11,6 +11,7 @@ RSpec.describe TwParser::Candidate::Parser do
       end
       variants = TwParser::Variants.new.tap do |v|
         v.functional("supports") {}
+        v.functional("data") {}
         v.static("hover") {}
         v.static("focus") {}
       end
@@ -199,7 +200,21 @@ RSpec.describe TwParser::Candidate::Parser do
         ]
       ),
       "unknown-utility" => nil,
-      "unknown-variant:flex" => nil
+      "unknown-variant:flex" => nil,
+      "data-[disabled]:flex" => TwParser::Candidate::StaticCandidate.new(
+        important: false,
+        raw: "data-[disabled]:flex",
+        root: "flex",
+        variants: [
+          TwParser::Candidate::FunctionalVariant.new(
+            modifier: nil,
+            root: "data",
+            value: TwParser::Candidate::ArbitraryVariantValue.new(
+              value: "disabled"
+            )
+          )
+        ]
+      )
     }.each do |input, expected|
       context input do
         let(:input) { input }
