@@ -29,7 +29,7 @@ module TwParser
         #             ^^^^^^^^^  -> Base
         raw_variants = TwParser.segment(input, ":")
 
-        base = raw_variants.pop
+        base = raw_variants.pop #: ::String
 
         parsed_candidate_variants = []
 
@@ -44,7 +44,7 @@ module TwParser
 
         if base.end_with?("!")
           important = true
-          base = base[0...-1]
+          base = base.delete_suffix("!")
         end
 
         if STATIC_CANDIDATES.include?(base) && !base.include?("[")
