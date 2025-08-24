@@ -64,8 +64,15 @@ module TwParser
         # // ^^^^^^^^^^    -> Base without modifier
         # //            ^^ -> Modifier segment
         # // ```
-        base_without_modifier, modifier_segment, _additional_modifier = TwParser.segment(base, "/")
+        base_without_modifier, modifier_segment, additional_modifier = TwParser.segment(base, "/")
         return nil if base_without_modifier.nil?
+
+        # If there's more than one modifier, the utility is invalid.
+        #
+        # E.g.:
+        #
+        # - `bg-red-500/50/50`
+        return nil unless additional_modifier.nil?
 
         parsed_modifier = modifier_segment.nil? ? nil : parse_modifier(modifier_segment)
 

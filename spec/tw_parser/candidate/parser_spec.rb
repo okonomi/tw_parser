@@ -214,7 +214,8 @@ RSpec.describe TwParser::Candidate::Parser do
             )
           )
         ]
-      )
+      ),
+      "bg-red-1/2/3" => nil
     }.each do |input, expected|
       context input do
         let(:input) { input }
