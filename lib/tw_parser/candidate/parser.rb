@@ -104,8 +104,6 @@ module TwParser
           utilities.has(root, "functional")
         end
 
-        return nil if roots.empty?
-
         roots.each do |root, value| # rubocop:disable Lint/ShadowingOuterLocalVariable,Lint/UnreachableLoop
           candidate = FunctionalCandidate.new(
             root: root,
