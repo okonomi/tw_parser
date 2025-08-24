@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe TwParser::Parser do
+RSpec.describe TwParser::Candidate::Parser do
   describe "#parse" do
     subject do
       utilities = TwParser::Utilities.new.tap do |u|

@@ -3,7 +3,8 @@
 module TwParser
   module Candidate
     class Util
-      def self.extract_candidate_info: (untyped candidate) -> untyped
+      # : (untyped candidate) -> Hash[Symbol, untyped]
+      def self.extract_candidate_info: (untyped candidate) -> Hash[Symbol, untyped]
     end
   end
 end

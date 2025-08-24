@@ -1,8 +1,6 @@
 # rbs_inline: enabled
 # frozen_string_literal: true
 
-require_relative "modifier"
-
 module TwParser
   module Candidate
     ArbitraryVariant = Data.define(
@@ -18,8 +16,8 @@ module TwParser
 
     FunctionalVariant = Data.define(
       :root, #: String
-      :value, #: TwParser::Candidate::ArbitraryVariantValue | TwParser::Candidate::NamedVariantValue | nil
-      :modifier #: TwParser::Candidate::ArbitraryModifier | TwParser::Candidate::NamedModifier | nil
+      :value, #: ArbitraryVariantValue | NamedVariantValue | nil
+      :modifier #: ArbitraryModifier | NamedModifier | nil
     )
 
     ArbitraryVariantValue = Data.define(

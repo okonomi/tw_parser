@@ -1,0 +1,27 @@
+# Generated from lib/tw_parser/candidate/parser.rb with RBS::Inline
+
+module TwParser
+  module Candidate
+    class Parser
+      type candidate = ArbitraryCandidate | StaticCandidate | FunctionalCandidate
+
+      STATIC_CANDIDATES: untyped
+
+      VARIANTS: untyped
+
+      # : (String input, utilities: TwParser::Utilities, variants: TwParser::Variants) -> (candidate | nil)
+      def parse: (String input, utilities: TwParser::Utilities, variants: TwParser::Variants) -> (candidate | nil)
+
+      # : (String variant, variants: TwParser::Variants) -> (variant | nil)
+      def parse_variant: (String variant, variants: TwParser::Variants) -> (variant | nil)
+
+      def decode_arbitrary_value: (untyped value) -> untyped
+
+      # : (String modifier) -> (ArbitraryModifier | NamedModifier)
+      def parse_modifier: (String modifier) -> (ArbitraryModifier | NamedModifier)
+
+      # : (String input) { (String) -> bool } -> [[String, String?]]
+      def find_roots: (String input) { (String) -> bool } -> [ [ String, String? ] ]
+    end
+  end
+end

@@ -29,12 +29,12 @@ module TwParser
     class FunctionalVariant < Data
       attr_reader root(): String
 
-      attr_reader value(): TwParser::Candidate::ArbitraryVariantValue | TwParser::Candidate::NamedVariantValue | nil
+      attr_reader value(): ArbitraryVariantValue | NamedVariantValue | nil
 
-      attr_reader modifier(): TwParser::Candidate::ArbitraryModifier | TwParser::Candidate::NamedModifier | nil
+      attr_reader modifier(): ArbitraryModifier | NamedModifier | nil
 
-      def self.new: (String root, TwParser::Candidate::ArbitraryVariantValue | TwParser::Candidate::NamedVariantValue | nil value, TwParser::Candidate::ArbitraryModifier | TwParser::Candidate::NamedModifier | nil modifier) -> instance
-                  | (root: String, value: TwParser::Candidate::ArbitraryVariantValue | TwParser::Candidate::NamedVariantValue | nil, modifier: TwParser::Candidate::ArbitraryModifier | TwParser::Candidate::NamedModifier | nil) -> instance
+      def self.new: (String root, ArbitraryVariantValue | NamedVariantValue | nil value, ArbitraryModifier | NamedModifier | nil modifier) -> instance
+                  | (root: String, value: ArbitraryVariantValue | NamedVariantValue | nil, modifier: ArbitraryModifier | NamedModifier | nil) -> instance
 
       def self.members: () -> [ :root, :value, :modifier ]
 

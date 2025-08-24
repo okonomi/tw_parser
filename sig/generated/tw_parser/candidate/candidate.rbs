@@ -2,18 +2,14 @@
 
 module TwParser
   module Candidate
-    type variant = TwParser::Candidate::ArbitraryVariant | TwParser::Candidate::StaticVariant | TwParser::Candidate::FunctionalVariant
-
-    type candidate_modifier = TwParser::Candidate::ArbitraryModifier | TwParser::Candidate::NamedModifier
-
-    type candidate_value = TwParser::Candidate::ArbitraryUtilityValue | TwParser::Candidate::NamedUtilityValue
+    type variant = ArbitraryVariant | StaticVariant | FunctionalVariant
 
     class ArbitraryCandidate < Data
       attr_reader property(): String
 
       attr_reader value(): String
 
-      attr_reader modifier(): candidate_modifier | nil
+      attr_reader modifier(): ArbitraryModifier | NamedModifier | nil
 
       attr_reader variants(): Array[variant]
 
@@ -21,8 +17,8 @@ module TwParser
 
       attr_reader raw(): String
 
-      def self.new: (String property, String value, candidate_modifier | nil modifier, Array[variant] variants, bool important, String raw) -> instance
-                  | (property: String, value: String, modifier: candidate_modifier | nil, variants: Array[variant], important: bool, raw: String) -> instance
+      def self.new: (String property, String value, ArbitraryModifier | NamedModifier | nil modifier, Array[variant] variants, bool important, String raw) -> instance
+                  | (property: String, value: String, modifier: ArbitraryModifier | NamedModifier | nil, variants: Array[variant], important: bool, raw: String) -> instance
 
       def self.members: () -> [ :property, :value, :modifier, :variants, :important, :raw ]
 
@@ -49,9 +45,9 @@ module TwParser
     class FunctionalCandidate < Data
       attr_reader root(): String
 
-      attr_reader value(): candidate_value | nil
+      attr_reader value(): ArbitraryUtilityValue | NamedUtilityValue | nil
 
-      attr_reader modifier(): candidate_modifier | nil
+      attr_reader modifier(): ArbitraryModifier | NamedModifier | nil
 
       attr_reader variants(): Array[variant]
 
@@ -59,8 +55,8 @@ module TwParser
 
       attr_reader raw(): String
 
-      def self.new: (String root, candidate_value | nil value, candidate_modifier | nil modifier, Array[variant] variants, bool important, String raw) -> instance
-                  | (root: String, value: candidate_value | nil, modifier: candidate_modifier | nil, variants: Array[variant], important: bool, raw: String) -> instance
+      def self.new: (String root, ArbitraryUtilityValue | NamedUtilityValue | nil value, ArbitraryModifier | NamedModifier | nil modifier, Array[variant] variants, bool important, String raw) -> instance
+                  | (root: String, value: ArbitraryUtilityValue | NamedUtilityValue | nil, modifier: ArbitraryModifier | NamedModifier | nil, variants: Array[variant], important: bool, raw: String) -> instance
 
       def self.members: () -> [ :root, :value, :modifier, :variants, :important, :raw ]
 

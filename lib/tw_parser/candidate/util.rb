@@ -5,6 +5,7 @@ module TwParser
   module Candidate
     class Util
       class << self
+        #: (untyped candidate) -> Hash[Symbol, untyped]
         def extract_candidate_info(candidate)
           class_name = candidate.class.name.split("::").last
           kind = class_name.gsub(/([^A-Z])([A-Z])/, '\1_\2')

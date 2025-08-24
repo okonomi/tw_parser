@@ -1,3 +1,4 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 require_relative "util"
@@ -6,14 +7,12 @@ module TwParser
   module Candidate
     # @rbs!
     #
-    #  type variant = TwParser::Candidate::ArbitraryVariant | TwParser::Candidate::StaticVariant | TwParser::Candidate::FunctionalVariant
-    #  type candidate_modifier = TwParser::Candidate::ArbitraryModifier | TwParser::Candidate::NamedModifier
-    #  type candidate_value = TwParser::Candidate::ArbitraryUtilityValue | TwParser::Candidate::NamedUtilityValue
+    #  type variant = ArbitraryVariant | StaticVariant | FunctionalVariant
 
     ArbitraryCandidate = Data.define(
       :property, #: String
       :value, #: String
-      :modifier, #: candidate_modifier | nil
+      :modifier, #: ArbitraryModifier | NamedModifier | nil
       :variants, #: Array[variant]
       :important, #: bool
       :raw #: String
@@ -36,8 +35,8 @@ module TwParser
 
     FunctionalCandidate = Data.define(
       :root, #: String
-      :value, #: candidate_value | nil
-      :modifier, #: candidate_modifier | nil
+      :value, #: ArbitraryUtilityValue | NamedUtilityValue | nil
+      :modifier, #: ArbitraryModifier | NamedModifier | nil
       :variants, #: Array[variant]
       :important, #: bool
       :raw #: String
