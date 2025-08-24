@@ -106,8 +106,43 @@ module TwParser
           )
         end
 
-        roots = find_roots(base_without_modifier) do |root|
-          utilities.has(root, "functional")
+        # The different "versions"" of a candidate that are utilities
+        # e.g. `['bg', 'red-500']` and `['bg-red', '500']`
+        # let roots: Iterable<Root>
+        roots = [] #: Array[root]
+
+        # If the base of the utility ends with a `]`, then we know it's an arbitrary
+        # value. This also means that everything before the `[…]` part should be the
+        # root of the utility.
+        #
+        # E.g.:
+        #
+        # ```
+        # bg-[#0088cc]
+        # ^^           -> Root
+        #    ^^^^^^^^^ -> Arbitrary value
+        #
+        # border-l-[#0088cc]
+        # ^^^^^^^^           -> Root
+        #          ^^^^^^^^^ -> Arbitrary value
+        # ```
+        if base_without_modifier.end_with?("]")
+          idx = base_without_modifier.index("-[")
+          return nil if idx.nil?
+
+          root = base_without_modifier.slice(0, idx) || ""
+
+          # The root of the utility should exist as-is in the utilities map. If not,
+          # it's an invalid utility and we can skip continue parsing.
+          return nil unless utilities.has(root, "functional")
+
+          value = base_without_modifier.slice(idx + 1..)
+
+          roots = [[root, value]] #: Array[root]
+        else
+          roots = find_roots(base_without_modifier) do |root|
+            utilities.has(root, "functional")
+          end
         end
 
         roots.each do |root, value| # rubocop:disable Lint/ShadowingOuterLocalVariable,Lint/UnreachableLoop
@@ -122,10 +157,17 @@ module TwParser
 
           return candidate if value.nil?
 
-          if value.start_with?("[")
-            return nil unless value.end_with?("]")
+          start_arbitrary_idx = value.index("[")
+          if !start_arbitrary_idx.nil?
+            # Arbitrary values must end with a `]`.
+            return nil unless value[-1] == "]"
 
-            # TODO: no implemented yet
+            arbitrary_value = decode_arbitrary_value(value.slice(start_arbitrary_idx + 1..-2))
+
+            candidate = candidate.with(value: ArbitraryUtilityValue.new(
+              data_type: nil,
+              value: arbitrary_value
+            ))
           else
             # Some utilities support fractions as values, e.g. `w-1/2`. Since it's
             # ambiguous whether the slash signals a modifier or not, we store the
