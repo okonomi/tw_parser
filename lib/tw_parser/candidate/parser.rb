@@ -31,7 +31,7 @@ module TwParser
 
         base = raw_variants.pop #: ::String
 
-        parsed_candidate_variants = []
+        parsed_candidate_variants = [] #: Array[variant]
 
         raw_variants.reverse_each do |variant|
           parsed_variant = parse_variant(variant, variants:)
