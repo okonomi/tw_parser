@@ -20,8 +20,10 @@ module TwParser
       # : (String modifier) -> (ArbitraryModifier | NamedModifier)
       def parse_modifier: (String modifier) -> (ArbitraryModifier | NamedModifier)
 
-      # : (String input) { (String) -> bool } -> [[String, String?]]
-      def find_roots: (String input) { (String) -> bool } -> [ [ String, String? ] ]
+      type root = [ ::String, ::String | nil ]
+
+      # : (String input) { (String) -> bool } -> Array[root]
+      def find_roots: (String input) { (String) -> bool } -> Array[root]
     end
   end
 end

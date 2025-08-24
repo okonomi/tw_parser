@@ -211,13 +211,25 @@ module TwParser
         )
       end
 
-      #: (String input) { (String) -> bool } -> [[String, String?]]
+      # @rbs!
+      #
+      #   type root = [
+      #     # The root of the utility, e.g.: `bg-red-500`
+      #     #                                 ^^
+      #     ::String,
+      #
+      #     # The value of the utility, e.g.: `bg-red-500`
+      #     #                                     ^^^^^^^
+      #     ::String | nil
+      #   ]
+
+      #: (String input) { (String) -> bool } -> Array[root]
       def find_roots(input, &exists)
         return [[input, nil]] if exists.call(input)
 
         idx = input.rindex("-", -1)
         while idx
-          maybe_root = input.slice(0, idx)
+          maybe_root = input[0, idx] || ""
 
           return [[maybe_root, input.slice((idx + 1)..)]] if exists.call(maybe_root)
 
