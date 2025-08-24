@@ -225,13 +225,33 @@ module TwParser
 
       #: (String input) { (String) -> bool } -> Array[root]
       def find_roots(input, &exists)
+        # If there is an exact match, then that's the root.
         return [[input, nil]] if exists.call(input)
 
+        # Otherwise test every permutation of the input by iteratively removing
+        # everything after the last dash.
         idx = input.rindex("-", -1)
+
+        # Determine the root and value by testing permutations of the incoming input.
+        #
+        # In case of a candidate like `bg-red-500`, this looks like:
+        #
+        # `bg-red-500` -> No match
+        # `bg-red`     -> No match
+        # `bg`         -> Match
         while idx
           maybe_root = input[0, idx] || ""
 
-          return [[maybe_root, input.slice((idx + 1)..)]] if exists.call(maybe_root)
+          if exists.call(maybe_root)
+            root_value = input.slice((idx + 1)..)
+
+            # If the leftover value is an empty string, it means that the value is an
+            # invalid named value, e.g.: `bg-`. This makes the candidate invalid and we
+            # can skip any further parsing.
+            break if root_value == ""
+
+            return [[maybe_root, root_value]]
+          end
 
           idx = input.rindex("-", idx - 1)
         end
