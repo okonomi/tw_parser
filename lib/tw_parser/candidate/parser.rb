@@ -264,7 +264,7 @@ module TwParser
       end
 
       def decode_arbitrary_value(value)
-        value.gsub("_", " ")
+        value.tr("_", " ")
       end
 
       #: (String modifier) -> (ArbitraryModifier | NamedModifier)
@@ -295,9 +295,9 @@ module TwParser
       #   ]
 
       #: (String input) { (String) -> bool } -> Array[root]
-      def find_roots(input, &exists)
+      def find_roots(input)
         # If there is an exact match, then that's the root.
-        return [[input, nil]] if exists.call(input)
+        return [[input, nil]] if yield(input)
 
         # Otherwise test every permutation of the input by iteratively removing
         # everything after the last dash.
@@ -313,7 +313,7 @@ module TwParser
         while idx
           maybe_root = input[0, idx] || ""
 
-          if exists.call(maybe_root)
+          if yield(maybe_root)
             root_value = input.slice((idx + 1)..)
 
             # If the leftover value is an empty string, it means that the value is an
