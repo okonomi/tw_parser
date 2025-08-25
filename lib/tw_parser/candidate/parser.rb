@@ -139,6 +139,29 @@ module TwParser
           value = base_without_modifier.slice(idx + 1..)
 
           roots = [[root, value]] #: Array[root]
+        # If the base of the utility ends with a `)`, then we know it's an arbitrary
+        # value that encapsulates a CSS variable. This also means that everything
+        # before the `(…)` part should be the root of the utility.
+        #
+        # E.g.:
+        #
+        # bg-(--my-var)
+        # ^^            -> Root
+        #    ^^^^^^^^^^ -> Arbitrary value
+        # ```
+        elsif base_without_modifier.end_with?(")")
+          idx = base_without_modifier.index("-(")
+          return nil if idx.nil?
+
+          root = base_without_modifier.slice(0, idx) || ""
+
+          # The root of the utility should exist as-is in the utilities map. If not,
+          # it's an invalid utility and we can skip continue parsing.
+          return nil unless utilities.has(root, "functional")
+
+          value = base_without_modifier.slice((idx + 2)..-2)
+
+          roots = [[root, "[var(#{value})]"]] #: Array[root]
         else
           roots = find_roots(base_without_modifier) do |root|
             utilities.has(root, "functional")

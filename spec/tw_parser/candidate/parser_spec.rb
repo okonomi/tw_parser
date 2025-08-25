@@ -226,6 +226,17 @@ RSpec.describe TwParser::Candidate::Parser do
           value: "#0088cc"
         ),
         variants: []
+      ),
+      "bg-(--my-color)" => TwParser::Candidate::FunctionalCandidate.new(
+        important: false,
+        modifier: nil,
+        raw: "bg-(--my-color)",
+        root: "bg",
+        value: TwParser::Candidate::ArbitraryUtilityValue.new(
+          data_type: nil,
+          value: "var(--my-color)"
+        ),
+        variants: []
       )
     }.each do |input, expected|
       context input do
