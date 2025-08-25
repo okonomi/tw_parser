@@ -1,0 +1,10 @@
+# Generated from lib/tw_parser/parser.rb with RBS::Inline
+
+# Wrapper for TwParser::Candidate::Parser
+module TwParser
+  class Parser
+    def initialize: () -> untyped
+
+    def parse: (untyped input) -> untyped
+  end
+end

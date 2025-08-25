@@ -1,0 +1,5 @@
+# Generated from lib/tw_parser/version.rb with RBS::Inline
+
+module TwParser
+  VERSION: ::String
+end
