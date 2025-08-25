@@ -159,13 +159,20 @@ module TwParser
           # it's an invalid utility and we can skip continue parsing.
           return nil unless utilities.has(root, "functional")
 
-          value = base_without_modifier.slice((idx + 2)..-2)
+          value = base_without_modifier.slice((idx + 2)..-2) || ""
+
+          parts = TwParser.segment(value, ":")
+          data_type = nil
+          if parts.length == 2
+            data_type = parts[0]
+            value = parts[1]
+          end
 
           # An arbitrary value with `(…)` should always start with `--` since it
           # represents a CSS variable.
           return nil unless value&.start_with?("--")
 
-          roots = [[root, "[var(#{value})]"]] #: Array[root]
+          roots = [[root, data_type.nil? ? "[var(#{value})]" : "[#{data_type}:var(#{value})]"]] #: Array[root]
         else
           roots = find_roots(base_without_modifier) do |root|
             utilities.has(root, "functional")
