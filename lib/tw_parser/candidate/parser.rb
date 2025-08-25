@@ -191,8 +191,10 @@ module TwParser
 
             arbitrary_value = decode_arbitrary_value(value.slice(start_arbitrary_idx + 1..-2))
 
+            typehint, arbitrary_value = arbitrary_value.split(":") if arbitrary_value.include?(":")
+
             candidate = candidate.with(value: ArbitraryUtilityValue.new(
-              data_type: nil,
+              data_type: typehint,
               value: arbitrary_value
             ))
           else
