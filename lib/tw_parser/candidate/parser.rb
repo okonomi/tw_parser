@@ -145,7 +145,7 @@ module TwParser
           end
         end
 
-        roots.each do |root, value| # rubocop:disable Lint/ShadowingOuterLocalVariable,Lint/UnreachableLoop
+        roots.each do |root, value| # rubocop:disable Lint/UnreachableLoop
           candidate = FunctionalCandidate.new(
             root: root,
             modifier: parsed_modifier,
