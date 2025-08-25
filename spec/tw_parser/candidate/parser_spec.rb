@@ -237,7 +237,8 @@ RSpec.describe TwParser::Candidate::Parser do
           value: "var(--my-color)"
         ),
         variants: []
-      )
+      ),
+      "bg-(my-color)" => nil
     }.each do |input, expected|
       context input do
         let(:input) { input }

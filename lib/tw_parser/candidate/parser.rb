@@ -161,6 +161,10 @@ module TwParser
 
           value = base_without_modifier.slice((idx + 2)..-2)
 
+          # An arbitrary value with `(…)` should always start with `--` since it
+          # represents a CSS variable.
+          return nil unless value&.start_with?("--")
+
           roots = [[root, "[var(#{value})]"]] #: Array[root]
         else
           roots = find_roots(base_without_modifier) do |root|
