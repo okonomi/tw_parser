@@ -3,8 +3,15 @@
 # Wrapper for TwParser::Candidate::Parser
 module TwParser
   class Parser
+    @parser: TwParser::Candidate::Parser
+
+    @utilities: TwParser::Utilities
+
+    @variants: TwParser::Variants
+
     def initialize: () -> untyped
 
-    def parse: (untyped input) -> untyped
+    # : (::String input) -> (TwParser::Candidate::Parser::candidate | nil)
+    def parse: (::String input) -> (TwParser::Candidate::Parser::candidate | nil)
   end
 end

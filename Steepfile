@@ -3,6 +3,9 @@
 target :lib do
   signature "sig"
 
+  check "lib/tw_parser.rb"
+  check "lib/tw_parser/version.rb"
+  check "lib/tw_parser/parser.rb"
   check "lib/tw_parser/segment.rb"
   # check "lib/tw_parser/utilities.rb"
   check "lib/tw_parser/candidate"
