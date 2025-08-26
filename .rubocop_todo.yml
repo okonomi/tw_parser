@@ -49,9 +49,3 @@ Naming/PredicateMethod:
 Style/NegatedIfElseCondition:
   Exclude:
     - 'lib/tw_parser/candidate/parser.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantCurrentDirectoryInPath:
-  Exclude:
-    - 'spec/spec_helper.rb'
