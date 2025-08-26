@@ -260,7 +260,8 @@ RSpec.describe TwParser::Candidate::Parser do
           value: "var(--my-color)"
         ),
         variants: []
-      )
+      ),
+      "data-(value):flex" => nil
     }.each do |input, expected|
       context input do
         let(:input) { input }

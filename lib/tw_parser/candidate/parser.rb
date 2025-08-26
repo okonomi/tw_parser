@@ -285,6 +285,9 @@ module TwParser
 
               arbitrary_value = decode_arbitrary_value(value[1..-2])
 
+              # Arbitrary values must start with `--` since it represents a CSS variable.
+              return nil unless arbitrary_value.start_with?("--")
+
               return FunctionalVariant.new(
                 root: root,
                 value: ArbitraryVariantValue.new(
