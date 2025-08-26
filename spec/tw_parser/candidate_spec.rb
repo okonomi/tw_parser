@@ -755,13 +755,13 @@ RSpec.describe TwParser::Candidate::Parser do
       utilities = TwParser::Utilities.new
       utilities.functional("bg") { [] }
 
-      expect(run("bg-[--value]!", utilities: utilities)).to eq(
+      expect(run("bg-[var(--value)]!", utilities: utilities)).to eq(
         [
           {
             important: true,
             kind: :functional,
             modifier: nil,
-            raw: "bg-[--value]!",
+            raw: "bg-[var(--value)]!",
             root: "bg",
             value: {
               data_type: nil,
