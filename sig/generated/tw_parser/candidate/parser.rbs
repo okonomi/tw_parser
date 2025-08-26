@@ -5,8 +5,6 @@ module TwParser
     class Parser
       type candidate = ArbitraryCandidate | StaticCandidate | FunctionalCandidate
 
-      VARIANTS: untyped
-
       # : (String input, utilities: TwParser::Utilities, variants: TwParser::Variants) -> (candidate | nil)
       def parse: (String input, utilities: TwParser::Utilities, variants: TwParser::Variants) -> (candidate | nil)
 

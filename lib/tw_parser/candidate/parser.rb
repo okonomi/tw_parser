@@ -15,10 +15,6 @@ module TwParser
       #
       #  type candidate = ArbitraryCandidate | StaticCandidate | FunctionalCandidate
 
-      VARIANTS = Set.new([
-                           "supports"
-                         ]).freeze
-
       #: (String input, utilities: TwParser::Utilities, variants: TwParser::Variants) -> (candidate | nil)
       def parse(input, utilities:, variants:)
         # hover:focus:underline
