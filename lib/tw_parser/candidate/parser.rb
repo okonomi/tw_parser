@@ -94,7 +94,7 @@ module TwParser
           return nil if idx.nil? || [0, base_without_modifier.length - 1].include?(idx)
 
           property = base_without_modifier.slice(0, idx) || ""
-          value = base_without_modifier.slice(idx + 1..) || ""
+          value = base_without_modifier.slice((idx + 1)..) || ""
 
           return ArbitraryCandidate.new(
             property: property,
@@ -136,7 +136,7 @@ module TwParser
           # it's an invalid utility and we can skip continue parsing.
           return nil unless utilities.has(root, "functional")
 
-          value = base_without_modifier.slice(idx + 1..)
+          value = base_without_modifier.slice((idx + 1)..)
 
           roots = [[root, value]] #: Array[root]
         # If the base of the utility ends with a `)`, then we know it's an arbitrary
@@ -196,7 +196,7 @@ module TwParser
             # Arbitrary values must end with a `]`.
             return nil unless value[-1] == "]"
 
-            arbitrary_value = decode_arbitrary_value(value.slice(start_arbitrary_idx + 1..-2))
+            arbitrary_value = decode_arbitrary_value(value.slice((start_arbitrary_idx + 1)..-2))
 
             typehint, arbitrary_value = arbitrary_value.split(":") if arbitrary_value.include?(":")
 

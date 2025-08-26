@@ -13,13 +13,6 @@ Gemspec/RequireMFA:
   Exclude:
     - 'tw_parser.gemspec'
 
-# Offense count: 3
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: RequireParenthesesForMethodChains.
-Lint/AmbiguousRange:
-  Exclude:
-    - 'lib/tw_parser/candidate/parser.rb'
-
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle, BlockForwardingName.
