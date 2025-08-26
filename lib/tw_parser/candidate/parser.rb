@@ -40,8 +40,8 @@ module TwParser
           base = base.delete_suffix("!")
         end
 
-        # // Check for an exact match of a static utility first as long as it does not
-        # // look like an arbitrary value.
+        # Check for an exact match of a static utility first as long as it does not
+        # look like an arbitrary value.
         if utilities.has?(base, "static") && !base.include?("[")
           return StaticCandidate.new(
             root: base,
@@ -51,15 +51,15 @@ module TwParser
           )
         end
 
-        # // Figure out the new base and the modifier segment if present.
-        # //
-        # // E.g.:
-        # //
-        # // ```
-        # // bg-red-500/50
-        # // ^^^^^^^^^^    -> Base without modifier
-        # //            ^^ -> Modifier segment
-        # // ```
+        # Figure out the new base and the modifier segment if present.
+        #
+        # E.g.:
+        #
+        # ```
+        # bg-red-500/50
+        # ^^^^^^^^^^    -> Base without modifier
+        #            ^^ -> Modifier segment
+        # ```
         base_without_modifier, modifier_segment, additional_modifier = TwParser.segment(base, "/")
         return nil if base_without_modifier.nil?
 
