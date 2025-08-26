@@ -20,7 +20,7 @@ module TwParser
     end
 
     #: (String name) -> bool
-    def has(name)
+    def has?(name)
       @variants.key?(name)
     end
 

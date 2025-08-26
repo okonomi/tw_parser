@@ -9,6 +9,6 @@ module TwParser
     def functional: (untyped name) ?{ (?) -> untyped } -> untyped
 
     # : (String name, String kind) -> bool
-    def has: (String name, String kind) -> bool
+    def has?: (String name, String kind) -> bool
   end
 end

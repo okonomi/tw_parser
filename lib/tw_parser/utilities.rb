@@ -18,7 +18,7 @@ module TwParser
     end
 
     #: (String name, String kind) -> bool
-    def has(name, kind)
+    def has?(name, kind)
       @utilities.key?(name) && @utilities.fetch(name).any? { _1[:kind] == kind }
     end
   end

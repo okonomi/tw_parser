@@ -46,7 +46,7 @@ module TwParser
 
         # // Check for an exact match of a static utility first as long as it does not
         # // look like an arbitrary value.
-        if utilities.has(base, "static") && !base.include?("[")
+        if utilities.has?(base, "static") && !base.include?("[")
           return StaticCandidate.new(
             root: base,
             variants: parsed_candidate_variants,
@@ -134,7 +134,7 @@ module TwParser
 
           # The root of the utility should exist as-is in the utilities map. If not,
           # it's an invalid utility and we can skip continue parsing.
-          return nil unless utilities.has(root, "functional")
+          return nil unless utilities.has?(root, "functional")
 
           value = base_without_modifier.slice((idx + 1)..)
 
@@ -157,7 +157,7 @@ module TwParser
 
           # The root of the utility should exist as-is in the utilities map. If not,
           # it's an invalid utility and we can skip continue parsing.
-          return nil unless utilities.has(root, "functional")
+          return nil unless utilities.has?(root, "functional")
 
           value = base_without_modifier.slice((idx + 2)..-2) || ""
 
@@ -175,7 +175,7 @@ module TwParser
           roots = [[root, data_type.nil? ? "[var(#{value})]" : "[#{data_type}:var(#{value})]"]] #: Array[root]
         else
           roots = find_roots(base_without_modifier) do |root|
-            utilities.has(root, "functional")
+            utilities.has?(root, "functional")
           end
         end
 
@@ -245,7 +245,7 @@ module TwParser
         return nil if variant_without_modifier.nil?
 
         roots = find_roots(variant_without_modifier) do |root|
-          variants.has(root)
+          variants.has?(root)
         end
         roots.each do |root, value|
           case variants.kind(root)

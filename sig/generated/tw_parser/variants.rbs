@@ -11,7 +11,7 @@ module TwParser
     def compound: (untyped name, untyped compound_type) ?{ (?) -> untyped } -> untyped
 
     # : (String name) -> bool
-    def has: (String name) -> bool
+    def has?: (String name) -> bool
 
     # : (String name) -> (Symbol | nil)
     def kind: (String name) -> (Symbol | nil)
