@@ -17,6 +17,9 @@ Layout/LeadingCommentSpace:
 Layout/LineLength:
   Enabled: false
 
+Lint/EmptyBlock:
+  Enabled: false
+
 Style/Documentation:
   Enabled: false
 
