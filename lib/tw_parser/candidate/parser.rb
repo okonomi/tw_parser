@@ -298,14 +298,41 @@ module TwParser
         nil
       end
 
-      def decode_arbitrary_value(value)
-        value.tr("_", " ")
+      #: (String input) -> String
+      def decode_arbitrary_value(input)
+        # There are definitely no functions in the input, so bail early
+        return input.tr("_", " ") unless input.include?("(")
+
+        # TODO: implement ValueParser
+        input.gsub(/\(.+?\)/) do |match|
+          match.split(",").map.with_index do |v, i|
+            i.zero? ? v : v.tr("_", " ")
+          end.join(",")
+        end
       end
 
       #: (String modifier) -> (ArbitraryModifier | NamedModifier)
       def parse_modifier(modifier)
         if modifier.start_with?("[") && modifier.end_with?("]")
           arbitrary_value = decode_arbitrary_value(modifier[1..-2])
+
+          return ArbitraryModifier.new(
+            value: arbitrary_value
+          )
+        end
+
+        if modifier.start_with?("(") && modifier.end_with?(")")
+          # Drop the `(` and `)` characters
+          modifier = modifier.slice!(1..-2)
+
+          # A modifier with `(…)` should always start with `--` since it
+          # represents a CSS variable.
+          return nil unless modifier.start_with?("--")
+
+          # Wrap the value in `var(…)` to ensure that it is a valid CSS variable.
+          modifier = "var(#{modifier})"
+
+          arbitrary_value = decode_arbitrary_value(modifier)
 
           return ArbitraryModifier.new(
             value: arbitrary_value

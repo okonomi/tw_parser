@@ -11,7 +11,8 @@ module TwParser
       # : (String variant, variants: TwParser::Variants) -> (variant | nil)
       def parse_variant: (String variant, variants: TwParser::Variants) -> (variant | nil)
 
-      def decode_arbitrary_value: (untyped value) -> untyped
+      # : (String input) -> String
+      def decode_arbitrary_value: (String input) -> String
 
       # : (String modifier) -> (ArbitraryModifier | NamedModifier)
       def parse_modifier: (String modifier) -> (ArbitraryModifier | NamedModifier)

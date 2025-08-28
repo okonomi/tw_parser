@@ -261,7 +261,46 @@ RSpec.describe TwParser::Candidate::Parser do
         ),
         variants: []
       ),
-      "data-(value):flex" => nil
+      "data-(value):flex" => nil,
+      "bg-red-500/(--value)" => TwParser::Candidate::FunctionalCandidate.new(
+        important: false,
+        modifier: TwParser::Candidate::ArbitraryModifier.new(
+          value: "var(--value)"
+        ),
+        raw: "bg-red-500/(--value)",
+        root: "bg",
+        value: TwParser::Candidate::NamedUtilityValue.new(
+          fraction: nil,
+          value: "red-500"
+        ),
+        variants: []
+      ),
+      "bg-red-500/(--with_underscore)" => TwParser::Candidate::FunctionalCandidate.new(
+        important: false,
+        modifier: TwParser::Candidate::ArbitraryModifier.new(
+          value: "var(--with_underscore)"
+        ),
+        raw: "bg-red-500/(--with_underscore)",
+        root: "bg",
+        value: TwParser::Candidate::NamedUtilityValue.new(
+          fraction: nil,
+          value: "red-500"
+        ),
+        variants: []
+      ),
+      "bg-red-500/(--with_underscore,fallback_value)" => TwParser::Candidate::FunctionalCandidate.new(
+        important: false,
+        modifier: TwParser::Candidate::ArbitraryModifier.new(
+          value: "var(--with_underscore,fallback value)"
+        ),
+        raw: "bg-red-500/(--with_underscore,fallback_value)",
+        root: "bg",
+        value: TwParser::Candidate::NamedUtilityValue.new(
+          fraction: nil,
+          value: "red-500"
+        ),
+        variants: []
+      )
     }.each do |input, expected|
       context input do
         let(:input) { input }
