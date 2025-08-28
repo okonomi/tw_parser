@@ -11,7 +11,7 @@ end
 require_relative "../../lib/tw_parser/candidate/util"
 
 RSpec.describe TwParser::Candidate::Parser do
-  describe "#parse" do
+  describe "#parse", :aggregate_failures do
     def run(candidate, utilities: nil, variants: nil, prefix: nil) # rubocop:disable Lint/UnusedMethodArgument
       utilities ||= TwParser::Utilities.new
       variants ||= TwParser::Variants.new
