@@ -300,7 +300,8 @@ RSpec.describe TwParser::Candidate::Parser do
           value: "red-500"
         ),
         variants: []
-      )
+      ),
+      "bg-red-500/()" => nil
     }.each do |input, expected|
       context input do
         let(:input) { input }

@@ -72,6 +72,12 @@ module TwParser
 
         parsed_modifier = modifier_segment.nil? ? nil : parse_modifier(modifier_segment)
 
+        # Empty arbitrary values are invalid. E.g.: `[color:red]/[]` or `[color:red]/()`.
+        #                                                        ^^                  ^^
+        #                                           `bg-[#0088cc]/[]` or `bg-[#0088cc]/()`.
+        #                                                         ^^                   ^^
+        return nil if !modifier_segment.nil? && parsed_modifier.nil?
+
         # Arbitrary properties
         if base_without_modifier.start_with?("[")
           # Arbitrary properties should end with a `]`.
