@@ -1,0 +1,10 @@
+# Generated from lib/tw_parser/candidate/arbitrary_value.rb with RBS::Inline
+
+module TwParser
+  module Candidate
+    class ArbitraryValue
+      # : (String input) -> String
+      def self.decode: (String input) -> String
+    end
+  end
+end

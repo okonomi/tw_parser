@@ -7,6 +7,7 @@ require_relative "../variants"
 require_relative "modifier"
 require_relative "variant"
 require_relative "candidate"
+require_relative "arbitrary_value"
 
 module TwParser
   module Candidate
@@ -198,7 +199,7 @@ module TwParser
             # Arbitrary values must end with a `]`.
             return nil unless value.end_with?("]")
 
-            arbitrary_value = decode_arbitrary_value(
+            arbitrary_value = ArbitraryValue.decode(
               value.slice((start_arbitrary_idx + 1)..-2) #: String
             )
 
@@ -236,7 +237,7 @@ module TwParser
       def parse_variant(variant, variants:)
         # Arbitrary variants
         if variant.start_with?("[") && variant.end_with?("]")
-          selector = decode_arbitrary_value(
+          selector = ArbitraryValue.decode(
             variant.slice(1..-2) #: String
           )
           relative = selector.start_with?(">", "+", "~")
@@ -275,7 +276,7 @@ module TwParser
               # Discard values like `foo-[#bar]`
               next unless value.start_with?("[")
 
-              arbitrary_value = decode_arbitrary_value(
+              arbitrary_value = ArbitraryValue.decode(
                 value.slice(1..-2) #: String
               )
 
@@ -292,7 +293,7 @@ module TwParser
               # Discard values like `foo-(--bar)`
               next unless value.start_with?("(")
 
-              arbitrary_value = decode_arbitrary_value(
+              arbitrary_value = ArbitraryValue.decode(
                 value.slice(1..-2) #: String
               )
 
@@ -313,23 +314,10 @@ module TwParser
         nil
       end
 
-      #: (String input) -> String
-      def decode_arbitrary_value(input)
-        # There are definitely no functions in the input, so bail early
-        return input.tr("_", " ") unless input.include?("(")
-
-        # TODO: implement ValueParser
-        input.gsub(/\(.+?\)/) do |match|
-          match.split(",").map.with_index do |v, i|
-            i.zero? ? v : v.tr("_", " ")
-          end.join(",")
-        end
-      end
-
       #: (String modifier) -> (ArbitraryModifier | NamedModifier | nil)
       def parse_modifier(modifier)
         if modifier.start_with?("[") && modifier.end_with?("]")
-          arbitrary_value = decode_arbitrary_value(
+          arbitrary_value = ArbitraryValue.decode(
             modifier.slice(1..-2) #: String
           )
 
@@ -349,7 +337,7 @@ module TwParser
           # Wrap the value in `var(…)` to ensure that it is a valid CSS variable.
           modifier = "var(#{modifier})"
 
-          arbitrary_value = decode_arbitrary_value(modifier)
+          arbitrary_value = ArbitraryValue.decode(modifier)
 
           return ArbitraryModifier.new(
             value: arbitrary_value
