@@ -79,7 +79,7 @@ class SimpleResultFormatter < RSpec::Core::Formatters::BaseFormatter
   def count_failed_expectations(notification)
     exception = notification.exception
 
-    if exception&.respond_to?(:all_exceptions)
+    if exception.respond_to?(:all_exceptions)
       # RSpec::Expectations::MultipleExpectationsNotMetError
       exception.all_exceptions.count
     elsif exception&.message&.include?("Got ")
