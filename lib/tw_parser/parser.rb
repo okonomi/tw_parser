@@ -16,6 +16,7 @@ module TwParser
         u.static("flex") { [] }
         u.functional("translate-x") { [] }
         u.functional("-translate-x") { [] }
+        u.functional("content") { [] }
         u.functional("bg") { [] }
       end
       @variants = TwParser::Variants.new.tap do |v|

@@ -5,6 +5,10 @@ module TwParser
     class ArbitraryValue
       # : (String input) -> String
       def self.decode: (String input) -> String
+
+      # Convert `_` to ` `, except for escaped underscores `\_` they should be
+      # converted to `_` instead.
+      def self.convert_underscores_to_whitespace: (untyped input, ?untyped skip_underscore_to_space) -> untyped
     end
   end
 end

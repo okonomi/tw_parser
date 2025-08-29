@@ -7,6 +7,7 @@ RSpec.describe TwParser::Candidate::Parser do
         u.static("flex") { [] }
         u.functional("translate-x") { [] }
         u.functional("-translate-x") { [] }
+        u.functional("content") { [] }
         u.functional("bg") { [] }
       end
       variants = TwParser::Variants.new.tap do |v|
@@ -301,7 +302,18 @@ RSpec.describe TwParser::Candidate::Parser do
         ),
         variants: []
       ),
-      "bg-red-500/()" => nil
+      "bg-red-500/()" => nil,
+      'content-["hello\\_world"]' => TwParser::Candidate::FunctionalCandidate.new(
+        important: false,
+        modifier: nil,
+        raw: 'content-["hello\\_world"]',
+        root: "content",
+        value: TwParser::Candidate::ArbitraryUtilityValue.new(
+          data_type: nil,
+          value: '"hello_world"'
+        ),
+        variants: []
+      )
     }.each do |input, expected|
       context input do
         let(:input) { input }
