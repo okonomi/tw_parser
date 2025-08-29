@@ -95,8 +95,8 @@ module TwParser
           idx = base_without_modifier.index(":")
           return nil if idx.nil? || [0, base_without_modifier.length - 1].include?(idx)
 
-          property = base_without_modifier.slice(0, idx) || ""
-          value = base_without_modifier.slice((idx + 1)..) || ""
+          property = base_without_modifier.slice(0, idx) #: String
+          value = base_without_modifier.slice((idx + 1)..) #: String
 
           return ArbitraryCandidate.new(
             property: property,
@@ -132,7 +132,7 @@ module TwParser
           idx = base_without_modifier.index("-[")
           return nil if idx.nil?
 
-          root = base_without_modifier.slice(0, idx) || ""
+          root = base_without_modifier.slice(0, idx) #: String
 
           # The root of the utility should exist as-is in the utilities map. If not,
           # it's an invalid utility and we can skip continue parsing.
@@ -155,13 +155,13 @@ module TwParser
           idx = base_without_modifier.index("-(")
           return nil if idx.nil?
 
-          root = base_without_modifier.slice(0, idx) || ""
+          root = base_without_modifier.slice(0, idx) #: String
 
           # The root of the utility should exist as-is in the utilities map. If not,
           # it's an invalid utility and we can skip continue parsing.
           return nil unless utilities.has?(root, "functional")
 
-          value = base_without_modifier.slice((idx + 2)..-2) || ""
+          value = base_without_modifier.slice((idx + 2)..-2) #: String
 
           parts = TwParser.segment(value, ":")
           data_type = nil
@@ -237,7 +237,7 @@ module TwParser
         # Arbitrary variants
         if variant.start_with?("[") && variant.end_with?("]")
           selector = decode_arbitrary_value(
-            variant.slice!(1..-2) #: String
+            variant.slice(1..-2) #: String
           )
           relative = selector.start_with?(">", "+", "~")
 
@@ -276,7 +276,7 @@ module TwParser
               next unless value.start_with?("[")
 
               arbitrary_value = decode_arbitrary_value(
-                value.slice!(1..-2) #: String
+                value.slice(1..-2) #: String
               )
 
               return FunctionalVariant.new(
