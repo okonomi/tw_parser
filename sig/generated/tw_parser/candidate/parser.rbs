@@ -14,8 +14,8 @@ module TwParser
       # : (String input) -> String
       def decode_arbitrary_value: (String input) -> String
 
-      # : (String modifier) -> (ArbitraryModifier | NamedModifier)
-      def parse_modifier: (String modifier) -> (ArbitraryModifier | NamedModifier)
+      # : (String modifier) -> (ArbitraryModifier | NamedModifier | nil)
+      def parse_modifier: (String modifier) -> (ArbitraryModifier | NamedModifier | nil)
 
       type root = [ ::String, ::String | nil ]
 

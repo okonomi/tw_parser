@@ -196,11 +196,14 @@ module TwParser
           start_arbitrary_idx = value.index("[")
           if !start_arbitrary_idx.nil?
             # Arbitrary values must end with a `]`.
-            return nil unless value[-1] == "]"
+            return nil unless value.end_with?("]")
 
-            arbitrary_value = decode_arbitrary_value(value.slice((start_arbitrary_idx + 1)..-2))
+            arbitrary_value = decode_arbitrary_value(
+              value.slice((start_arbitrary_idx + 1)..-2) #: String
+            )
 
             typehint, arbitrary_value = arbitrary_value.split(":") if arbitrary_value.include?(":")
+            return nil if arbitrary_value.nil?
 
             candidate = candidate.with(value: ArbitraryUtilityValue.new(
               data_type: typehint,
@@ -233,7 +236,9 @@ module TwParser
       def parse_variant(variant, variants:)
         # Arbitrary variants
         if variant.start_with?("[") && variant.end_with?("]")
-          selector = decode_arbitrary_value(variant[1..-2])
+          selector = decode_arbitrary_value(
+            variant.slice!(1..-2) #: String
+          )
           relative = selector.start_with?(">", "+", "~")
 
           return ArbitraryVariant.new(
@@ -270,7 +275,9 @@ module TwParser
               # Discard values like `foo-[#bar]`
               next unless value.start_with?("[")
 
-              arbitrary_value = decode_arbitrary_value(value[1..-2])
+              arbitrary_value = decode_arbitrary_value(
+                value.slice!(1..-2) #: String
+              )
 
               return FunctionalVariant.new(
                 root: root,
@@ -285,7 +292,9 @@ module TwParser
               # Discard values like `foo-(--bar)`
               next unless value.start_with?("(")
 
-              arbitrary_value = decode_arbitrary_value(value[1..-2])
+              arbitrary_value = decode_arbitrary_value(
+                value.slice(1..-2) #: String
+              )
 
               # Arbitrary values must start with `--` since it represents a CSS variable.
               return nil unless arbitrary_value.start_with?("--")
@@ -317,10 +326,12 @@ module TwParser
         end
       end
 
-      #: (String modifier) -> (ArbitraryModifier | NamedModifier)
+      #: (String modifier) -> (ArbitraryModifier | NamedModifier | nil)
       def parse_modifier(modifier)
         if modifier.start_with?("[") && modifier.end_with?("]")
-          arbitrary_value = decode_arbitrary_value(modifier[1..-2])
+          arbitrary_value = decode_arbitrary_value(
+            modifier.slice(1..-2) #: String
+          )
 
           return ArbitraryModifier.new(
             value: arbitrary_value
@@ -329,7 +340,7 @@ module TwParser
 
         if modifier.start_with?("(") && modifier.end_with?(")")
           # Drop the `(` and `)` characters
-          modifier = modifier.slice!(1..-2)
+          modifier = modifier.slice(1..-2) #: String
 
           # A modifier with `(…)` should always start with `--` since it
           # represents a CSS variable.

@@ -24,6 +24,11 @@ module TwParser
 
           { kind: kind }.merge(attributes)
         end
+
+        #: (String str) -> String
+        def unsurround(str)
+          str.slice(1..-2) || ""
+        end
       end
     end
   end

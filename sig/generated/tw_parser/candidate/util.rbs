@@ -5,6 +5,9 @@ module TwParser
     class Util
       # : (untyped candidate) -> Hash[Symbol, untyped]
       def self.extract_candidate_info: (untyped candidate) -> Hash[Symbol, untyped]
+
+      # : (String str) -> String
+      def self.unsurround: (String str) -> String
     end
   end
 end
