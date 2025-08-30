@@ -262,6 +262,19 @@ module TwParser
       def parse_variant(variant, variants:)
         # Arbitrary variants
         if variant.start_with?("[") && variant.end_with?("]")
+          # TODO: Breaking change
+          #
+          # @deprecated Arbitrary variants containing at-rules with other selectors
+          # are deprecated. Use stacked variants instead.
+          #
+          # Before:
+          #  - `[@media(width>=123px){&:hover}]:`
+          #
+          # After:
+          #  - `[@media(width>=123px)]:[&:hover]:`
+          #  - `[@media(width>=123px)]:hover:`
+          return nil if variant[1] == "@" && variant.include?("&")
+
           selector = ArbitraryValue.decode(
             variant.slice(1..-2) #: String
           )
