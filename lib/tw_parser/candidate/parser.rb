@@ -84,6 +84,14 @@ module TwParser
           # Arbitrary properties should end with a `]`.
           return nil unless base_without_modifier.end_with?("]")
 
+          # The property part of the arbitrary property can only start with a-z
+          # lowercase or a dash `-` in case of vendor prefixes such as `-webkit-`
+          # or `-moz-`.
+          #
+          # Otherwise, it is an invalid candidate, and skip continue parsing.
+          char_code = base_without_modifier[1]
+          return nil unless char_code == "-" || char_code&.between?("a", "z")
+
           base_without_modifier = base_without_modifier.delete_prefix("[").delete_suffix("]")
 
           # Arbitrary properties consist of a property and a value separated by a
