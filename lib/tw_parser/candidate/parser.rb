@@ -336,6 +336,13 @@ module TwParser
             modifier.slice(1..-2) #: String
           )
 
+          # Values can't contain `;` or `}` characters at the top-level.
+          return nil unless ArbitraryValue.valid?(arbitrary_value)
+
+          # Empty arbitrary values are invalid. E.g.: `data-[]:`
+          #                                                 ^^
+          return nil if arbitrary_value.strip.empty?
+
           return ArbitraryModifier.new(
             value: arbitrary_value
           )
