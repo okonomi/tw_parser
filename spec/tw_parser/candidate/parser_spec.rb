@@ -15,7 +15,9 @@ RSpec.describe TwParser::Candidate::Parser do
         v.functional("data") {}
         v.static("hover") {}
         v.static("focus") {}
+        v.compound("group", TwParser::Variants::COMPOUND_STYLE_RULES) {}
       end
+
       described_class.new.parse(input, utilities:, variants:)
     end
 
@@ -313,6 +315,23 @@ RSpec.describe TwParser::Candidate::Parser do
           value: '"hello_world"'
         ),
         variants: []
+      ),
+      "group-[&_p]/parent-name:flex" => TwParser::Candidate::StaticCandidate.new(
+        important: false,
+        raw: "group-[&_p]/parent-name:flex",
+        root: "flex",
+        variants: [
+          TwParser::Candidate::CompoundVariant.new(
+            modifier: TwParser::Candidate::NamedModifier.new(
+              value: "parent-name"
+            ),
+            root: "group",
+            variant: TwParser::Candidate::ArbitraryVariant.new(
+              relative: false,
+              selector: "& p"
+            )
+          )
+        ]
       )
     }.each do |input, expected|
       context input do

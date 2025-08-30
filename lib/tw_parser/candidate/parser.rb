@@ -263,19 +263,32 @@ module TwParser
           )
         end
 
-        # Functional variants
-        variant_without_modifier, modifier, _additional_modifier = TwParser.segment(variant, "/")
+        # Functional and compound variants
+
+        # group-hover/group-name
+        # ^^^^^^^^^^^            -> Variant without modifier
+        #             ^^^^^^^^^^ -> Modifier
+        variant_without_modifier, modifier, additional_modifier = TwParser.segment(variant, "/")
         return nil if variant_without_modifier.nil?
+
+        # If there's more than one modifier, the variant is invalid.
+        #
+        # E.g.:
+        #
+        # - `group-hover/foo/bar`
+        return nil unless additional_modifier.nil?
 
         roots = find_roots(variant_without_modifier) do |root|
           variants.has?(root)
         end
+
         roots.each do |root, value|
           case variants.kind(root)
           when :static
             return StaticVariant.new(
               root: variant
             )
+
           when :functional
             parsed_modifier = modifier.nil? ? nil : parse_modifier(modifier)
 
@@ -327,6 +340,24 @@ module TwParser
                 modifier: nil
               )
             end
+
+          when :compound
+            return nil if value.nil?
+
+            sub_variant = parse_variant(value, variants: variants)
+            return nil if sub_variant.nil?
+
+            parsed_modifier = modifier.nil? ? nil : parse_modifier(modifier)
+            # Empty arbitrary values are invalid. E.g.: `group-focus/[]:` or `group-focus/():`
+            #                                                        ^^                   ^^
+            # if (modifier !== null && parsedModifier === null) return null
+            return nil if !modifier.nil? && parsed_modifier.nil?
+
+            return CompoundVariant.new(
+              root:,
+              modifier: parsed_modifier,
+              variant: sub_variant
+            )
           end
         end
 

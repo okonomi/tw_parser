@@ -25,7 +25,7 @@ module TwParser
 
     #: (::String name, compounds compounds_with) { (untyped) -> untyped } -> void
     def compound(name, compounds_with, &block)
-      # TODO: implement compound variant registration
+      @variants[name] = { kind: :compound, block:, compounds_with: }
     end
 
     #: (String name) -> bool
