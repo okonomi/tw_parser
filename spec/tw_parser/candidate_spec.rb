@@ -1752,13 +1752,12 @@ RSpec.describe TwParser::Candidate::Parser do
       variants = TwParser::Variants.new
       variants.functional("string") {}
 
-      test_string = "string-[\"}[(\"\\']\":flex"
-      expect(run(test_string, utilities: utilities, variants: variants)).to eq(
+      expect(run(%q`string-['}[("\'']:flex`, utilities: utilities, variants: variants)).to eq(
         [
           {
             important: false,
             kind: :static,
-            raw: test_string,
+            raw: %q`string-['}[("\'']:flex`,
             root: "flex",
             variants: [
               {
@@ -1767,7 +1766,7 @@ RSpec.describe TwParser::Candidate::Parser do
                 root: "string",
                 value: {
                   kind: :arbitrary,
-                  value: "\"}[(\"\\"
+                  value: %q`'}[("\''`
                 }
               }
             ]
