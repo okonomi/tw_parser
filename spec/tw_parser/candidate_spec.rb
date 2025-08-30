@@ -1,13 +1,5 @@
 # frozen_string_literal: true
 
-module TwParser
-  module Compounds
-    module StyleRules
-      # TODO: implement StyleRules compound type
-    end
-  end
-end
-
 require_relative "../../lib/tw_parser/candidate/util"
 
 RSpec.describe TwParser::Candidate::Parser do
@@ -233,7 +225,7 @@ RSpec.describe TwParser::Candidate::Parser do
       utilities.static("flex") { [] }
 
       variants = TwParser::Variants.new
-      variants.compound("group", TwParser::Compounds::StyleRules) {}
+      variants.compound("group", TwParser::Variants::COMPOUND_STYLE_RULES) {}
 
       expect(run("group-[&_p]/parent-name:flex", utilities: utilities, variants: variants)).to eq(
         [
@@ -267,7 +259,7 @@ RSpec.describe TwParser::Candidate::Parser do
       utilities.static("flex") { [] }
 
       variants = TwParser::Variants.new
-      variants.compound("group", TwParser::Compounds::StyleRules) {}
+      variants.compound("group", TwParser::Variants::COMPOUND_STYLE_RULES) {}
       variants.functional("aria") {}
 
       expect(run("group-aria-[disabled]/parent-name:flex", utilities: utilities, variants: variants)).to eq(
@@ -307,7 +299,7 @@ RSpec.describe TwParser::Candidate::Parser do
 
       variants = TwParser::Variants.new
       variants.static("hover") {}
-      variants.compound("group", TwParser::Compounds::StyleRules) {}
+      variants.compound("group", TwParser::Variants::COMPOUND_STYLE_RULES) {}
 
       expect(run("group-group-group-hover/parent-name:flex", utilities: utilities, variants: variants)).to eq(
         [
@@ -1740,7 +1732,7 @@ RSpec.describe TwParser::Candidate::Parser do
       utilities.static("flex") { [] }
 
       variants = TwParser::Variants.new
-      variants.compound("group", TwParser::Compounds::StyleRules) {}
+      variants.compound("group", TwParser::Variants::COMPOUND_STYLE_RULES) {}
 
       expect(run("group-*:flex", utilities: utilities, variants: variants)).to eq([])
     end
@@ -1937,7 +1929,7 @@ RSpec.describe TwParser::Candidate::Parser do
 
         variants = TwParser::Variants.new
         variants.functional("data") {}
-        variants.compound("group", TwParser::Compounds::StyleRules) {}
+        variants.compound("group", TwParser::Variants::COMPOUND_STYLE_RULES) {}
 
         expect(run(raw_candidate, utilities: utilities, variants: variants)).to eq([])
       end
@@ -1967,7 +1959,7 @@ RSpec.describe TwParser::Candidate::Parser do
 
         variants = TwParser::Variants.new
         variants.functional("data") {}
-        variants.compound("group", TwParser::Compounds::StyleRules) {}
+        variants.compound("group", TwParser::Variants::COMPOUND_STYLE_RULES) {}
 
         expect(run(raw_candidate, utilities: utilities, variants: variants)).to eq([])
       end
