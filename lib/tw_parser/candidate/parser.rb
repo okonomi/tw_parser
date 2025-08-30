@@ -295,6 +295,10 @@ module TwParser
                 value.slice(1..-2) #: String
               )
 
+              # Empty arbitrary values are invalid. E.g.: `data-[]:`
+              #                                                 ^^
+              return nil if arbitrary_value.strip.empty?
+
               return FunctionalVariant.new(
                 root: root,
                 value: ArbitraryVariantValue.new(
