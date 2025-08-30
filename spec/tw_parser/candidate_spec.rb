@@ -4,14 +4,13 @@ require_relative "../../lib/tw_parser/candidate/util"
 
 RSpec.describe TwParser::Candidate::Parser do
   describe "#parse", :aggregate_failures do
-    def run(candidate, utilities: nil, variants: nil, prefix: nil) # rubocop:disable Lint/UnusedMethodArgument
+    def run(candidate, utilities: nil, variants: nil, prefix: nil)
       utilities ||= TwParser::Utilities.new
       variants ||= TwParser::Variants.new
 
       parser = described_class.new
-      # parser.prefix = prefix
 
-      candidate = parser.parse(candidate, utilities:, variants:)
+      candidate = parser.parse(candidate, utilities:, variants:, prefix:)
       return [] if candidate.nil?
 
       [TwParser::Candidate::Util.extract_candidate_info(candidate)]

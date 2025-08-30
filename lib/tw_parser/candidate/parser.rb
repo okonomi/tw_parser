@@ -16,12 +16,22 @@ module TwParser
       #
       #  type candidate = ArbitraryCandidate | StaticCandidate | FunctionalCandidate
 
-      #: (String input, utilities: TwParser::Utilities, variants: TwParser::Variants) -> (candidate | nil)
-      def parse(input, utilities:, variants:)
+      #: (String input, utilities: TwParser::Utilities, variants: TwParser::Variants, ?prefix: String?) -> (candidate | nil)
+      def parse(input, utilities:, variants:, prefix: nil)
         # hover:focus:underline
         # ^^^^^ ^^^^^^           -> Variants
         #             ^^^^^^^^^  -> Base
         raw_variants = TwParser.segment(input, ":")
+
+        # A prefix is a special variant used to prefix all utilities. When present,
+        # all utilities must start with that variant which we will then remove from
+        # the variant list so no other part of the codebase has to know about it.
+        if prefix
+          return nil if raw_variants.length == 1
+          return nil if raw_variants[0] != prefix
+
+          raw_variants.shift
+        end
 
         base = raw_variants.pop #: ::String
 

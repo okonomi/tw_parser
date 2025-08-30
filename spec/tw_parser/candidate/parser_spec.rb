@@ -19,8 +19,10 @@ RSpec.describe TwParser::Candidate::Parser do
         v.compound("group", TwParser::Variants::COMPOUND_STYLE_RULES) {}
       end
 
-      described_class.new.parse(input, utilities:, variants:)
+      described_class.new.parse(input, utilities:, variants:, prefix:)
     end
+
+    let(:prefix) { nil }
 
     {
       "flex" => TwParser::Candidate::StaticCandidate.new(
@@ -368,6 +370,24 @@ RSpec.describe TwParser::Candidate::Parser do
       context input do
         let(:input) { input }
         it { is_expected.to eq(expected) }
+      end
+    end
+
+    context "with tw: prefix" do
+      let(:prefix) { "tw" }
+
+      {
+        "tw:flex" => TwParser::Candidate::StaticCandidate.new(
+          important: false,
+          raw: "tw:flex",
+          root: "flex",
+          variants: []
+        )
+      }.each do |input, expected|
+        context input do
+          let(:input) { input }
+          it { is_expected.to eq(expected) }
+        end
       end
     end
   end
