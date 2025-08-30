@@ -2,8 +2,6 @@
 
 module TwParser
   module Candidate
-    type variant = ArbitraryVariant | StaticVariant | FunctionalVariant
-
     class ArbitraryCandidate < Data
       attr_reader property(): String
 

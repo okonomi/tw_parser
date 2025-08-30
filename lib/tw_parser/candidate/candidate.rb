@@ -5,10 +5,6 @@ require_relative "util"
 
 module TwParser
   module Candidate
-    # @rbs!
-    #
-    #  type variant = ArbitraryVariant | StaticVariant | FunctionalVariant
-
     ArbitraryCandidate = Data.define(
       :property, #: String
       :value, #: String
