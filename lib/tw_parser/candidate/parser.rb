@@ -341,6 +341,14 @@ module TwParser
               )
             end
 
+            return FunctionalVariant.new(
+              root: root,
+              value: NamedVariantValue.new(
+                value: value
+              ),
+              modifier: parsed_modifier
+            )
+
           when :compound
             return nil if value.nil?
 

@@ -332,6 +332,22 @@ RSpec.describe TwParser::Candidate::Parser do
             )
           )
         ]
+      ),
+      "data-bar/50:flex" => TwParser::Candidate::StaticCandidate.new(
+        important: false,
+        raw: "data-bar/50:flex",
+        root: "flex",
+        variants: [
+          TwParser::Candidate::FunctionalVariant.new(
+            modifier: TwParser::Candidate::NamedModifier.new(
+              value: "50"
+            ),
+            root: "data",
+            value: TwParser::Candidate::NamedVariantValue.new(
+              value: "bar"
+            )
+          )
+        ]
       )
     }.each do |input, expected|
       context input do
