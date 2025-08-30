@@ -190,7 +190,7 @@ module TwParser
           end
         end
 
-        roots.each do |root, value| # rubocop:disable Lint/UnreachableLoop
+        roots.each do |root, value|
           candidate = FunctionalCandidate.new(
             root: root,
             modifier: parsed_modifier,
@@ -211,8 +211,15 @@ module TwParser
               value.slice((start_arbitrary_idx + 1)..-2) #: String
             )
 
+            # Values can't contain `;` or `}` characters at the top-level.
+            next unless ArbitraryValue.valid?(arbitrary_value)
+
             typehint, arbitrary_value = arbitrary_value.split(":") if arbitrary_value.include?(":")
             return nil if arbitrary_value.nil?
+
+            # Empty arbitrary values are invalid. E.g.: `p-[]`
+            #                                              ^^
+            next if arbitrary_value.strip.empty?
 
             candidate = candidate.with(value: ArbitraryUtilityValue.new(
               data_type: typehint,

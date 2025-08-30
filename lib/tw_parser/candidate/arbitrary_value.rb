@@ -41,6 +41,12 @@ module TwParser
 
           output
         end
+
+        #: (String input) -> bool
+        def valid?(input)
+          # TODO: implement
+          true
+        end
       end
     end
   end

@@ -9,6 +9,9 @@ module TwParser
       # Convert `_` to ` `, except for escaped underscores `\_` they should be
       # converted to `_` instead.
       def self.convert_underscores_to_whitespace: (untyped input, ?untyped skip_underscore_to_space) -> untyped
+
+      # : (String input) -> bool
+      def self.valid?: (String input) -> bool
     end
   end
 end
