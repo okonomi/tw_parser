@@ -301,6 +301,9 @@ module TwParser
 
           when :functional
             parsed_modifier = modifier.nil? ? nil : parse_modifier(modifier)
+            # Empty arbitrary values are invalid. E.g.: `@max-md/[]:` or `@max-md/():`
+            #                                                    ^^               ^^
+            return nil if !modifier.nil? && parsed_modifier.nil?
 
             if value.nil?
               return FunctionalVariant.new(
