@@ -20,7 +20,7 @@ module TwParser
 
         # Convert `_` to ` `, except for escaped underscores `\_` they should be
         # converted to `_` instead.
-        def convert_underscores_to_whitespace(input, skip_underscore_to_space = false)
+        def convert_underscores_to_whitespace(input, _skip_underscore_to_space: false)
           escaping = false
           output = +""
           input.each_char do |char|
@@ -43,7 +43,7 @@ module TwParser
         end
 
         #: (String input) -> bool
-        def valid?(input)
+        def valid?(_input)
           # TODO: implement
           true
         end
