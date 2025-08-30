@@ -443,9 +443,9 @@ module TwParser
         # `bg-red`     -> No match
         # `bg`         -> Match
         while idx
-          maybe_root = input[0, idx] || ""
+          maybe_root = input.slice(0, idx)
 
-          if yield(maybe_root)
+          if maybe_root && yield(maybe_root)
             root_value = input.slice((idx + 1)..)
 
             # If the leftover value is an empty string, it means that the value is an
