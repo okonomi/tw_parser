@@ -13,6 +13,7 @@ RSpec.describe TwParser::Candidate::Parser do
       variants = TwParser::Variants.new.tap do |v|
         v.functional("supports") {}
         v.functional("data") {}
+        v.functional("@") {}
         v.static("hover") {}
         v.static("focus") {}
         v.compound("group", TwParser::Variants::COMPOUND_STYLE_RULES) {}
@@ -345,6 +346,20 @@ RSpec.describe TwParser::Candidate::Parser do
             root: "data",
             value: TwParser::Candidate::NamedVariantValue.new(
               value: "bar"
+            )
+          )
+        ]
+      ),
+      "@lg:flex" => TwParser::Candidate::StaticCandidate.new(
+        important: false,
+        raw: "@lg:flex",
+        root: "flex",
+        variants: [
+          TwParser::Candidate::FunctionalVariant.new(
+            modifier: nil,
+            root: "@",
+            value: TwParser::Candidate::NamedVariantValue.new(
+              value: "lg"
             )
           )
         ]

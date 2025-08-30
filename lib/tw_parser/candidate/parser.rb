@@ -459,6 +459,10 @@ module TwParser
           idx = input.rindex("-", idx - 1)
         end
 
+        # Try '@' variant after permutations. This allows things like `@max` of `@max-foo-bar`
+        # to match before looking for `@`.
+        return [["@", input.slice(1..)]] if input[0] == "@" && yield("@")
+
         []
       end
     end
