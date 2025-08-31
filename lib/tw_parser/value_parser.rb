@@ -34,21 +34,9 @@ module TwParser
           case current_char
           # Start of a string.
           when "'", '"'
-            start = idx
-
-            j = idx + 1
-            while j < input.length
-              peek_char = input[j]
-
-              if peek_char == current_char
-                idx = j
-                break
-              end
-
-              j += 1
-            end
-
-            buffer << input.slice(start..j)
+            pos = input.index(current_char, idx + 1) || (input.length - 1)
+            buffer << input.slice(idx..pos)
+            idx = pos
           else
             buffer << current_char
           end
