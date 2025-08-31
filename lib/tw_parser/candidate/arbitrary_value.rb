@@ -1,6 +1,8 @@
 # rbs_inline: enabled
 # frozen_string_literal: true
 
+require_relative "../value_parser"
+
 module TwParser
   module Candidate
     class ArbitraryValue
@@ -10,12 +12,15 @@ module TwParser
           # There are definitely no functions in the input, so bail early
           return convert_underscores_to_whitespace(input) unless input.include?("(")
 
-          # TODO: implement ValueParser
-          input.gsub(/\(.+?\)/) do |match|
-            match.split(",").map.with_index do |v, i|
-              i.zero? ? v : convert_underscores_to_whitespace(v)
-            end.join(",")
-          end
+          ValueParser.parse(input)
+
+          # let ast = ValueParser.parse(input)
+          # recursivelyDecodeArbitraryValues(ast)
+          # input = ValueParser.toCss(ast)
+
+          # input = addWhitespaceAroundMathOperators(input)
+
+          # return input
         end
 
         # Convert `_` to ` `, except for escaped underscores `\_` they should be

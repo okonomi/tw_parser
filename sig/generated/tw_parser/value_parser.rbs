@@ -1,0 +1,11 @@
+# Generated from lib/tw_parser/value_parser.rb with RBS::Inline
+
+module TwParser
+  class ValueParser
+    # : (String input) -> String
+    def self.parse: (String input) -> String
+
+    # copy from TwParser::Candidate::ArbitraryValue
+    def self.convert_underscores_to_whitespace: (untyped input, ?_skip_underscore_to_space: untyped) -> untyped
+  end
+end
