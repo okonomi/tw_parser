@@ -3,7 +3,31 @@
 
 module TwParser
   class ValueParser
+    ValueWordNode = Data.define(
+      :value #: String
+    )
+
+    ValueFunctionNode = Data.define(
+      :value, #: String
+      :nodes #: Array[value_ast_node]
+    )
+
+    ValueSeparatorNode = Data.define(
+      :value #: String
+    )
+
+    # @rbs!
+    #
+    #  type value_ast_node = ValueWordNode | ValueFunctionNode | ValueSeparatorNode
+    #  type value_parent_node = ValueFunctionNode | nil
+
     class << self
+      #: (String input) -> Array[value_ast_node]
+      def parse_new(input)
+        ast = []
+        ast << ValueWordNode.new(value: input)
+      end
+
       #: (String input) -> String
       def parse(input)
         input.gsub(/\(.+?\)/) do |match|
