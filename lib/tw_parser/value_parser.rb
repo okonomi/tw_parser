@@ -24,8 +24,42 @@ module TwParser
     class << self
       #: (String input) -> Array[value_ast_node]
       def parse_new(input)
-        ast = []
-        ast << ValueWordNode.new(value: input)
+        ast = [] #: Array[value_ast_node]
+        buffer = +""
+
+        idx = 0
+        while idx < input.length
+          current_char = input[idx]
+
+          case current_char
+          # Start of a string.
+          when "'", '"'
+            start = idx
+
+            j = idx + 1
+            while j < input.length
+              peek_char = input[j]
+
+              if peek_char == current_char
+                idx = j
+                break
+              end
+
+              j += 1
+            end
+
+            buffer << input.slice(start..j)
+          else
+            buffer << current_char
+          end
+
+          idx += 1
+        end
+
+        # Collect the remainder as a word
+        ast << ValueWordNode.new(value: buffer) unless buffer.empty?
+
+        ast
       end
 
       #: (String input) -> String
