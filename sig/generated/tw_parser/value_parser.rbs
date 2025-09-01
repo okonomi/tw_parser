@@ -44,6 +44,9 @@ module TwParser
     # : (String input) -> Array[value_ast_node]
     def self.parse_new: (String input) -> Array[value_ast_node]
 
+    # : (String input, Integer start, Integer finish) -> String
+    def self.substring: (String input, Integer start, Integer finish) -> String
+
     # : (String input) -> String
     def self.parse: (String input) -> String
 

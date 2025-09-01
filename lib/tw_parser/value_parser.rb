@@ -30,29 +30,29 @@ module TwParser
         idx = 0
         while idx < input.length
           current_char = input[idx]
+          unless current_char.nil?
+            case current_char
+            when " "
+              # 1. Handle everything before the separator as a word
+              # Handle everything before the closing paren as a word
+              unless buffer.empty?
+                ast << ValueWordNode.new(value: buffer)
+                buffer = +""
+              end
 
-          case current_char
-          when " "
-            # 1. Handle everything before the separator as a word
-            # Handle everything before the closing paren as a word
-            unless buffer.empty?
-              node = ValueWordNode.new(value: buffer)
-              ast << node
-              buffer = +""
+              # 2. Look ahead and find the end of the separator
+              pos = (input.index(/[^ ]/, idx + 1) || (input.length - 1)) - 1
+              ast << ValueSeparatorNode.new(value: substring(input, idx, pos))
+              idx = pos
+
+            # Start of a string.
+            when "'", '"'
+              pos = input.index(current_char, idx + 1) || (input.length - 1)
+              buffer << substring(input, idx, pos)
+              idx = pos
+            else
+              buffer << current_char
             end
-
-            # 2. Look ahead and find the end of the separator
-            pos = (input.index(/[^ ]/, idx + 1) || (input.length - 1)) - 1
-            ast << ValueSeparatorNode.new(value: input.slice(idx..pos))
-            idx = pos
-
-          # Start of a string.
-          when "'", '"'
-            pos = input.index(current_char, idx + 1) || (input.length - 1)
-            buffer << input.slice(idx..pos)
-            idx = pos
-          else
-            buffer << current_char
           end
 
           idx += 1
@@ -62,6 +62,11 @@ module TwParser
         ast << ValueWordNode.new(value: buffer) unless buffer.empty?
 
         ast
+      end
+
+      #: (String input, Integer start, Integer finish) -> String
+      def substring(input, start, finish)
+        input.slice(start..finish) or raise ArgumentError, "Invalid substring range"
       end
 
       #: (String input) -> String
