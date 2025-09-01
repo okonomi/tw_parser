@@ -32,6 +32,20 @@ module TwParser
           current_char = input[idx]
 
           case current_char
+          when " "
+            # 1. Handle everything before the separator as a word
+            # Handle everything before the closing paren as a word
+            unless buffer.empty?
+              node = ValueWordNode.new(value: buffer)
+              ast << node
+              buffer = +""
+            end
+
+            # 2. Look ahead and find the end of the separator
+            pos = (input.index(/[^ ]/, idx + 1) || (input.length - 1)) - 1
+            ast << ValueSeparatorNode.new(value: input.slice(idx..pos))
+            idx = pos
+
           # Start of a string.
           when "'", '"'
             pos = input.index(current_char, idx + 1) || (input.length - 1)
