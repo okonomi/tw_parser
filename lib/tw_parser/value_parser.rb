@@ -114,6 +114,32 @@ module TwParser
         input.slice(start..finish) or raise ArgumentError, "Invalid substring range"
       end
 
+      #: (Array[value_ast_node]) -> Array[Hash[Symbol, untyped]]
+      def extract(ast)
+        ast.map do |node|
+          case node
+          when TwParser::ValueParser::ValueWordNode
+            {
+              kind: :word,
+              value: node.value
+            }
+          when TwParser::ValueParser::ValueFunctionNode
+            {
+              kind: :function,
+              value: node.value,
+              nodes: extract(node.nodes)
+            }
+          when TwParser::ValueParser::ValueSeparatorNode
+            {
+              kind: :separator,
+              value: node.value
+            }
+          else
+            { kind: :unknown, value: node.to_s }
+          end
+        end
+      end
+
       #: (String input) -> String
       def parse(input)
         input.gsub(/\(.+?\)/) do |match|

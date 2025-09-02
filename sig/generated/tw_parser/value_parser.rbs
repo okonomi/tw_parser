@@ -47,6 +47,9 @@ module TwParser
     # : (String input, Integer start, Integer finish) -> String
     def self.substring: (String input, Integer start, Integer finish) -> String
 
+    # : (Array[value_ast_node]) -> Array[Hash[Symbol, untyped]]
+    def self.extract: (Array[value_ast_node]) -> Array[Hash[Symbol, untyped]]
+
     # : (String input) -> String
     def self.parse: (String input) -> String
 
