@@ -41,5 +41,13 @@ RSpec.describe TwParser::ValueParser do
         ]
       )
     end
+
+    it "should parse a function with no arguments" do
+      expect(run("theme()")).to eq(
+        [
+          TwParser::ValueParser::ValueFunctionNode.new(value: "theme", nodes: [])
+        ]
+      )
+    end
   end
 end

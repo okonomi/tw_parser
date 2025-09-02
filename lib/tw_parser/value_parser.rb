@@ -50,6 +50,18 @@ module TwParser
               pos = input.index(current_char, idx + 1) || (input.length - 1)
               buffer << substring(input, idx, pos)
               idx = pos
+
+            when "("
+              node = ValueFunctionNode.new(value: buffer, nodes: [])
+              buffer = +""
+
+              ast << node
+
+            when ")"
+              unless buffer.empty?
+                # todo
+                buffer = +""
+              end
             else
               buffer << current_char
             end
