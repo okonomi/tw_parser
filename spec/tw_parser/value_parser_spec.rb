@@ -49,5 +49,18 @@ RSpec.describe TwParser::ValueParser do
         ]
       )
     end
+
+    it "should parse a function with a single argument" do
+      expect(run("theme(foo)")).to eq(
+        [
+          TwParser::ValueParser::ValueFunctionNode.new(
+            value: "theme",
+            nodes: [
+              TwParser::ValueParser::ValueWordNode.new(value: "foo")
+            ]
+          )
+        ]
+      )
+    end
   end
 end

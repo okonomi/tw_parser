@@ -25,6 +25,8 @@ module TwParser
       #: (String input) -> Array[value_ast_node]
       def parse_new(input)
         ast = [] #: Array[value_ast_node]
+        stack = [] #: Array[ValueFunctionNode | nil]
+        parent = nil #: ValueFunctionNode | nil
         buffer = +""
 
         idx = 0
@@ -51,17 +53,48 @@ module TwParser
               buffer << substring(input, idx, pos)
               idx = pos
 
+            # Start of a function call.
+            #
+            # E.g.:
+            #
+            # ```css
+            # foo(bar, baz)
+            #    ^
+            # ```
             when "("
               node = ValueFunctionNode.new(value: buffer, nodes: [])
               buffer = +""
 
-              ast << node
+              if parent
+                parent.nodes << node
+              else
+                ast << node
+              end
+              stack << node
+              parent = node
 
+            # End of a function call.
+            #
+            # E.g.:
+            #
+            # ```css
+            # foo(bar, baz)
+            #             ^
+            # ```
             when ")"
+              tail = stack.pop
+
               unless buffer.empty?
-                # todo
+                node = ValueWordNode.new(value: buffer)
+                tail&.nodes&.push(node)
                 buffer = +""
               end
+
+              parent = if stack.empty?
+                         nil
+                       else
+                         stack.last
+                       end
             else
               buffer << current_char
             end
