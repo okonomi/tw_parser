@@ -2,13 +2,13 @@
 
 require_relative "../../lib/tw_parser/candidate/util"
 
-RSpec.describe TwParser::Candidate::Parser do
+RSpec.describe "candidate" do
   describe "#parse", :aggregate_failures do
     def run(candidate, utilities: nil, variants: nil, prefix: nil)
       utilities ||= TwParser::Utilities.new
       variants ||= TwParser::Variants.new
 
-      parser = described_class.new
+      parser = TwParser::Candidate::Parser.new
 
       candidate = parser.parse(candidate, utilities:, variants:, prefix:)
       return [] if candidate.nil?
