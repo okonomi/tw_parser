@@ -27,3 +27,6 @@ jobs:
 
       - name: Run RSpec and Rubocop
         run: bundle exec rake
+
+      - name: Run compatibility tests
+        run: bundle exec rake spec_compatibility
