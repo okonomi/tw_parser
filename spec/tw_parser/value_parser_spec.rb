@@ -9,11 +9,19 @@ RSpec.describe TwParser::ValueParser do
     end
 
     it "should parse a value" do
-      expect(run("123px")).to eq([TwParser::ValueParser::ValueWordNode.new(value: "123px")])
+      expect(run("123px")).to eq(
+        [
+          TwParser::ValueParser::ValueWordNode.new(value: "123px")
+        ]
+      )
     end
 
     it "should parse a string value" do
-      expect(run("'hello world'")).to eq([TwParser::ValueParser::ValueWordNode.new(value: "'hello world'")])
+      expect(run("'hello world'")).to eq(
+        [
+          TwParser::ValueParser::ValueWordNode.new(value: "'hello world'")
+        ]
+      )
     end
 
     it "should parse a list" do
@@ -22,6 +30,14 @@ RSpec.describe TwParser::ValueParser do
           TwParser::ValueParser::ValueWordNode.new(value: "hello"),
           TwParser::ValueParser::ValueSeparatorNode.new(value: " "),
           TwParser::ValueParser::ValueWordNode.new(value: "world")
+        ]
+      )
+    end
+
+    it "should parse a string containing parentheses" do
+      expect(run("'hello ( world )'")).to eq(
+        [
+          TwParser::ValueParser::ValueWordNode.new(value: "'hello ( world )'")
         ]
       )
     end
