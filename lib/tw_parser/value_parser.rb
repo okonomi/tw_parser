@@ -34,7 +34,7 @@ module TwParser
           current_char = input[idx]
           unless current_char.nil?
             case current_char
-            when " ", ",", "\n", "\t"
+            when " ", ",", "/", "\n", "\t"
               # 1. Handle everything before the separator as a word
               # Handle everything before the closing paren as a word
               unless buffer.empty?
@@ -48,7 +48,7 @@ module TwParser
               end
 
               # 2. Look ahead and find the end of the separator
-              pos = (input.index(/[^ ,\n\t]/, idx + 1) || (input.length - 1)) - 1
+              pos = (input.index(%r{[^ ,/\n\t]}, idx + 1) || (input.length - 1)) - 1
               node = ValueSeparatorNode.new(value: substring(input, idx, pos))
               if parent
                 parent.nodes << node
