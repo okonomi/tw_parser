@@ -223,7 +223,7 @@ RSpec.describe "value_parser" do
 
   describe ".to_css" do
     def to_css(input)
-      described_class.to_css(described_class.extract(described_class.parse_new(input)))
+      TwParser::ValueParser.to_css(TwParser::ValueParser.parse_new(input))
     end
 
     it "should pretty print calculations" do

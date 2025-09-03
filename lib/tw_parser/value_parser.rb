@@ -150,6 +150,20 @@ module TwParser
         end
       end
 
+      #: (Array[value_ast_node]) -> String
+      def to_css(ast)
+        css = +""
+        ast.each do |node|
+          if node.is_a?(ValueWordNode) || node.is_a?(ValueSeparatorNode)
+            css << node.value
+          elsif node.is_a?(ValueFunctionNode)
+            css << "#{node.value}(#{to_css(node.nodes)})"
+          end
+        end
+
+        css
+      end
+
       #: (String input) -> String
       def parse(input)
         input.gsub(/\(.+?\)/) do |match|

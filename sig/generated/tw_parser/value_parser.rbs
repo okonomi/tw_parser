@@ -50,6 +50,9 @@ module TwParser
     # : (Array[value_ast_node]) -> Array[Hash[Symbol, untyped]]
     def self.extract: (Array[value_ast_node]) -> Array[Hash[Symbol, untyped]]
 
+    # : (Array[value_ast_node]) -> String
+    def self.to_css: (Array[value_ast_node]) -> String
+
     # : (String input) -> String
     def self.parse: (String input) -> String
 
