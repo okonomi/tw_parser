@@ -2,7 +2,7 @@
 
 require "rspec/core/formatters/base_formatter"
 
-class SimpleResultFormatter < RSpec::Core::Formatters::BaseFormatter
+class SummarizeFormatter < RSpec::Core::Formatters::BaseFormatter
   RSpec::Core::Formatters.register self, :example_started, :example_passed, :example_failed, :example_pending, :dump_summary
 
   # ステータス定数
@@ -220,7 +220,7 @@ class SimpleResultFormatter < RSpec::Core::Formatters::BaseFormatter
     if example[:assertion_count] > 1
       format_detailed_result(example)
     else
-      format_simple_result(example)
+      format_basic_result(example)
     end
   end
 
@@ -233,8 +233,8 @@ class SimpleResultFormatter < RSpec::Core::Formatters::BaseFormatter
       "(#{passed}/#{example[:assertion_count]} expects, #{percentage}%)"
   end
 
-  # 単純結果のフォーマット
-  def format_simple_result(example)
+  # 基本結果のフォーマット
+  def format_basic_result(example)
     "#{example[:status]}: #{example[:description]}"
   end
 

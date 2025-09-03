@@ -8,7 +8,7 @@ RSpec::Core::RakeTask.new(:spec) do |t|
 end
 
 RSpec::Core::RakeTask.new(:spec_compatibility) do |t|
-  t.rspec_opts = ["--pattern", "spec/compatibility/**/*_spec.rb", "--format", "SimpleResultFormatter"]
+  t.rspec_opts = ["--pattern", "spec/compatibility/**/*_spec.rb", "--format", "SummarizeFormatter"]
   t.fail_on_error = false
 end
 
