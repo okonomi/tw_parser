@@ -5,7 +5,7 @@ require "tw_parser/value_parser"
 RSpec.describe "value_parser" do
   describe ".parse" do
     def run(input)
-      TwParser::ValueParser.extract(TwParser::ValueParser.parse_new(input))
+      TwParser::ValueParser.extract(TwParser::ValueParser.parse(input))
     end
 
     it "should parse a value" do
@@ -223,7 +223,7 @@ RSpec.describe "value_parser" do
 
   describe ".to_css" do
     def to_css(input)
-      TwParser::ValueParser.to_css(TwParser::ValueParser.parse_new(input))
+      TwParser::ValueParser.to_css(TwParser::ValueParser.parse(input))
     end
 
     it "should pretty print calculations" do
@@ -247,7 +247,7 @@ RSpec.describe "value_parser" do
 
   describe ".walk" do
     def walk_and_replace(input)
-      ast = described_class.extract(described_class.parse_new(input))
+      ast = described_class.extract(described_class.parse(input))
       described_class.walk(ast) do |node, context|
         context[:replace_with].call({ kind: :word, value: "64rem" }) if node[:kind] == :function && node[:value] == "theme"
       end

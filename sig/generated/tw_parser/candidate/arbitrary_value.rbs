@@ -8,7 +8,11 @@ module TwParser
 
       # Convert `_` to ` `, except for escaped underscores `\_` they should be
       # converted to `_` instead.
-      def self.convert_underscores_to_whitespace: (untyped input, ?_skip_underscore_to_space: untyped) -> untyped
+      # : (String input, ?skip_underscore_to_space: bool) -> String
+      def self.convert_underscores_to_whitespace: (String input, ?skip_underscore_to_space: bool) -> String
+
+      # : (Array[ValueParser::value_ast_node]) -> void
+      def self.recursively_decode_arbitrary_values: (Array[ValueParser::value_ast_node]) -> void
 
       # : (String input) -> bool
       def self.valid?: (String input) -> bool
