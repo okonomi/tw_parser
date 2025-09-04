@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require "tw_parser/value_parser"
+require "tw_parser/utils/value_parser"
 
 RSpec.describe "value_parser" do
   describe ".parse" do
     def run(input)
-      TwParser::ValueParser.extract(TwParser::ValueParser.parse(input))
+      TwParser::Utils::ValueParser.extract(TwParser::Utils::ValueParser.parse(input))
     end
 
     it "should parse a value" do
@@ -223,7 +223,7 @@ RSpec.describe "value_parser" do
 
   describe ".to_css" do
     def to_css(input)
-      TwParser::ValueParser.to_css(TwParser::ValueParser.parse(input))
+      TwParser::Utils::ValueParser.to_css(TwParser::Utils::ValueParser.parse(input))
     end
 
     it "should pretty print calculations" do

@@ -11,8 +11,8 @@ module TwParser
       # : (String input, ?skip_underscore_to_space: bool) -> String
       def self.convert_underscores_to_whitespace: (String input, ?skip_underscore_to_space: bool) -> String
 
-      # : (Array[ValueParser::value_ast_node]) -> void
-      def self.recursively_decode_arbitrary_values: (Array[ValueParser::value_ast_node]) -> void
+      # : (Array[Utils::ValueParser::value_ast_node]) -> void
+      def self.recursively_decode_arbitrary_values: (Array[Utils::ValueParser::value_ast_node]) -> void
 
       # : (String input) -> bool
       def self.valid?: (String input) -> bool

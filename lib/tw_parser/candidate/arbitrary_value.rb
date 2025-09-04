@@ -1,7 +1,7 @@
 # rbs_inline: enabled
 # frozen_string_literal: true
 
-require_relative "../value_parser"
+require_relative "../utils/value_parser"
 
 module TwParser
   module Candidate
@@ -12,9 +12,9 @@ module TwParser
           # There are definitely no functions in the input, so bail early
           return convert_underscores_to_whitespace(input) unless input.include?("(")
 
-          ast = ValueParser.parse(input)
+          ast = Utils::ValueParser.parse(input)
           recursively_decode_arbitrary_values(ast)
-          ValueParser.to_css(ast)
+          Utils::ValueParser.to_css(ast)
 
           # input = addWhitespaceAroundMathOperators(input)
         end
@@ -46,18 +46,18 @@ module TwParser
           output
         end
 
-        #: (Array[ValueParser::value_ast_node]) -> void
+        #: (Array[Utils::ValueParser::value_ast_node]) -> void
         def recursively_decode_arbitrary_values(ast)
           ast.each_index do |i|
             node = ast[i]
             case node
-            when ValueParser::ValueFunctionNode
+            when Utils::ValueParser::ValueFunctionNode
               ast[i] = node.with(value: convert_underscores_to_whitespace(node.value))
 
               if node.value == "var"
                 node.nodes.each_index do |j|
                   # Don't decode underscores to spaces in the first argument of var()
-                  if j.zero? && node.nodes[j].is_a?(ValueParser::ValueWordNode)
+                  if j.zero? && node.nodes[j].is_a?(Utils::ValueParser::ValueWordNode)
                     node.nodes[j] = node.nodes[j].with(value: convert_underscores_to_whitespace(node.nodes[j].value, skip_underscore_to_space: true))
                   else
                     nodes = [node.nodes[j]]
@@ -71,7 +71,7 @@ module TwParser
 
               recursively_decode_arbitrary_values(node.nodes)
 
-            when ValueParser::ValueWordNode, ValueParser::ValueSeparatorNode
+            when Utils::ValueParser::ValueWordNode, Utils::ValueParser::ValueSeparatorNode
               ast[i] = node.with(value: convert_underscores_to_whitespace(node.value))
             else
               raise "Unknown node type: #{node.class} #{node}"
