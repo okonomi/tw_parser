@@ -4,7 +4,7 @@
 require_relative "../utils/value_parser"
 
 module TwParser
-  module Candidate
+  module Utils
     class ArbitraryValue
       class << self
         #: (String input) -> String

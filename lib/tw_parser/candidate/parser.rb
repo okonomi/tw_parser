@@ -7,7 +7,7 @@ require_relative "../variants"
 require_relative "modifier"
 require_relative "variant"
 require_relative "candidate"
-require_relative "arbitrary_value"
+require_relative "../utils/arbitrary_value"
 
 module TwParser
   module Candidate
@@ -217,12 +217,12 @@ module TwParser
             # Arbitrary values must end with a `]`.
             return nil unless value.end_with?("]")
 
-            arbitrary_value = ArbitraryValue.decode(
+            arbitrary_value = Utils::ArbitraryValue.decode(
               value.slice((start_arbitrary_idx + 1)..-2) #: String
             )
 
             # Values can't contain `;` or `}` characters at the top-level.
-            next unless ArbitraryValue.valid?(arbitrary_value)
+            next unless Utils::ArbitraryValue.valid?(arbitrary_value)
 
             typehint, arbitrary_value = arbitrary_value.split(":") if arbitrary_value.include?(":")
             return nil if arbitrary_value.nil?
@@ -275,7 +275,7 @@ module TwParser
           #  - `[@media(width>=123px)]:hover:`
           return nil if variant[1] == "@" && variant.include?("&")
 
-          selector = ArbitraryValue.decode(
+          selector = Utils::ArbitraryValue.decode(
             variant.slice(1..-2) #: String
           )
           relative = selector.start_with?(">", "+", "~")
@@ -330,7 +330,7 @@ module TwParser
               # Discard values like `foo-[#bar]`
               next unless value.start_with?("[")
 
-              arbitrary_value = ArbitraryValue.decode(
+              arbitrary_value = Utils::ArbitraryValue.decode(
                 value.slice(1..-2) #: String
               )
 
@@ -351,7 +351,7 @@ module TwParser
               # Discard values like `foo-(--bar)`
               next unless value.start_with?("(")
 
-              arbitrary_value = ArbitraryValue.decode(
+              arbitrary_value = Utils::ArbitraryValue.decode(
                 value.slice(1..-2) #: String
               )
 
@@ -401,12 +401,12 @@ module TwParser
       #: (String modifier) -> (ArbitraryModifier | NamedModifier | nil)
       def parse_modifier(modifier)
         if modifier.start_with?("[") && modifier.end_with?("]")
-          arbitrary_value = ArbitraryValue.decode(
+          arbitrary_value = Utils::ArbitraryValue.decode(
             modifier.slice(1..-2) #: String
           )
 
           # Values can't contain `;` or `}` characters at the top-level.
-          return nil unless ArbitraryValue.valid?(arbitrary_value)
+          return nil unless Utils::ArbitraryValue.valid?(arbitrary_value)
 
           # Empty arbitrary values are invalid. E.g.: `data-[]:`
           #                                                 ^^
@@ -428,7 +428,7 @@ module TwParser
           # Wrap the value in `var(…)` to ensure that it is a valid CSS variable.
           modifier = "var(#{modifier})"
 
-          arbitrary_value = ArbitraryValue.decode(modifier)
+          arbitrary_value = Utils::ArbitraryValue.decode(modifier)
 
           return ArbitraryModifier.new(
             value: arbitrary_value
