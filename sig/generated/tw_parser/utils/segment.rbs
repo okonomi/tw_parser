@@ -1,0 +1,10 @@
+# Generated from lib/tw_parser/utils/segment.rb with RBS::Inline
+
+module TwParser
+  module Utils
+    class Segment
+      # : (String input, String delimiter) -> Array[String]
+      def self.parse: (String input, String delimiter) -> Array[String]
+    end
+  end
+end

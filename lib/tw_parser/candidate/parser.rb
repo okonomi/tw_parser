@@ -1,7 +1,7 @@
 # rbs_inline: enabled
 # frozen_string_literal: true
 
-require_relative "../segment"
+require_relative "../utils/segment"
 require_relative "../utilities"
 require_relative "../variants"
 require_relative "modifier"
@@ -21,7 +21,7 @@ module TwParser
         # hover:focus:underline
         # ^^^^^ ^^^^^^           -> Variants
         #             ^^^^^^^^^  -> Base
-        raw_variants = TwParser.segment(input, ":")
+        raw_variants = Utils::Segment.parse(input, ":")
 
         # A prefix is a special variant used to prefix all utilities. When present,
         # all utilities must start with that variant which we will then remove from
@@ -71,7 +71,7 @@ module TwParser
         # ^^^^^^^^^^    -> Base without modifier
         #            ^^ -> Modifier segment
         # ```
-        base_without_modifier, modifier_segment, additional_modifier = TwParser.segment(base, "/")
+        base_without_modifier, modifier_segment, additional_modifier = Utils::Segment.parse(base, "/")
         return nil if base_without_modifier.nil?
 
         # If there's more than one modifier, the utility is invalid.
@@ -182,7 +182,7 @@ module TwParser
 
           value = base_without_modifier.slice((idx + 2)..-2) #: String
 
-          parts = TwParser.segment(value, ":")
+          parts = Utils::Segment.parse(value, ":")
           data_type = nil
           if parts.length == 2
             data_type = parts[0]
@@ -291,7 +291,7 @@ module TwParser
         # group-hover/group-name
         # ^^^^^^^^^^^            -> Variant without modifier
         #             ^^^^^^^^^^ -> Modifier
-        variant_without_modifier, modifier, additional_modifier = TwParser.segment(variant, "/")
+        variant_without_modifier, modifier, additional_modifier = Utils::Segment.parse(variant, "/")
         return nil if variant_without_modifier.nil?
 
         # If there's more than one modifier, the variant is invalid.

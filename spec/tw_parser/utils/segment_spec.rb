@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "tw_parser/segment"
+require "tw_parser/utils/segment"
 
-RSpec.describe TwParser do
-  describe ".segment" do
-    subject { described_class.segment(input, delimiter) }
+RSpec.describe TwParser::Utils::Segment do
+  describe ".parse" do
+    subject { described_class.parse(input, delimiter) }
 
     context "when input is correct" do
       {
