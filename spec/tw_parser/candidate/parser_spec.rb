@@ -9,6 +9,7 @@ RSpec.describe TwParser::Candidate::Parser do
         u.functional("-translate-x") { [] }
         u.functional("content") { [] }
         u.functional("bg") { [] }
+        u.functional("flex") { [] }
       end
       variants = TwParser::Variants.new.tap do |v|
         v.functional("supports") {}
@@ -365,6 +366,17 @@ RSpec.describe TwParser::Candidate::Parser do
             )
           )
         ]
+      ),
+      "flex-(--\\_foo)" => TwParser::Candidate::FunctionalCandidate.new(
+        important: false,
+        modifier: nil,
+        raw: "flex-(--\\_foo)",
+        root: "flex",
+        value: TwParser::Candidate::ArbitraryUtilityValue.new(
+          data_type: nil,
+          value: "var(--_foo)"
+        ),
+        variants: []
       )
     }.each do |input, expected|
       context input do
