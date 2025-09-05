@@ -425,6 +425,9 @@ module TwParser
           # represents a CSS variable.
           return nil unless modifier.start_with?("--")
 
+          # Values can't contain `;` or `}` characters at the top-level.
+          return nil unless Utils::ArbitraryValue.valid?(modifier)
+
           # Wrap the value in `var(…)` to ensure that it is a valid CSS variable.
           modifier = "var(#{modifier})"
 
