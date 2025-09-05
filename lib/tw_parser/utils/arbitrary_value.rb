@@ -82,8 +82,9 @@ module TwParser
         end
 
         #: (String input) -> bool
-        def valid?(_input)
-          # TODO: implement
+        def valid?(input)
+          return false if input.include?(";")
+
           true
         end
       end

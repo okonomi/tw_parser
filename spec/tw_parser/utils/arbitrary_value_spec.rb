@@ -19,4 +19,33 @@ RSpec.describe TwParser::Utils::ArbitraryValue do
       end
     end
   end
+
+  describe ".valid?" do
+    subject { described_class.valid?(input) }
+
+    context "when input is valid" do
+      [
+        "",
+        "#ffffff"
+      ].each do |input|
+        context "with \"#{input}\"" do
+          let(:input) { input }
+
+          it { is_expected.to be true }
+        end
+      end
+    end
+
+    context "when input is invalid" do
+      [
+        "foo;bar"
+      ].each do |input|
+        context "with \"#{input}\"" do
+          let(:input) { input }
+
+          it { is_expected.to be false }
+        end
+      end
+    end
+  end
 end
