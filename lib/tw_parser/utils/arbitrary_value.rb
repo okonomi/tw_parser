@@ -84,6 +84,7 @@ module TwParser
         #: (String input) -> bool
         def valid?(input)
           return false if input.include?(";")
+          return false if input.include?("{") || input.include?("}")
 
           true
         end

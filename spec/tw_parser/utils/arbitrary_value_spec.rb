@@ -38,7 +38,8 @@ RSpec.describe TwParser::Utils::ArbitraryValue do
 
     context "when input is invalid" do
       [
-        "foo;bar"
+        "foo;bar",
+        "{foo:bar}"
       ].each do |input|
         context "with \"#{input}\"" do
           let(:input) { input }
