@@ -54,7 +54,7 @@ module TwParser
             when Utils::ValueParser::ValueFunctionNode
               ast[i] = node.with(value: convert_underscores_to_whitespace(node.value))
 
-              if node.value == "var"
+              if node.value == "var" || node.value.end_with?("_var")
                 node.nodes.each_index do |j|
                   # Don't decode underscores to spaces in the first argument of var()
                   if j.zero? && node.nodes[j].is_a?(Utils::ValueParser::ValueWordNode)
