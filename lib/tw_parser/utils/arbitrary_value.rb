@@ -100,8 +100,10 @@ module TwParser
               # TODO
             when '"', "'"
               # TODO
-            when "(", "["
-              # TODO
+            when "("
+              closing_bracket_stack.push(")")
+            when "["
+              closing_bracket_stack.push("]")
             when "{"
               # NOTE: We intentionally do not consider `{` to move the stack pointer
               # because a candidate like `[&{color:red}]:flex` should not be valid.
