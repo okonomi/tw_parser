@@ -108,7 +108,7 @@ module TwParser
             when ")", "]", "}"
               return false if closing_bracket_stack.empty?
 
-            when ";"
+            when ";" # rubocop:disable Lint/DuplicateBranch
               return false if closing_bracket_stack.empty?
             end
 
