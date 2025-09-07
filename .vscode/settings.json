@@ -1,4 +1,5 @@
 {
   "rbs-helper.rbs-inline-on-save": true,
-  "rubyLsp.formatter": "rubocop"
+  "rubyLsp.formatter": "rubocop",
+  "rdbg.saveBreakpoints": true
 }
