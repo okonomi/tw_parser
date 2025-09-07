@@ -14,6 +14,13 @@ module TwParser
       # : (Array[Utils::ValueParser::value_ast_node]) -> void
       def self.recursively_decode_arbitrary_values: (Array[Utils::ValueParser::value_ast_node]) -> void
 
+      # Determine if a given string might be a valid arbitrary value.
+      #
+      # Unbalanced parens, brackets, and braces are not allowed. Additionally, a
+      # top-level `;` is not allowed.
+      #
+      # This function is very similar to `TwParser::Segment.parse` but `TwParser::Segment.parse` cannot be used
+      # because we'd need to split on a bracket stack character.
       # : (String input) -> bool
       def self.valid?: (String input) -> bool
     end

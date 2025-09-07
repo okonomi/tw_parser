@@ -81,10 +81,39 @@ module TwParser
           nil
         end
 
+        # Determine if a given string might be a valid arbitrary value.
+        #
+        # Unbalanced parens, brackets, and braces are not allowed. Additionally, a
+        # top-level `;` is not allowed.
+        #
+        # This function is very similar to `TwParser::Segment.parse` but `TwParser::Segment.parse` cannot be used
+        # because we'd need to split on a bracket stack character.
         #: (String input) -> bool
         def valid?(input)
-          return false if input.include?(";")
-          return false if input.include?("{") || input.include?("}")
+          closing_bracket_stack = [] #: Array[String]
+          idx = 0
+          len = input.length
+          while idx < len
+            char = input[idx]
+            case char
+            when "\\"
+              # TODO
+            when '"', "'"
+              # TODO
+            when "(", "["
+              # TODO
+            when "{"
+              # NOTE: We intentionally do not consider `{` to move the stack pointer
+              # because a candidate like `[&{color:red}]:flex` should not be valid.
+            when ")", "]", "}"
+              return false if closing_bracket_stack.empty?
+
+            when ";"
+              return false if closing_bracket_stack.empty?
+            end
+
+            idx += 1
+          end
 
           true
         end
