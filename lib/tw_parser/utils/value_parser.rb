@@ -155,13 +155,13 @@ module TwParser
         def to_css(ast)
           css = +""
           ast.each do |node|
-            if node.is_a?(ValueWordNode) || node.is_a?(ValueSeparatorNode)
+            case node
+            when ValueWordNode, ValueSeparatorNode
               css << node.value
-            elsif node.is_a?(ValueFunctionNode)
+            when ValueFunctionNode
               css << "#{node.value}(#{to_css(node.nodes)})"
             end
           end
-
           css
         end
       end
