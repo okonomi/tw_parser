@@ -377,7 +377,8 @@ RSpec.describe TwParser::Candidate::Parser do
           value: "var(--_foo)"
         ),
         variants: []
-      )
+      ),
+      "bg-(--x;--y)" => nil
     }.each do |input, expected|
       context input do
         let(:input) { input }

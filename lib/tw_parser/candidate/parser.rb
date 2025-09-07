@@ -193,6 +193,9 @@ module TwParser
           # represents a CSS variable.
           return nil unless value&.start_with?("--")
 
+          # Values can't contain `;` or `}` characters at the top-level.
+          return nil unless Utils::ArbitraryValue.valid?(value)
+
           roots = [[root, data_type.nil? ? "[var(#{value})]" : "[#{data_type}:var(#{value})]"]] #: Array[root]
         else
           roots = find_roots(base_without_modifier) do |root|
