@@ -117,6 +117,9 @@ module TwParser
           property = base_without_modifier.slice(0, idx) #: String
           value = base_without_modifier.slice((idx + 1)..) #: String
 
+          # Values can't contain `;` or `}` characters at the top-level.
+          return nil unless Utils::ArbitraryValue.valid?(value)
+
           return ArbitraryCandidate.new(
             property: property,
             value: value,
