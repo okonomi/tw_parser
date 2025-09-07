@@ -11,7 +11,8 @@ RSpec.describe TwParser::Utils::ArbitraryValue do
       "foo_bar" => "foo bar",
       "foo\\_bar" => "foo_bar",
       "var(--foo_foo,bar_bar)" => "var(--foo_foo,bar bar)",
-      "var(--a,b_var(--c_d))" => "var(--a,b var(--c_d))"
+      "var(--a,b_var(--c_d))" => "var(--a,b var(--c_d))",
+      %q`'}[("\''` => %q`'}[("\''`
     }.each do |input, expected|
       context "when input is \"#{input}\"" do
         let(:input) { input }

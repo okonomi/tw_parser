@@ -23,24 +23,28 @@ module TwParser
         # converted to `_` instead.
         #: (String input, ?skip_underscore_to_space: bool) -> String
         def convert_underscores_to_whitespace(input, skip_underscore_to_space: false)
-          escaping = false
           output = +""
-          input.each_char do |char|
-            output << if char == "_"
-                        if skip_underscore_to_space
-                          "_"
-                        elsif escaping
-                          escaping = false
-                          "_"
-                        else
-                          " "
-                        end
-                      elsif char == "\\"
-                        escaping = true
-                        ""
-                      else
-                        char
-                      end
+
+          idx = 0
+          len = input.length
+          while idx < len
+            char = input[idx]
+
+            # Escaped underscore
+            if char == "\\" && input[idx + 1] == "_"
+              output << "_"
+              idx += 1
+
+            # Unescaped underscore
+            elsif char == "_" && !skip_underscore_to_space
+              output << " "
+
+            # All other characters
+            else
+              output << char unless char.nil?
+            end
+
+            idx += 1
           end
 
           output
