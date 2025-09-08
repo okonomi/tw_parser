@@ -31,4 +31,4 @@ jobs:
         run: bin/rake
 
       - name: Run compatibility tests
-        run: bin/rake spec_compatibility
+        run: bin/rake spec_compat

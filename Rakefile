@@ -7,7 +7,7 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   t.rspec_opts = ["--exclude-pattern", '"spec/compatibility/**/*_spec.rb"']
 end
 
-RSpec::Core::RakeTask.new(:spec_compatibility) do |t|
+RSpec::Core::RakeTask.new(:spec_compat) do |t|
   t.rspec_opts = ["--pattern", '"spec/compatibility/**/*_spec.rb"', "--format", "SummarizeFormatter"]
   t.fail_on_error = false
 end
