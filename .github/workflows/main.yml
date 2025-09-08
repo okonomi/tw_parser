@@ -28,7 +28,7 @@ jobs:
           bundler-cache: true
 
       - name: Run RSpec and Rubocop
-        run: bundle exec rake
+        run: bin/rake
 
       - name: Run compatibility tests
-        run: bundle exec rake spec_compatibility
+        run: bin/rake spec_compatibility
