@@ -284,6 +284,10 @@ module TwParser
           selector = Utils::ArbitraryValue.decode(
             variant.slice(1..-2) #: String
           )
+
+          # Values can't contain `;` or `}` characters at the top-level.
+          return nil unless Utils::ArbitraryValue.valid?(selector)
+
           relative = selector.start_with?(">", "+", "~")
 
           return ArbitraryVariant.new(
