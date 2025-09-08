@@ -344,6 +344,9 @@ module TwParser
                 value.slice(1..-2) #: String
               )
 
+              # Values can't contain `;` or `}` characters at the top-level.
+              return nil unless Utils::ArbitraryValue.valid?(arbitrary_value)
+
               # Empty arbitrary values are invalid. E.g.: `data-[]:`
               #                                                 ^^
               return nil if arbitrary_value.strip.empty?
