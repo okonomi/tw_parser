@@ -27,7 +27,8 @@ RSpec.describe TwParser::Utils::ArbitraryValue do
     context "when input is valid" do
       [
         "",
-        "#ffffff"
+        "#ffffff",
+        %q`'}[("\''`
       ].each do |input|
         context "with \"#{input}\"" do
           let(:input) { input }

@@ -101,9 +101,26 @@ module TwParser
             char = input[idx]
             case char
             when "\\"
-              # TODO
+              # The next character is escaped, so we skip it.
+              idx += 1
+            # Strings should be handled as-is until the end of the string. No need to
+            # worry about balancing parens, brackets, or curlies inside a string.
             when '"', "'"
-              # TODO
+              # Ensure we don't go out of bounds.
+              idx += 1
+              while idx < len
+                next_char = input[idx]
+
+                # The next character is escaped, so we skip it.
+                if next_char == "\\"
+                  idx += 1
+                  next
+                end
+
+                break if next_char == char
+
+                idx += 1
+              end
             when "("
               closing_bracket_stack.push(")")
             when "["
