@@ -12,7 +12,8 @@ RSpec.describe TwParser::Utils::ArbitraryValue do
       "foo\\_bar" => "foo_bar",
       "var(--foo_foo,bar_bar)" => "var(--foo_foo,bar bar)",
       "var(--a,b_var(--c_d))" => "var(--a,b var(--c_d))",
-      %q`'}[("\''` => %q`'}[("\''`
+      %q`'}[("\''` => %q`'}[("\''`,
+      "no-repeat_url(https://example.com/some_page)" => "no-repeat url(https://example.com/some_page)"
     }.each do |input, expected|
       context "when input is \"#{input}\"" do
         let(:input) { input }

@@ -58,6 +58,9 @@ module TwParser
             when Utils::ValueParser::ValueFunctionNode
               ast[i] = node.with(value: convert_underscores_to_whitespace(node.value))
 
+              # Don't decode underscores in url() but do decode the function name
+              next if node.value == "url" || node.value.end_with?("_url")
+
               if node.value == "var" || node.value.end_with?("_var") || node.value == "theme" || node.value.end_with?("_theme")
                 node.nodes.each_index do |j|
                   # Don't decode underscores to spaces in the first argument of var()

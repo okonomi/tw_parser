@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 target :lib do
+  library "strscan"
+
   signature "sig"
 
   check "lib/tw_parser.rb"

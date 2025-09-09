@@ -1,6 +1,8 @@
 # rbs_inline: enabled
 # frozen_string_literal: true
 
+require "strscan"
+
 require_relative "../utils/segment"
 require_relative "../utilities"
 require_relative "../variants"
@@ -230,8 +232,16 @@ module TwParser
             # Values can't contain `;` or `}` characters at the top-level.
             next unless Utils::ArbitraryValue.valid?(arbitrary_value)
 
-            typehint, arbitrary_value = arbitrary_value.split(":") if arbitrary_value.include?(":")
-            return nil if arbitrary_value.nil?
+            # Extract an explicit typehint if present, e.g. `bg-[color:var(--my-var)])`
+            typehint = nil
+            scan = StringScanner.new(arbitrary_value)
+            if scan.scan(/[a-z-]+/) && (scan.peek(1) == ":")
+              typehint = scan.matched
+              scan.pointer += 1
+              arbitrary_value = scan.rest
+            end
+
+            return nil if arbitrary_value.empty?
 
             # Empty arbitrary values are invalid. E.g.: `p-[]`
             #                                              ^^
