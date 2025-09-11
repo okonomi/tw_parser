@@ -1,7 +1,8 @@
 # rbs_inline: enabled
 # frozen_string_literal: true
 
-require_relative "../utils/value_parser"
+require_relative "math_operators"
+require_relative "value_parser"
 
 module TwParser
   module Utils
@@ -14,9 +15,9 @@ module TwParser
 
           ast = Utils::ValueParser.parse(input)
           recursively_decode_arbitrary_values(ast)
-          Utils::ValueParser.to_css(ast)
+          input = Utils::ValueParser.to_css(ast)
 
-          # input = addWhitespaceAroundMathOperators(input)
+          Utils::MathOperators.add_whitespace(input)
         end
 
         # Convert `_` to ` `, except for escaped underscores `\_` they should be

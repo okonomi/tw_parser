@@ -3,6 +3,8 @@
 module TwParser
   module Utils
     module MathOperators
+      OPERATORS: untyped
+
       # : (String input) -> String
       def self.add_whitespace: (String input) -> String
     end
