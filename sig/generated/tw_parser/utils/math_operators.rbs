@@ -1,0 +1,12 @@
+# Generated from lib/tw_parser/utils/math_operators.rb with RBS::Inline
+
+module TwParser
+  module Utils
+    module MathOperators
+      OPERATORS: untyped
+
+      # : (String input) -> String
+      def self.add_whitespace: (String input) -> String
+    end
+  end
+end
