@@ -19,7 +19,7 @@ module TwParser
 
           scanner = StringScanner.new(input)
           until scanner.eos?
-            case # rubocop:disable Style/EmptyCaseCondition,Style/ConditionalAssignment
+            case # rubocop:disable Style/EmptyCaseCondition
             # function start
             when scanner.scan(/(?:#{MATH_FUNCTIONS.join("|")})\(/)
               # TODO: stack push
@@ -33,7 +33,13 @@ module TwParser
               result << scanner.matched.to_s
             # operator
             when scanner.scan(Regexp.union(*OPERATORS))
-              result << " #{scanner.matched} "
+              operator = scanner.matched.to_s
+              # check if this is a negative number sign (- after an operator or at the start of calc)
+              result << if operator == "-" && result.end_with?(" + ", " - ", " * ", " / ", "(")
+                          "-"
+                        else
+                          " #{operator} "
+                        end
             else
               result << scanner.getch.to_s
             end
