@@ -33,6 +33,9 @@ module TwParser
             # value
             when scanner.scan(/\d+[%a-z]*/) # rubocop:disable Lint/DuplicateBranch
               result << scanner.matched.to_s
+            # comma (add space after comma in function arguments)
+            when scanner.scan(/,/) # rubocop:disable Style/RedundantRegexpArgument
+              result << ", "
             # operator
             when scanner.scan(Regexp.union(*OPERATORS))
               operator = scanner.matched.to_s
