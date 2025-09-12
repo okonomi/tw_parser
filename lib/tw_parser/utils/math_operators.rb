@@ -17,14 +17,14 @@ module TwParser
 
           result = +""
 
-          scan = StringScanner.new(input)
-          until scan.eos?
-            result << if scan.scan(/\d+[%a-z]*/)
-                        scan.matched || ""
-                      elsif scan.scan(Regexp.union(*OPERATORS))
-                        " #{scan.matched} "
+          scanner = StringScanner.new(input)
+          until scanner.eos?
+            result << if scanner.scan(/\d+[%a-z]*/)
+                        scanner.matched || ""
+                      elsif scanner.scan(Regexp.union(*OPERATORS))
+                        " #{scanner.matched} "
                       else
-                        scan.getch || ""
+                        scanner.getch || ""
                       end
           end
 
