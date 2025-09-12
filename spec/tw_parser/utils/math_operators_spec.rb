@@ -11,7 +11,8 @@ RSpec.describe TwParser::Utils::MathOperators do
       "calc(100%-4px)" => "calc(100% - 4px)",
       "var(--foo)" => "var(--foo)",
       "calc(1+-2)" => "calc(1 + -2)",
-      "calc(+2--3)" => "calc(+2 - -3)"
+      "calc(+2--3)" => "calc(+2 - -3)",
+      "calc( (1+2) -(-3) )" => "calc( (1 + 2) - (-3) )"
       # "calc(100% - 4px)" => "calc(100% - 4px)",
       # "var(--foo+bar)" => "var(--foo+bar)",
       # "url(https://example.com/some_page?foo=bar_baz+qux)" => "url(https://example.com/some_page?foo=bar_baz+qux)"

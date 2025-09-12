@@ -37,11 +37,14 @@ module TwParser
             when scanner.scan(Regexp.union(*OPERATORS))
               operator = scanner.matched.to_s
               # check if this is a sign (+ or -) after an operator or at the start of calc
-              result << if NUMBER_SIGNS.include?(operator) && result.end_with?(" + ", " - ", " * ", " / ", "(")
-                          operator
-                        else
-                          " #{operator} "
-                        end
+              if NUMBER_SIGNS.include?(operator) && result.end_with?(" + ", " - ", " * ", " / ", "(")
+                result << operator
+              else
+                # add space before operator if not already present
+                result << " " unless result.end_with?(" ")
+                result << operator
+                result << " "
+              end
             else
               result << scanner.getch.to_s
             end
