@@ -10,6 +10,8 @@ module TwParser
 
       MATH_FUNCTIONS = %w[calc].freeze
 
+      NUMBER_SIGNS = %w[+ -].freeze
+
       class << self
         #: (String input) -> String
         def add_whitespace(input)
@@ -34,9 +36,9 @@ module TwParser
             # operator
             when scanner.scan(Regexp.union(*OPERATORS))
               operator = scanner.matched.to_s
-              # check if this is a negative number sign (- after an operator or at the start of calc)
-              result << if operator == "-" && result.end_with?(" + ", " - ", " * ", " / ", "(")
-                          "-"
+              # check if this is a sign (+ or -) after an operator or at the start of calc
+              result << if NUMBER_SIGNS.include?(operator) && result.end_with?(" + ", " - ", " * ", " / ", "(")
+                          operator
                         else
                           " #{operator} "
                         end

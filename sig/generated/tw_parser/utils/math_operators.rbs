@@ -7,6 +7,8 @@ module TwParser
 
       MATH_FUNCTIONS: untyped
 
+      NUMBER_SIGNS: untyped
+
       # : (String input) -> String
       def self.add_whitespace: (String input) -> String
     end
