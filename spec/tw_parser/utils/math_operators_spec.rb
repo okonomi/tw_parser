@@ -14,8 +14,8 @@ RSpec.describe TwParser::Utils::MathOperators do
       "calc(+2--3)" => "calc(+2 - -3)",
       "calc( (1+2) -(-3) )" => "calc( (1 + 2) - (-3) )",
       "calc(10px,2px)" => "calc(10px, 2px)",
-      "min(50vw,500px)" => "min(50vw, 500px)"
-      # "var(--foo+bar)" => "var(--foo+bar)",
+      "min(50vw,500px)" => "min(50vw, 500px)",
+      "calc(var(--foo))" => "calc(var(--foo))"
       # "url(https://example.com/some_page?foo=bar_baz+qux)" => "url(https://example.com/some_page?foo=bar_baz+qux)"
     }.each do |input, expected|
       context "when input is \"#{input}\"" do

@@ -33,6 +33,9 @@ module TwParser
             # value
             when scanner.scan(/\d+[%a-z]*/) # rubocop:disable Lint/DuplicateBranch
               result << scanner.matched.to_s
+            # CSS variables (--name)
+            when scanner.scan(/--[a-z][a-z0-9-]*/)
+              result << scanner.matched.to_s
             # comma (add space after comma in function arguments)
             when scanner.scan(/,/) # rubocop:disable Style/RedundantRegexpArgument
               result << ", "
