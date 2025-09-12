@@ -15,30 +15,36 @@ module TwParser
       class << self
         #: (String input) -> String
         def add_whitespace(input)
-          return input unless input.match?(Regexp.union(*MATH_FUNCTIONS))
+          return input unless input.match?(Regexp.union(*MATH_FUNCTIONS)) || input.include?("var(")
 
           result = +""
+          function_stack = []
 
           scanner = StringScanner.new(input)
           until scanner.eos?
             case # rubocop:disable Style/EmptyCaseCondition
-            # function start
-            when scanner.scan(/(?:#{MATH_FUNCTIONS.join("|")})\(/)
-              # TODO: stack push
+            # function start (including var)
+            when scanner.scan(/(?:#{MATH_FUNCTIONS.join("|")}|var)\(/)
+              function_name = scanner.matched.to_s.gsub(/\($/, "")
+              function_stack.push(function_name)
               result << scanner.matched.to_s
             # function end
-            when scanner.scan(/\)/) # rubocop:disable Lint/DuplicateBranch,Style/RedundantRegexpArgument
-              # TODO: stack pop
+            when scanner.scan(/\)/) # rubocop:disable Style/RedundantRegexpArgument
+              function_stack.pop
               result << scanner.matched.to_s
             # value
-            when scanner.scan(/\d+[%a-z]*/) # rubocop:disable Lint/DuplicateBranch
+            when scanner.scan(/\d+[%a-z]*/)
               result << scanner.matched.to_s
             # CSS variables (--name)
             when scanner.scan(/--[a-z][a-z0-9-]*/)
               result << scanner.matched.to_s
-            # comma (add space after comma in function arguments)
+            # comma (add space after comma in function arguments, except in var())
             when scanner.scan(/,/) # rubocop:disable Style/RedundantRegexpArgument
-              result << ", "
+              result << if function_stack.last == "var"
+                          ","
+                        else
+                          ", "
+                        end
             # operator
             when scanner.scan(Regexp.union(*OPERATORS))
               operator = scanner.matched.to_s
