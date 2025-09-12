@@ -8,7 +8,7 @@ module TwParser
     module MathOperators
       OPERATORS = %w[+ - * /].freeze
 
-      MATH_FUNCTIONS = %w[calc].freeze
+      MATH_FUNCTIONS = %w[calc min max clamp].freeze
 
       NUMBER_SIGNS = %w[+ -].freeze
 
