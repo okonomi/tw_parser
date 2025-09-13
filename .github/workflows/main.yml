@@ -32,3 +32,6 @@ jobs:
 
       - name: Run compatibility tests
         run: bin/rake spec_compat
+
+      - name: Run compatibility tests (detailed)
+        run: bin/rspec spec/compatibility/candidate_spec.rb
