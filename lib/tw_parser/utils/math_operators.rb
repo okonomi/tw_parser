@@ -15,6 +15,8 @@ module TwParser
       class << self
         #: (String input) -> String
         def add_whitespace(input)
+          return add_whitespace_v2(input) if ENV["TW_PARSER_MATH_OPS_V2"]
+
           return input unless input.match?(Regexp.union(*MATH_FUNCTIONS)) || input.include?("var(")
 
           result = +""
@@ -63,6 +65,37 @@ module TwParser
           end
 
           result
+        end
+
+        #: (String input) -> String
+        def add_whitespace_v2(input)
+          scanner = StringScanner.new(input)
+          value_pos = nil
+          last_value_pos = nil
+
+          until scanner.eos?
+            char = scanner.getch #: String
+
+            # Track if we see a number followed by a unit, then we know for sure that
+            # this is not a function call.
+            if char.between?("0", "9")
+              value_pos = scanner.pos
+
+            # If we saw a number before, and we see normal a-z character, then we
+            # assume this is a value such as `123px`
+            elsif value_pos && (char == "%" || char.between?("a", "z") || char.between?("A", "Z")) # rubocop:disable Lint/DuplicateBranch
+              value_pos = scanner.pos
+
+            # Once we see something else, we reset the value position
+            else
+              last_value_pos = value_pos
+              value_pos = nil
+            end
+
+            puts "char: #{char.inspect}, pos: #{scanner.pos}, value_pos: #{value_pos}, last_value_pos: #{last_value_pos}" if ENV["TW_PARSER_MATH_OPS_DEBUG"]
+          end
+
+          ""
         end
       end
     end

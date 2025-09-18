@@ -11,6 +11,9 @@ module TwParser
 
       # : (String input) -> String
       def self.add_whitespace: (String input) -> String
+
+      # : (String input) -> String
+      def self.add_whitespace_v2: (String input) -> String
     end
   end
 end
