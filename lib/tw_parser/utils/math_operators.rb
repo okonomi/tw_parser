@@ -73,6 +73,7 @@ module TwParser
           return input unless input.match?(Regexp.union(*MATH_FUNCTIONS))
 
           scanner = StringScanner.new(input)
+          result = +""
           value_pos = nil
           last_value_pos = nil
 
@@ -95,10 +96,17 @@ module TwParser
               value_pos = nil
             end
 
-            puts "char: #{char.inspect}, pos: #{scanner.pos}, value_pos: #{value_pos}, last_value_pos: #{last_value_pos}" if ENV["TW_PARSER_MATH_OPS_DEBUG"]
+            # Add whitespace around operators inside math functions
+            result << if OPERATORS.include?(char)
+                        # Add spaces around the operator, if...
+                        # TODO
+                        " #{char} "
+                      else
+                        char
+                      end
           end
 
-          ""
+          result
         end
       end
     end
