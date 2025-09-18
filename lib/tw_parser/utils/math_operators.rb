@@ -69,6 +69,9 @@ module TwParser
 
         #: (String input) -> String
         def add_whitespace_v2(input)
+          # Bail early if there are no math functions in the input
+          return input unless input.match?(Regexp.union(*MATH_FUNCTIONS))
+
           scanner = StringScanner.new(input)
           value_pos = nil
           last_value_pos = nil
