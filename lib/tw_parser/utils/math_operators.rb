@@ -96,6 +96,11 @@ module TwParser
               value_pos = nil
             end
 
+            if char == ","
+              result << ", "
+              next
+            end
+
             # Add whitespace around operators inside math functions
             result << if OPERATORS.include?(char)
                         # Add spaces around the operator, if...
