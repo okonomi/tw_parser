@@ -15,60 +15,6 @@ module TwParser
       class << self
         #: (String input) -> String
         def add_whitespace(input)
-          return add_whitespace_v2(input) if ENV["TW_PARSER_MATH_OPS_V2"]
-
-          return input unless input.match?(Regexp.union(*MATH_FUNCTIONS)) || input.include?("var(")
-
-          result = +""
-          function_stack = []
-
-          scanner = StringScanner.new(input)
-          until scanner.eos?
-            case # rubocop:disable Style/EmptyCaseCondition
-            # function start (including var)
-            when scanner.scan(/(?:#{MATH_FUNCTIONS.join("|")}|var)\(/)
-              function_name = scanner.matched.to_s.gsub(/\($/, "")
-              function_stack.push(function_name)
-              result << scanner.matched.to_s
-            # function end
-            when scanner.scan(/\)/) # rubocop:disable Style/RedundantRegexpArgument
-              function_stack.pop
-              result << scanner.matched.to_s
-            # value
-            when scanner.scan(/\d+[%a-z]*/)
-              result << scanner.matched.to_s
-            # CSS variables (--name)
-            when scanner.scan(/--[a-z][a-z0-9-]*/)
-              result << scanner.matched.to_s
-            # comma (add space after comma in function arguments, except in var())
-            when scanner.scan(/,/) # rubocop:disable Style/RedundantRegexpArgument
-              result << if function_stack.last == "var"
-                          ","
-                        else
-                          ", "
-                        end
-            # operator
-            when scanner.scan(Regexp.union(*OPERATORS))
-              operator = scanner.matched.to_s
-              # check if this is a sign (+ or -) after an operator or at the start of calc
-              if NUMBER_SIGNS.include?(operator) && result.end_with?(" + ", " - ", " * ", " / ", "(")
-                result << operator
-              else
-                # add space before operator if not already present
-                result << " " unless result.end_with?(" ")
-                result << operator
-                result << " "
-              end
-            else
-              result << scanner.getch.to_s
-            end
-          end
-
-          result
-        end
-
-        #: (String input) -> String
-        def add_whitespace_v2(input)
           # Bail early if there are no math functions in the input
           return input unless input.match?(Regexp.union(*MATH_FUNCTIONS))
 
