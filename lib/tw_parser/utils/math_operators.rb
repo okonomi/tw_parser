@@ -75,8 +75,8 @@ module TwParser
           result = +""
           formattable = [] #: Array[TrueClass | FalseClass]
 
-          value_pos = nil
-          last_value_pos = nil
+          value_pos = nil #: Integer | nil
+          last_value_pos = nil #: Integer | nil
 
           scanner = StringScanner.new(input)
           until scanner.eos?
@@ -165,7 +165,7 @@ module TwParser
               next_char = scanner.peek(1)
 
               # Do not add spaces for scientific notation, e.g.: `-3.4e-2`
-              if %w[e E].include?(prev_char.to_s) && prev_prev_char&.between?("0", "9")
+              if prev_char&.match?(/[eE]/) && prev_prev_char&.between?("0", "9")
                 result << char
                 next
               end
@@ -177,7 +177,7 @@ module TwParser
               end
 
               # If we're at the beginning of an argument don't add spaces
-              if !prev_char.nil? && ["(", ","].include?(prev_char)
+              if prev_char&.match?(/[(,]/)
                 result << char
                 next
               end

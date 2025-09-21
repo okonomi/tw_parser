@@ -20,6 +20,9 @@ Layout/LineLength:
 Lint/EmptyBlock:
   Enabled: false
 
+Lint/DuplicateBranch:
+  Enabled: false
+
 Style/Documentation:
   Enabled: false
 
