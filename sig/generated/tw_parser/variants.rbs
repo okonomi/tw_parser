@@ -24,5 +24,8 @@ module TwParser
 
     # : (String name) -> (Symbol | nil)
     def kind: (String name) -> (Symbol | nil)
+
+    # : () -> Variants
+    def self.create: () -> Variants
   end
 end

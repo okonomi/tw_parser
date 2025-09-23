@@ -10,5 +10,8 @@ module TwParser
 
     # : (String name, String kind) -> bool
     def has?: (String name, String kind) -> bool
+
+    # : () -> Utilities
+    def self.create: () -> Utilities
   end
 end

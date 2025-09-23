@@ -12,19 +12,8 @@ module TwParser
 
     def initialize
       @parser = TwParser::Candidate::Parser.new
-      @utilities = TwParser::Utilities.new.tap do |u|
-        u.static("flex") { [] }
-        u.functional("translate-x") { [] }
-        u.functional("-translate-x") { [] }
-        u.functional("content") { [] }
-        u.functional("bg") { [] }
-      end
-      @variants = TwParser::Variants.new.tap do |v|
-        v.functional("supports") {}
-        v.functional("data") {}
-        v.static("hover") {}
-        v.static("focus") {}
-      end
+      @utilities = TwParser::Utilities.create
+      @variants = TwParser::Variants.create
     end
 
     #: (::String input) -> (TwParser::Candidate::Parser::candidate | nil)

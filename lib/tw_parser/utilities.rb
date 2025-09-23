@@ -21,5 +21,18 @@ module TwParser
     def has?(name, kind)
       @utilities.key?(name) && @utilities.fetch(name).any? { _1[:kind] == kind }
     end
+
+    class << self
+      #: () -> Utilities
+      def create
+        new.tap do |u|
+          u.static("flex") { [] }
+          u.functional("translate-x") { [] }
+          u.functional("-translate-x") { [] }
+          u.functional("content") { [] }
+          u.functional("bg") { [] }
+        end
+      end
+    end
   end
 end

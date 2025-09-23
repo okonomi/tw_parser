@@ -37,5 +37,17 @@ module TwParser
     def kind(name)
       @variants[name]&.dig(:kind)
     end
+
+    class << self
+      #: () -> Variants
+      def create
+        new.tap do |v|
+          v.functional("supports") {}
+          v.functional("data") {}
+          v.static("hover") {}
+          v.static("focus") {}
+        end
+      end
+    end
   end
 end
