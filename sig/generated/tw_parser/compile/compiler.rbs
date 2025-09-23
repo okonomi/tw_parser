@@ -1,0 +1,10 @@
+# Generated from lib/tw_parser/compile/compiler.rb with RBS::Inline
+
+module TwParser
+  module Compile
+    class Compiler
+      # : (Array[String] raw_candidates, DesignSystem design_system) -> void
+      def compile_candidates: (Array[String] raw_candidates, DesignSystem design_system) -> void
+    end
+  end
+end

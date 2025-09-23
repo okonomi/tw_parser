@@ -1,6 +1,9 @@
 # rbs_inline: enabled
 # frozen_string_literal: true
 
+require_relative "utilities"
+require_relative "variants"
+
 module TwParser
   class DesignSystem
     attr_reader :utilities #: TwParser::Utilities
