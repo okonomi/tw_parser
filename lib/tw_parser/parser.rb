@@ -7,18 +7,16 @@ module TwParser
     # @rbs!
     #
     #   @parser: TwParser::Candidate::Parser
-    #   @utilities: TwParser::Utilities
-    #   @variants: TwParser::Variants
+    #   @design_system: TwParser::DesignSystem
 
     def initialize
       @parser = TwParser::Candidate::Parser.new
-      @utilities = TwParser::Utilities.create
-      @variants = TwParser::Variants.create
+      @design_system = DesignSystem.build
     end
 
     #: (::String input) -> (TwParser::Candidate::Parser::candidate | nil)
     def parse(input)
-      @parser.parse(input, utilities: @utilities, variants: @variants)
+      @parser.parse(input, @design_system)
     end
   end
 end

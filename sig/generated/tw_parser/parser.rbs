@@ -5,9 +5,7 @@ module TwParser
   class Parser
     @parser: TwParser::Candidate::Parser
 
-    @utilities: TwParser::Utilities
-
-    @variants: TwParser::Variants
+    @design_system: TwParser::DesignSystem
 
     def initialize: () -> untyped
 
