@@ -8,7 +8,9 @@ module TwParser
     class Compiler
       #: (Array[String] raw_candidates, DesignSystem design_system) -> void
       def compile_candidates(raw_candidates, design_system)
-        # Implementation goes here
+        raw_candidates.each do |raw_candidate|
+          design_system.parse_candidate(raw_candidate)
+        end
       end
     end
   end

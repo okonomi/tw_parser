@@ -11,6 +11,8 @@ target :lib do
   check "lib/tw_parser/utils"
   # check "lib/tw_parser/utilities.rb"
   check "lib/tw_parser/candidate"
+  check "lib/tw_parser/compile"
+  check "lib/tw_parser/design_system"
 
   # check "spec/tw_parser/parser_spec.rb"
 end

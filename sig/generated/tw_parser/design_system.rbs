@@ -6,8 +6,13 @@ module TwParser
 
     attr_reader variants: TwParser::Variants
 
+    attr_reader parser: TwParser::Candidate::Parser
+
     # : (Utilities utilities, Variants variants) -> void
     def initialize: (Utilities utilities, Variants variants) -> void
+
+    # : (String candidate) -> (TwParser::Candidate::Parser::candidate | nil)
+    def parse_candidate: (String candidate) -> (TwParser::Candidate::Parser::candidate | nil)
 
     # : () -> DesignSystem
     def self.build: () -> DesignSystem
