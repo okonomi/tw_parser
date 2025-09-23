@@ -5,11 +5,11 @@ module TwParser
     class Parser
       type candidate = ArbitraryCandidate | StaticCandidate | FunctionalCandidate
 
-      # : (String input, utilities: TwParser::Utilities, variants: TwParser::Variants, ?prefix: String?) -> (candidate | nil)
-      def parse: (String input, utilities: TwParser::Utilities, variants: TwParser::Variants, ?prefix: String?) -> (candidate | nil)
+      # : (String input, DesignSystem design_system, ?prefix: String?) -> (candidate | nil)
+      def parse: (String input, DesignSystem design_system, ?prefix: String?) -> (candidate | nil)
 
-      # : (String variant, variants: TwParser::Variants) -> (variant | nil)
-      def parse_variant: (String variant, variants: TwParser::Variants) -> (variant | nil)
+      # : (String variant, DesignSystem design_system) -> (variant | nil)
+      def parse_variant: (String variant, DesignSystem design_system) -> (variant | nil)
 
       # : (String modifier) -> (ArbitraryModifier | NamedModifier | nil)
       def parse_modifier: (String modifier) -> (ArbitraryModifier | NamedModifier | nil)

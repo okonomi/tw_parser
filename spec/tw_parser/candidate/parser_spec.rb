@@ -1,26 +1,13 @@
 # frozen_string_literal: true
 
+require_relative "../../../lib/tw_parser/design_system"
+
 RSpec.describe TwParser::Candidate::Parser do
   describe "#parse" do
     subject do
-      utilities = TwParser::Utilities.new.tap do |u|
-        u.static("flex") { [] }
-        u.functional("translate-x") { [] }
-        u.functional("-translate-x") { [] }
-        u.functional("content") { [] }
-        u.functional("bg") { [] }
-        u.functional("flex") { [] }
-      end
-      variants = TwParser::Variants.new.tap do |v|
-        v.functional("supports") {}
-        v.functional("data") {}
-        v.functional("@") {}
-        v.static("hover") {}
-        v.static("focus") {}
-        v.compound("group", TwParser::Variants::COMPOUND_STYLE_RULES) {}
-      end
+      design_system = TwParser::DesignSystem.build
 
-      described_class.new.parse(input, utilities:, variants:, prefix:)
+      described_class.new.parse(input, design_system, prefix:)
     end
 
     let(:prefix) { nil }

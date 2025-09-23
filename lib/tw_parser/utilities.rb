@@ -31,6 +31,7 @@ module TwParser
           u.functional("-translate-x") { [] }
           u.functional("content") { [] }
           u.functional("bg") { [] }
+          u.functional("flex") { [] }
         end
       end
     end

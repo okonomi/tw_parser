@@ -1,0 +1,15 @@
+# Generated from lib/tw_parser/design_system.rb with RBS::Inline
+
+module TwParser
+  class DesignSystem
+    attr_reader utilities: TwParser::Utilities
+
+    attr_reader variants: TwParser::Variants
+
+    # : (Utilities utilities, Variants variants) -> void
+    def initialize: (Utilities utilities, Variants variants) -> void
+
+    # : () -> DesignSystem
+    def self.build: () -> DesignSystem
+  end
+end

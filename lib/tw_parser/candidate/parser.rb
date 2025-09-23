@@ -10,6 +10,7 @@ require_relative "modifier"
 require_relative "variant"
 require_relative "candidate"
 require_relative "../utils/arbitrary_value"
+require_relative "../design_system"
 
 module TwParser
   module Candidate
@@ -18,8 +19,8 @@ module TwParser
       #
       #  type candidate = ArbitraryCandidate | StaticCandidate | FunctionalCandidate
 
-      #: (String input, utilities: TwParser::Utilities, variants: TwParser::Variants, ?prefix: String?) -> (candidate | nil)
-      def parse(input, utilities:, variants:, prefix: nil)
+      #: (String input, DesignSystem design_system, ?prefix: String?) -> (candidate | nil)
+      def parse(input, design_system, prefix: nil)
         # hover:focus:underline
         # ^^^^^ ^^^^^^           -> Variants
         #             ^^^^^^^^^  -> Base
@@ -40,7 +41,7 @@ module TwParser
         parsed_candidate_variants = [] #: Array[variant]
 
         raw_variants.reverse_each do |variant|
-          parsed_variant = parse_variant(variant, variants:)
+          parsed_variant = parse_variant(variant, design_system)
           return nil if parsed_variant.nil?
 
           parsed_candidate_variants.push(parsed_variant)
@@ -55,7 +56,7 @@ module TwParser
 
         # Check for an exact match of a static utility first as long as it does not
         # look like an arbitrary value.
-        if utilities.has?(base, "static") && !base.include?("[")
+        if design_system.utilities.has?(base, "static") && !base.include?("[")
           return StaticCandidate.new(
             root: base,
             variants: parsed_candidate_variants,
@@ -160,7 +161,7 @@ module TwParser
 
           # The root of the utility should exist as-is in the utilities map. If not,
           # it's an invalid utility and we can skip continue parsing.
-          return nil unless utilities.has?(root, "functional")
+          return nil unless design_system.utilities.has?(root, "functional")
 
           value = base_without_modifier.slice((idx + 1)..)
 
@@ -183,7 +184,7 @@ module TwParser
 
           # The root of the utility should exist as-is in the utilities map. If not,
           # it's an invalid utility and we can skip continue parsing.
-          return nil unless utilities.has?(root, "functional")
+          return nil unless design_system.utilities.has?(root, "functional")
 
           value = base_without_modifier.slice((idx + 2)..-2) #: String
 
@@ -204,7 +205,7 @@ module TwParser
           roots = [[root, data_type.nil? ? "[var(#{value})]" : "[#{data_type}:var(#{value})]"]] #: Array[root]
         else
           roots = find_roots(base_without_modifier) do |root|
-            utilities.has?(root, "functional")
+            design_system.utilities.has?(root, "functional")
           end
         end
 
@@ -274,8 +275,8 @@ module TwParser
         nil
       end
 
-      #: (String variant, variants: TwParser::Variants) -> (variant | nil)
-      def parse_variant(variant, variants:)
+      #: (String variant, DesignSystem design_system) -> (variant | nil)
+      def parse_variant(variant, design_system)
         # Arbitrary variants
         if variant.start_with?("[") && variant.end_with?("]")
           # TODO: Breaking change
@@ -322,11 +323,11 @@ module TwParser
         return nil unless additional_modifier.nil?
 
         roots = find_roots(variant_without_modifier) do |root|
-          variants.has?(root)
+          design_system.variants.has?(root)
         end
 
         roots.each do |root, value|
-          case variants.kind(root)
+          case design_system.variants.kind(root)
           when :static
             return StaticVariant.new(
               root: variant
@@ -401,7 +402,7 @@ module TwParser
           when :compound
             return nil if value.nil?
 
-            sub_variant = parse_variant(value, variants: variants)
+            sub_variant = parse_variant(value, design_system)
             return nil if sub_variant.nil?
 
             parsed_modifier = modifier.nil? ? nil : parse_modifier(modifier)

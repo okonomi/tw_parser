@@ -44,8 +44,10 @@ module TwParser
         new.tap do |v|
           v.functional("supports") {}
           v.functional("data") {}
+          v.functional("@") {}
           v.static("hover") {}
           v.static("focus") {}
+          v.compound("group", TwParser::Variants::COMPOUND_STYLE_RULES) {}
         end
       end
     end
